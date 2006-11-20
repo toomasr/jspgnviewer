@@ -1,0 +1,131 @@
+<html>
+	<head>
+			<script
+				type="text/javascript"
+				language="javascript"
+				src="myUnit.js">
+			</script>
+			<script
+				type="text/javascript"
+				language="javascript"
+				src="pgn.js">
+			</script>
+			<script
+				type="text/javascript"
+				language="javascript"
+				src="log4javascript.js">
+			</script>
+
+			<script>
+				var log = log4javascript.getDefaultLogger();
+
+				function testProps() {
+					// case 1 - props
+					var pgn = new Pgn(document.getElementById('testProps').firstChild.nodeValue)
+					var props = {'Event':'2nd Samba Cup',
+												'Site' : "Skanderborg DEN",
+												'Date' : "2005.10.14",
+												'Round' : "1",
+												'White' : "Hansen,LB",
+												'Black' : "Bruzon,L",
+												'Result' : "1/2-1/2",
+												'WhiteElo' : "2565",
+												'BlackElo' : "2677",
+												'EventDate' :"2005.10.14",
+												'ECO' : "D47"
+												}
+
+					for ( i in props) {
+						 assertEquals(pgn.props[i], props[i])
+					}
+					// EOF case 1 - drawResult
+				}
+
+				function testNewline() {
+					// case 2 - PGN where moves have the \n after numbers
+					// eg 1. <-- \n
+					//		e4
+					var pgn = new Pgn(document.getElementById('newLine').firstChild.nodeValue)
+					// EOF case 2 - \n special case
+					var moves = ['e4','c6','d4', 'd5']
+					var result = "0-1"
+					for (var i = 0;i < moves.length;i++) {
+						assertEquals(moves[i], pgn.nextMove()[0])	 
+					}
+				}
+
+				function testFullGame() {
+					var pgn = new Pgn(document.getElementById('newLine').firstChild.nodeValue)
+					// EOF case 2 - \n special case
+					var moves = ['e4','c6','d4', 'd5']
+					var result = "0-1"
+					for (var i = 0;i < moves.length;i++) {
+						assertEquals(moves[i], pgn.nextMove()[0])	 
+					}
+				}
+
+				function runTests() {
+					suite = new TestSuite()
+					suite.addTest(testProps)
+					suite.addTest(testNewline)
+					suite.runTests()
+				}
+			
+				log.warn('Warning')
+			</script>
+  </head>
+
+  <body onLoad="runTests()">
+		<div id ="result">
+		</div>
+		<div id="testProps" style="visibility:none;display:none">
+[Event "2nd Samba Cup"]
+[Site "Skanderborg DEN"]
+[Date "2005.10.14"]
+[Round "1"]
+[White "Hansen,LB"]
+[Black "Bruzon,L"]
+[Result "1/2-1/2"]
+[WhiteElo "2565"]
+[BlackElo "2677"]
+[EventDate "2005.10.14"]
+[ECO "D47"]
+		</div>
+
+		<div id="newLine" style="visibility:none;display:none">
+[Event "2nd Samba Cup"]
+[Site "Skanderborg DEN"]
+[Date "2005.10.15"]
+[Round "2"]
+[White "Nisipeanu,LD"]
+[Black "Jobava,Ba"]
+[Result "0-1"]
+[WhiteElo "2707"]
+[BlackElo "2601"]
+[EventDate "2005.10.14"]
+[ECO "B14"]
+
+1. e4 c6 2.
+d4 d5  0-1
+		</div>
+		
+		<div id="fullGame" style="visibility:none;display:none">
+[Event "2nd Samba Cup"]
+[Site "Skanderborg DEN"]
+[Date "2005.10.23"]
+[Round "9"]
+[White "Zhang Pengxiang"]
+[Black "Nisipeanu,LD"]
+[Result "1/2-1/2"]
+[WhiteElo "2613"]
+[BlackElo "2707"]
+[EventDate "2005.10.14"]
+[ECO "B12"]
+
+1. e4 c6 2. d4 d5 3. e5 Bf5 4. Be3 e6 5. Nd2 Nd7 6. Be2 Ne7 7. f4 c5 8.
+Ngf3 Nc6 9. c3 Qb6 10. Qb3 Be7 11. dxc5 Nxc5 12. Qxb6 axb6 13. Nd4 Nd3+ 14.
+Bxd3 Bxd3 15. Kf2 Ra4 16. Rhd1 Bg6 17. g3 Bc5 18. N2b3 Kd7 19. Rd2 Bxd4 20.
+Nxd4 Nxd4 21. Rxd4 b5 22. a3 1/2-1/2
+		</div>
+  </body>
+</html>

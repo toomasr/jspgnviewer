@@ -340,11 +340,15 @@ function Converter(pgn) {
           Find the bishop from location.
         */
         function findFromBish(pos, to, color) {
+					var oldTo = to
           to = getSquare(to)
           var rtrn
              for(var i = 0;i < 8; i++) {
+							 // diagonal down right
                try {
                   var coord = pos[to[0]+i][to[1]+i]
+									//alert(oldTo+" '"+coord.color+"' and "+coord.piece+" looking '"+color+"' "+(coord.color==color)+" "+(coord.piece=='bishop'))
+									//alert(coord.color==color+" and "+coord.piece)
                   if (coord.piece == 'bishop'
                      && coord.color == color) {
                      return new Array(to[0]+i, to[1]+i)
@@ -379,7 +383,7 @@ function Converter(pgn) {
                }
                catch (e) {}
              } 
-          alert('No move found for the bishop')
+          alert('No move found for the bishop '+oldTo)
         }
 
         /* 
@@ -613,7 +617,7 @@ function Converter(pgn) {
 					from.piece = null
 					from.color = null
 
-            // promoting the piece
+          // promoting the piece
 					if (prom.length>0) {
 						var image = new Image();
 						pPiece = tmpPiece

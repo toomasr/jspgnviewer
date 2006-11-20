@@ -1,6 +1,9 @@
 TODO
   + en passante
 
+OPERA
+	+ regexps are broken. Does not handle \n very well, weird fcking browser
+
 Use-cases
 
    UC1 - Static HTML generation

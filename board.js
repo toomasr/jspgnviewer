@@ -574,10 +574,6 @@
 				}
 			}
 
-			function Move(white, black) {
-				this.white = white
-				this.black = black
-			}
 
       function init() {
         var pgn = new Pgn(document.getElementById("area").value);

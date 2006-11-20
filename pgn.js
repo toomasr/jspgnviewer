@@ -36,18 +36,20 @@ function Pgn(pgn) {
 	// the properties
 	var reprop = /\[([^\]]*)\]/gi
 	var matches = pgn.match(reprop)
-	for(var i = 0;i < matches.length; i++) {
-		// lose the brackets
-		matches[i] = matches[i].substring(1, matches[i].length-1)
-		// split by the first space
-		var key = matches[i].substring(0, matches[i].indexOf(" "))
-		var value = matches[i].substring(matches[i].indexOf(" ")+1)
-		if (value.charAt(0) == '"')
-			value = value.substr(1)
-		if (value.charAt(value.length-1) == '"')
-			value = value.substr(0, value.length-1)
-		
-		this.props[key] = value;
+	if (matches) {
+		 for(var i = 0;i < matches.length; i++) {
+			 // lose the brackets
+			 matches[i] = matches[i].substring(1, matches[i].length-1)
+			 // split by the first space
+			 var key = matches[i].substring(0, matches[i].indexOf(" "))
+			 var value = matches[i].substring(matches[i].indexOf(" ")+1)
+			 if (value.charAt(0) == '"')
+				 value = value.substr(1)
+			 if (value.charAt(value.length-1) == '"')
+				 value = value.substr(0, value.length-1)
+			 
+			 this.props[key] = value;
+		 }
 	}
 
 	var gameOverre = new Array(
@@ -62,6 +64,7 @@ function Pgn(pgn) {
 		re = i+"\.(\\n| )([^.]*)"
 		
 		var result = pgn.match(re)
+		
 		if (result == null)
 			break
 		var tmp = result[2].replace(/\n/g, " ").split(" ")
@@ -74,11 +77,14 @@ function Pgn(pgn) {
 		this.moves[this.moves.length] = move
 	}
 
-		for(var i = 0; i < gameOverre.length; i++) {
-			if (gameOverre[i].test(this.moves[this.moves.length-1][1])) {
-				this.moves[this.moves.length-1][1] = null
-	 	}
-		}
+	// no moves
+	if (this.moves.length>0) {
+		 for(var i = 0; i < gameOverre.length; i++) {
+			 if (gameOverre[i].test(this.moves[this.moves.length-1][1])) {
+				 this.moves[this.moves.length-1][1] = null
+			 }
+		 }
+	}
 
 	if (/1\/2-1\/2/.test(pgn)) {
 		this.props['result'] = '1/2-1/2'
@@ -115,5 +121,10 @@ function Pgn(pgn) {
 			return null
 		}
 	}
+}
+
+function Move(white, black) {
+	this.white = white
+	this.black = black
 }
 
