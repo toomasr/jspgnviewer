@@ -565,10 +565,10 @@
 
 
       function init() {
-        var pgn = new Pgn(document.getElementById("area").value);
+        var pgn = new Pgn(document.getElementById("area").firstChild.nodeValue);
 				var conv = new Converter(pgn)
 				conv.convert()      
-
+				
 				var brd = new Board(conv)
 				brd.init()
       }

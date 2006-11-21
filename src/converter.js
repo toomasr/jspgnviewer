@@ -347,8 +347,6 @@ function Converter(pgn) {
 							 // diagonal down right
                try {
                   var coord = pos[to[0]+i][to[1]+i]
-									//alert(oldTo+" '"+coord.color+"' and "+coord.piece+" looking '"+color+"' "+(coord.color==color)+" "+(coord.piece=='bishop'))
-									//alert(coord.color==color+" and "+coord.piece)
                   if (coord.piece == 'bishop'
                      && coord.color == color) {
                      return new Array(to[0]+i, to[1]+i)
@@ -510,7 +508,6 @@ function Converter(pgn) {
               return a
              }
              else {
-                //alert("2nd "+to+" ... " + a + " ... " + b)
               return b
              }
           }

@@ -1,24 +1,42 @@
 TODO
-  + en passante
+	Serious:
+  	+ en passante
+			- Have to get a pgn with en passante
 
-OPERA
-	+ regexps are broken. Does not handle \n very well, weird fcking browser
+	Normal:
+		+ get new images from Riivo
+		+ test the page with IE 6, 7
+			+ update crossover to ie6
+			+ mnz, helmer, martti, johh can be testers
+	
+	Any:
+		+ Post about RegExp & \n in textareas
+		+ Post about the new testpage
+			+ new categories meme and devel
+			+ link to duke
+			+ write about starting devel with wordpress
+		+ get wordpress plugin development sample
+		+ get wordpress
+		+ Move blog to tom.jabber.ee
+		+ Make development page (wiki) at pgnview.com
+		+ Post about developing the viewer
+		+ Post about developing for ff, opera, konq
 
 Use-cases
 
-   UC1 - Static HTML generation
-      *) Paste the PGNs
-      *) Choose which ones to include
-      *) Choose chess set & css
-      *) Generate - voila
+	UC1 - Static HTML generation
+		*) Paste the PGNs
+		*) Choose which ones to include
+		*) Choose chess set & css
+		*) Generate - voila
 
-   UC2 - Host your PGN files
-    *) You paste the pgn
-    *) Choose which ones to include
-    *) Choose chess set & css
-    *) A link will be generated where you can play the game(s)
+	UC2 - Host your PGN files
+		*) You paste the pgn
+		*) Choose which ones to include
+		*) Choose chess set & css
+		*) A link will be generated where you can play the game(s)
 
-   UC3 - Blog integration
-    *) You are writing a blog entry
-    *) You include your games
-    *) In the blog entry you can play through the game(s)
+	UC3 - Blog integration
+		*) You are writing a blog entry
+		*) You include your games
+		*) In the blog entry you can play through the game(s)
