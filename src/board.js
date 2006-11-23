@@ -14,192 +14,202 @@
  * limitations under the License.
 **/
 
-	function Board(converter) {
-		this.conv = converter
+	function Board(divId) {
+		var pgn = new Pgn(document.getElementById(divId).firstChild.nodeValue);
+		this.conv = new Converter(pgn)
+		this.conv.convert()
+
 		this.flipped = false
 		this.id = (new Date()).getTime()
 		window[this.id] = this
 
 		// static
+		this.imagePrefix = "../img/"
+		if (arguments.length == 2)
+			 this.imagePrefix = arguments[1]
 		var imageNames = {
-			"white" : {"rook":"../img/wRook.png"
-								 ,"bishop":"../img/wBishop.png"
-								 ,"knight":"../img/wKnight.png"
-								 ,"queen":"../img/wQueen.png"
-								 ,"king":"../img/wKing.png"
-								 ,"pawn":"../img/wPawn.png"}
+			"white" : {"rook":"wRook.png"
+								 ,"bishop":"wBishop.png"
+								 ,"knight":"wKnight.png"
+								 ,"queen":"wQueen.png"
+								 ,"king":"wKing.png"
+								 ,"pawn":"wPawn.png"}
             
-			,"black" : {"rook":"../img/bRook.png"
-								 ,"bishop":"../img/bBishop.png"
-								 ,"knight":"../img/bKnight.png"
-								 ,"queen":"../img/bQueen.png"
-								 ,"king":"../img/bKing.png"
-								 ,"pawn":"../img/bPawn.png"}
+			,"black" : {"rook":"bRook.png"
+								 ,"bishop":"bBishop.png"
+								 ,"knight":"bKnight.png"
+								 ,"queen":"bQueen.png"
+								 ,"king":"bKing.png"
+								 ,"pawn":"bPawn.png"}
 		};
+		for (i in imageNames.white)
+			 imageNames.white[i] = this.imagePrefix+imageNames.white[i]
+		for (i in imageNames.black)
+			 imageNames.black[i] = this.imagePrefix+imageNames.black[i]
 		// end of static
 		this.pos = new Array()
 
 		for(var i = 0;i<8;i++)
 			this.pos[i] = new Array()
       
-         this.init = function() {
-           // the main frame
-           var boardFrame = document.getElementById("chessBoard");
+	 this.init = function() {
+		 // the main frame
+		 var boardFrame = document.getElementById(divId+"_board");
+		 
+		 // toplevel table
+		 var topTable = document.createElement("table");
+		 topTable.style.border = "1px solid #000000"
 
-           // toplevel table
-           var topTable = document.createElement("table");
-					 topTable.style.border = "1px solid #000000"
+		 var boardTd = document.createElement("td")
+		 var btnTd = document.createElement("td")
+		 var propsTd = document.createElement("td")
+		 
+		 // movesTable
+		 var movesTd = document.createElement("td")
+		 this.movesTd = movesTd
+		 movesTd.style.width = "400px"
+		 movesTd.rowSpan = 3
+		 movesTd.valign = "top"
+		 
+		 var tmp = document.createElement("tr")
+		 tmp.appendChild(boardTd)
+		 //tmp.appendChild(movesTd)
+		 topTable.appendChild(tmp)
 
-           var boardTd = document.createElement("td")
-           var btnTd = document.createElement("td")
-					 var propsTd = document.createElement("td")
-					 
-					 // movesTable
-					 var movesTd = document.createElement("td")
-					 this.movesTd = movesTd
-					 movesTd.style.width = "400px"
-					 movesTd.rowSpan = 3
-					 movesTd.valign = "top"
-           
-					 var tmp = document.createElement("tr")
-					 tmp.appendChild(boardTd)
-					 tmp.appendChild(movesTd)
-					 topTable.appendChild(tmp)
-
-           topTable.appendChild(document.createElement("tr")).appendChild(btnTd)
-					 topTable.appendChild(document.createElement("tr")).appendChild(propsTd)
+		 topTable.appendChild(document.createElement("tr")).appendChild(btnTd)
+		 topTable.appendChild(document.createElement("tr")).appendChild(propsTd)
 
 
-           var board = document.createElement("table");
-           
-           board.style.top = boardFrame.style.top;
-           board.style.left = boardFrame.style.left;
-           board.style.borderCollapse = "collapse"
-           
-           boardFrame.appendChild(topTable);
-           boardTd.appendChild(board)
-           
-           var width = 31;
-           var height = 31;
+		 var board = document.createElement("table");
+		 
+		 board.style.top = boardFrame.style.top;
+		 board.style.left = boardFrame.style.left;
+		 board.style.borderCollapse = "collapse"
+		 
+		 boardFrame.appendChild(topTable);
+		 boardTd.appendChild(board)
+		 
+		 var width = 31;
+		 var height = 31;
 
-           // white pieces
-           for(var i = 0; i < 8; i++) {
-              var tr = document.createElement("tr")
-              var flip = (i % 2)?1:0;
-              for(var j = 0; j < 8; j++) {
-               var td = document.createElement("td")   
+		 // white pieces
+		 for(var i = 0; i < 8; i++) {
+				var tr = document.createElement("tr")
+				var flip = (i % 2)?1:0;
+				for(var j = 0; j < 8; j++) {
+				 var td = document.createElement("td")   
 
-               td.style.height = height+"px"
-               td.style.width = width+"px"
-               td.style.border = "1px solid #000000"
-               td.style.padding = "0px"
-               var color = !flip?(j%2)?"#4b4b4b":"#ffffff":!(j%2)?"#4b4b4b":"#ffffff";
-               
-               td.style.background = color
+				 td.style.height = height+"px"
+				 td.style.width = width+"px"
+				 td.style.border = "1px solid #000000"
+				 td.style.padding = "0px"
+				 var color = !flip?(j%2)?"#4b4b4b":"#ffffff":!(j%2)?"#4b4b4b":"#ffffff";
+				 
+				 td.style.background = color
 
-               this.pos[i][j] = td;
-               tr.appendChild(td)
-              }
-              board.appendChild(tr)
-           }
-           this.populatePieces()
-					 this.populateProps(propsTd)
-					 this.populateMoves(movesTd)
-         
-           // in java i could do Board.this in anon function
-           var tmp = this
-           // button td
-           btnTd.align = 'center'
+				 this.pos[i][j] = td;
+				 tr.appendChild(td)
+				}
+				board.appendChild(tr)
+		 }
+		 this.populatePieces()
+		 this.populateProps(propsTd)
+		 this.populateMoves(movesTd)
+	 
+		 // in java i could do Board.this in anon function
+		 var tmp = this
+		 // button td
+		 btnTd.align = 'center'
 
-           // rwnd
-           var input = document.createElement("input")
-           input.type = "button"
-           input.value = "|<<"
-           
-           input.onclick = function() {
-              startPosition(tmp)
-           }
-           btnTd.appendChild(input)
+		 // rwnd
+		 var input = document.createElement("input")
+		 input.type = "button"
+		 input.value = "|<<"
+		 
+		 input.onclick = function() {
+				startPosition(tmp)
+		 }
+		 btnTd.appendChild(input)
 
-           // back
-           input = document.createElement("input")
-           input.type = "button"
-           input.value = "<"
-           
-           input.onclick = function() {
-            makeBwMove(tmp)
-           }
-            
-           btnTd.appendChild(input)
-          
-           // flip the board
-           input = document.createElement("input")
-           input.type = "button"
-           input.value = "||"
-           
-           input.onclick = function() {
-            flipBoard(tmp)
-           }
+		 // back
+		 input = document.createElement("input")
+		 input.type = "button"
+		 input.value = "<"
+		 
+		 input.onclick = function() {
+			makeBwMove(tmp)
+		 }
+			
+		 btnTd.appendChild(input)
+		
+		 // flip the board
+		 input = document.createElement("input")
+		 input.type = "button"
+		 input.value = "||"
+		 
+		 input.onclick = function() {
+			flipBoard(tmp)
+		 }
 
-           btnTd.appendChild(input)
-           
-					 // hide
-           input = document.createElement("input")
-           input.type = "button"
-           input.value = "||"
-           
-           input.onclick = function() {
-            hideMoves(tmp)
-           }
+		 //btnTd.appendChild(input)
+		 
+		 // hide
+		 input = document.createElement("input")
+		 input.type = "button"
+		 input.value = "||"
+		 
+		 input.onclick = function() {
+			hideMoves(tmp)
+		 }
 
-           btnTd.appendChild(input)
-           
-           // next btn
-           input = document.createElement("input");
-           input.type = "button"
-           input.value = ">"
+		 btnTd.appendChild(input)
+		 
+		 // next btn
+		 input = document.createElement("input");
+		 input.type = "button"
+		 input.value = ">"
 
-           input.onclick = function() {
-					 	makeMove(tmp)
-					 }
+		 input.onclick = function() {
+			makeMove(tmp)
+		 }
 
-           btnTd.appendChild(input)
-           
-           // ffwd
-           input = document.createElement("input");
-           input.type = "button"
-           input.value = ">>|"
+		 btnTd.appendChild(input)
+		 
+		 // ffwd
+		 input = document.createElement("input");
+		 input.type = "button"
+		 input.value = ">>|"
 
-           input.onclick = function() {
-              endPosition(tmp)
-           }
-           btnTd.appendChild(input)
-         }
+		 input.onclick = function() {
+				endPosition(tmp)
+		 }
+		 btnTd.appendChild(input)
+	 }
 
-					flipBoard = function(board) {
-						board.deMarkLastMove(true)
-						var frst, snd, tmp
-						board.flipped = !board.flipped
-						for (var i = 0;i<8;i++) {
-							for (var j = 0;j<4;j++){
-								frst = board.pos[i][j]
-								snd = board.pos[7-i][7-j]
+		flipBoard = function(board) {
+			board.deMarkLastMove(true)
+			var frst, snd, tmp
+			board.flipped = !board.flipped
+			for (var i = 0;i<8;i++) {
+				for (var j = 0;j<4;j++){
+					frst = board.pos[i][j]
+					snd = board.pos[7-i][7-j]
 
-								try {
-									 tmp = frst.removeChild(frst.firstChild)
-								}
-								catch (e) {tmp=null}
-
-								try{
-									 frst.appendChild(snd.removeChild(snd.firstChild))
-								}
-								catch (e) {}
-								
-								if (tmp)
-									snd.appendChild(tmp)
-							} 
-						}
+					try {
+						 tmp = frst.removeChild(frst.firstChild)
 					}
+					catch (e) {tmp=null}
+
+					try{
+						 frst.appendChild(snd.removeChild(snd.firstChild))
+					}
+					catch (e) {}
+					
+					if (tmp)
+						snd.appendChild(tmp)
+				} 
+			}
+		}
 
 					this.skipToMove = function(no, color) {
 						var rNo = no*2+color+1
@@ -407,7 +417,7 @@
 					cont.vAlign = "top"
 					var tmp2=this.conv.pgn.moves
 					var p = document.createElement("p")
-					p.style.fontSize = "14pt"
+					p.style.fontSize = "9pt"
 					p.style.fontFace = "Tahoma, Arial, sans-serif"
 					p.style.fontWeight = "bold"
 					var txt = document.createTextNode(this.conv.pgn.props['White']
@@ -449,7 +459,7 @@
 					// init the style
 					var tdS = document.createElement('td')
 					tdS.style.fontFamily = "Tahoma, Arial, sans-serif"
-					tdS.style.fontSize = "10pt"
+					tdS.style.fontSize = "8pt"
 					tdS.align = 'center'
 					// end of init the style
 					
@@ -561,14 +571,13 @@
 						to.appendChild(this.getPieceImg(to.piece, to.color))
 					}
 				}
+
+				function setUp(board, divId) {
+					var pgn = new Pgn(document.getElementById(divId).firstChild.nodeValue);
+					var conv = new Converter(pgn)
+					conv.convert()      
+					 
+					var brd = new Board(conv)
+					brd.init()
+				}
 			}
-
-
-      function init() {
-        var pgn = new Pgn(document.getElementById("area").firstChild.nodeValue);
-				var conv = new Converter(pgn)
-				conv.convert()      
-				
-				var brd = new Board(conv)
-				brd.init()
-      }

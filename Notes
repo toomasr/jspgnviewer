@@ -2,25 +2,22 @@ TODO
 	Serious:
   	+ en passante
 			- Have to get a pgn with en passante
+		+ JS should be more relaxed when it comes to
+			the pgn format (wp tinyMCE editor adds extra tags (br, p) that
+			i strip with php's strip_tags and the output differs on how
+			tinyMCE acted upon pasting the content. FF & Opera are cool,
+			Konq is going crazy at the moment.
 
 	Normal:
-		+ get new images from Riivo
+		+ get new images from Riivo - EMAIL SENT
 		+ test the page with IE 6, 7
-			+ update crossover to ie6
+			+ when i alert the innerHTML of the div I get the contents it should have
+				but nothing is displayed :(
 			+ mnz, helmer, martti, johh can be testers
 	
 	Any:
-		+ Post about RegExp & \n in textareas
-		+ Post about the new testpage
-			+ new categories meme and devel
-			+ link to duke
-			+ write about starting devel with wordpress
-		+ get wordpress plugin development sample
-		+ get wordpress
-		+ Move blog to tom.jabber.ee
+		+ write about starting devel with wordpress
 		+ Make development page (wiki) at pgnview.com
-		+ Post about developing the viewer
-		+ Post about developing for ff, opera, konq
 
 Use-cases
 

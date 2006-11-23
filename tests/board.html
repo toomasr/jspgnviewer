@@ -15,17 +15,19 @@
     	language="javascript"
 			src="../src/board.js">
 			</script>
+    <script
+    	type="text/javascript"
+    	language="javascript"
+			src="../src/log4javascript.js">
+			</script>
   </head>
 
-  <body onLoad="init()">
-		<table>
-			<tr>
-     <td valign="top"><div id="chessBoard"/></td>
-		 </tr>
-		 </table>
+  <body>
     <table border=0>
       <tr>
         <td>
+<div id='area_board'> 
+</div>
 <div id='area' style="visibility: hidden;display:none">
 [Event "2nd Samba Cup"]
 [Site "Skanderborg DEN"]
@@ -44,6 +46,10 @@ Be2 b4 9. Na4 Be7 10. O-O O-O 11. a3 a5 12. axb4 axb4 13. Bd2 Bb7 14. Qc2
 Qa5 15. Rfc1 Rfc8 16. Qd1 Qd8 17. Be1 Nd5 18. Nd2 c5 19. Nxc5 Rxa1 20. Rxa1
 Nxc5 21. dxc5 Bxc5 22. Bf3 1/2-1/2
 </div>
+<script>
+	var brd = new Board('area')
+	brd.init()
+</script>
           </td>
       </tr>
     </table>
