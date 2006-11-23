@@ -9,6 +9,9 @@ TODO
 			Konq is going crazy at the moment.
 
 	Normal:
+		+ Read the PGN spec
+			+ think what to do with comments
+			+ variations
 		+ get new images from Riivo - EMAIL SENT
 		+ test the page with IE 6, 7
 			+ when i alert the innerHTML of the div I get the contents it should have

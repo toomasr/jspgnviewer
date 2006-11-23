@@ -28,19 +28,19 @@
 		if (arguments.length == 2)
 			 this.imagePrefix = arguments[1]
 		var imageNames = {
-			"white" : {"rook":"wRook.png"
-								 ,"bishop":"wBishop.png"
-								 ,"knight":"wKnight.png"
-								 ,"queen":"wQueen.png"
-								 ,"king":"wKing.png"
-								 ,"pawn":"wPawn.png"}
+			"white" : {"rook":"wRook.gif"
+								 ,"bishop":"wBishop.gif"
+								 ,"knight":"wKnight.gif"
+								 ,"queen":"wQueen.gif"
+								 ,"king":"wKing.gif"
+								 ,"pawn":"wPawn.gif"}
             
-			,"black" : {"rook":"bRook.png"
-								 ,"bishop":"bBishop.png"
-								 ,"knight":"bKnight.png"
-								 ,"queen":"bQueen.png"
-								 ,"king":"bKing.png"
-								 ,"pawn":"bPawn.png"}
+			,"black" : {"rook":"bRook.gif"
+								 ,"bishop":"bBishop.gif"
+								 ,"knight":"bKnight.gif"
+								 ,"queen":"bQueen.gif"
+								 ,"king":"bKing.gif"
+								 ,"pawn":"bPawn.gif"}
 		};
 		for (i in imageNames.white)
 			 imageNames.white[i] = this.imagePrefix+imageNames.white[i]
@@ -57,7 +57,10 @@
 		 var boardFrame = document.getElementById(divId+"_board");
 		 
 		 // toplevel table
-		 var topTable = document.createElement("table");
+		 var topTable = document.createElement("table")
+		 var topTableTb = document.createElement("tbody")
+		 topTable.appendChild(topTableTb)
+		 
 		 topTable.style.border = "1px solid #000000"
 
 		 var boardTd = document.createElement("td")
@@ -74,13 +77,15 @@
 		 var tmp = document.createElement("tr")
 		 tmp.appendChild(boardTd)
 		 //tmp.appendChild(movesTd)
-		 topTable.appendChild(tmp)
+		 topTableTb.appendChild(tmp)
 
-		 topTable.appendChild(document.createElement("tr")).appendChild(btnTd)
-		 topTable.appendChild(document.createElement("tr")).appendChild(propsTd)
+		 topTableTb.appendChild(document.createElement("tr")).appendChild(btnTd)
+		 topTableTb.appendChild(document.createElement("tr")).appendChild(propsTd)
 
 
-		 var board = document.createElement("table");
+		 var board = document.createElement("table")
+		 var boardTb = document.createElement("tbody")
+		 board.appendChild(boardTb)
 		 
 		 board.style.top = boardFrame.style.top;
 		 board.style.left = boardFrame.style.left;
@@ -110,7 +115,7 @@
 				 this.pos[i][j] = td;
 				 tr.appendChild(td)
 				}
-				board.appendChild(tr)
+				boardTb.appendChild(tr)
 		 }
 		 this.populatePieces()
 		 this.populateProps(propsTd)
@@ -464,12 +469,15 @@
 					// end of init the style
 					
 					var tbl = document.createElement('table')
+					var tblTb = document.createElement("tbody")
+					tbl.appendChild(tblTb)
+
 					tbl.width = "100%"
 					container.appendChild(tbl)
 					
 					// white - black
 					var tr = document.createElement('tr')
-					tbl.appendChild(tr)
+					tblTb.appendChild(tr)
 					
 					var td = tdS.cloneNode(false)
 					td.style.fontWeight = "bold"
@@ -483,7 +491,7 @@
 					
 					// ELO
 					tr = document.createElement('tr')
-					tbl.appendChild(tr)
+					tblTb.appendChild(tr)
 					
 					td = tdS.cloneNode(false)
 					tr.appendChild(td)
@@ -496,7 +504,7 @@
 					
 					// Date 
 					tr = document.createElement('tr')
-					tbl.appendChild(tr)
+					tblTb.appendChild(tr)
 					
 					td = tdS.cloneNode(false)
 					tr.appendChild(td)
@@ -526,7 +534,7 @@
 					
 					// white - black
 					tr = document.createElement('tr')
-					tbl.appendChild(tr)
+					tblTb.appendChild(tr)
 					
 					td = document.createElement('td')
 					td.width = "50%"
@@ -549,6 +557,9 @@
 				this.getPieceImg = function(piece, color) {
 					var img = new Image()
 					img.src = imageNames[color][piece]
+					img.width = 30
+					img.height = 30
+					
 					return img
 				}
 
