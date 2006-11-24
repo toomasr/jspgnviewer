@@ -30,6 +30,8 @@ function tr_pgnview_callback($str) {
 	$now = time()+mt_rand();
 	// tinyMCE might have added <br /> and other tags
 	$str = strip_tags($str[0]);
+	// strip entities
+	$str = str_replace(array('&#8220;', '&#8221;', '&#8243;'), '"', $str);
 	// hidden div with the game information
 	$rtrn = '<div id="'.$now.'" style="visibility:hidden;display:none">'.$str."</div>\n";
 	// the div that will contain the graphical board
