@@ -267,8 +267,12 @@ function Converter(pgn) {
 			}
 			from = this.vBoard[fromCoords[0]][fromCoords[1]]
 			to = this.vBoard[toCoords[0]][toCoords[1]]
+				
+		 	var enPassante = null
+		 	enPassante = getEnPassante(this, fromCoords[0], fromCoords[1],
+															 toCoords[0], toCoords[1])
 			
-			result = movePiece(from, to ,prom)
+			result = movePiece(from, to ,prom, enPassante)
 			// in case of castling we don't have a null value
 			if (!myMove)
 				 myMove = new MyMove()
@@ -602,8 +606,32 @@ function Converter(pgn) {
 															extra, taking)
 					return rtrn;
         }
+
+				getEnPassante = function(brd, x1, y1, x2, y2) {
+					var from = brd.vBoard[x1][y1]
+					var to = brd.vBoard[x2][y2]
+					
+					// pawn move
+					if ("pawn" != from.piece)
+						 return null
+					
+					// taking move
+					if ((y1-y2) == 0)
+						 return null
+
+					// destination should be null
+					if ( null != to.piece )
+						 return null
+
+					// the piece we are looking for
+					return new Array(x1, y2)
+				}
+
+				getOppColor = function(color) {
+					return "white"==color?"black":"white"
+				}
         
-				movePiece = function(from, to, prom) {
+				movePiece = function(from, to, prom, passante) {
 					var hist = to.clone()
 					var tmpPiece = from.piece
 					var pPiece = null
@@ -613,7 +641,7 @@ function Converter(pgn) {
 
 					from.piece = null
 					from.color = null
-
+					
           // promoting the piece
 					if (prom.length>0) {
 						var image = new Image();
@@ -636,6 +664,7 @@ function Converter(pgn) {
 								alert('Unknown promotion')
 						}
 					}	 
+
 					return new Array(from, to, hist, pPiece)
 				}
 	}

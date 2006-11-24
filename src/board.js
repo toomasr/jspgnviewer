@@ -281,7 +281,11 @@
 							 if (this.flipped) {
 							 	piece = this.pos[7-move.x][7-move.y]
 							 }
-							 piece.lastBg = piece.style.background
+							 // on konq the bg contains "initial initial initial "
+							 // i guess xtra information. Anyways setting the
+							 // background to a color containing the "initial"
+							 // parts fails. Go figure
+							 piece.lastBg = piece.style.background.replace(/initial/g, "")
 							 piece.style.background = "#e89292"
 						}
 						catch (e) {}
