@@ -10,11 +10,13 @@ DEST_DIR="bin"
 SRC_DIR="src"
 WP_DIR="wpPlugin"
 TEST_DIR="tests"
+IMG_DIR="img"
 
 if [ ! -d $SRC_DIR ];then
 	 DEST_DIR="../bin"
 	 SRC_DIR="../src"
 	 TEST_DIR="../tests"
+	 IMG_DIR="../img"
 	 WP_DIR="../wpPlugin"
 fi
 
@@ -56,9 +58,10 @@ if [ $# -eq 1 ];then
 		scp $JS_DEST_DIR/testPage.html toomas@jabber.ee:/home/toomas/public_html/jspgnviewer/index.html
 	elif [ $1 == 'wpr' ];then
 		cp $WP_DIR/* $WP_DEST_DIR
+		cp -r $IMG_DIR/* $WP_DEST_DIR
 		cd $DEST_DIR
 		NAME="pgnview-"`cat ../wpVersion`".tar.gz"
-		tar -cvzf $NAME pgnview
+		tar --exclude=.svn -cvzf $NAME pgnview
 		scp $NAME toomas@jabber.ee:/home/toomas/public_html/jspgnviewer/downloads/$NAME
 		cd $OLD_DIR
 	elif [ $1 == 'jsr' ];then
@@ -67,6 +70,9 @@ if [ $# -eq 1 ];then
 		tar -cvzf $NAME jspgnviewer
 		scp $NAME toomas@jabber.ee:/home/toomas/public_html/jspgnviewer/downloads/$NAME
 		cd $OLD_DIR
+	elif [ $1 == 'clean' ];then
+		echo "clean "$DEST_DIR
+		rm -rf $DEST_DIR
 	fi
 fi
 
