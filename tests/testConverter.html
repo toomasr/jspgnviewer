@@ -31,6 +31,12 @@
 					assertEquals(44, conv.moves.length)
 				}
 
+				function testEnPassante() {
+					var pgn = new Pgn(document.getElementById('enPassante').firstChild.nodeValue)
+					var conv = new Converter(pgn)
+					conv.convert()
+				}
+
 				function runTests() {
 					suite = new TestSuite()
 					suite.addTest(testCase1)
