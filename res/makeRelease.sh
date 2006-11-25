@@ -6,6 +6,7 @@
 
 OLD_DIR=`pwd`
 
+PROJ_DIR="."
 DEST_DIR="bin"
 SRC_DIR="src"
 WP_DIR="wpPlugin"
@@ -18,6 +19,7 @@ if [ ! -d $SRC_DIR ];then
 	 TEST_DIR="../tests"
 	 IMG_DIR="../img"
 	 WP_DIR="../wpPlugin"
+	 PROJ_DIR="../"
 fi
 
 WP_DEST_DIR=$DEST_DIR/"pgnview"
@@ -72,6 +74,10 @@ if [ $# -eq 1 ];then
 		tar -cvzf $NAME jspgnviewer
 		scp $NAME toomas@jabber.ee:/home/toomas/public_html/jspgnviewer/downloads/$NAME
 		cd $OLD_DIR
+	elif [ $1 == 'snap' ];then
+		echo "Making and uploading a snapshot of the project"
+		tar --exclude=.svn -cvzf $DEST_DIR/pgnviewer-snapshot.tar.gz ../jspgnviewer
+		scp $DEST_DIR/pgnviewer-snapshot.tar.gz toomas@jabber.ee:/home/toomas/public_html/jspgnviewer/downloads/pgnviewer-snapshot.tar.gz
 	elif [ $1 == 'clean' ];then
 		echo "clean "$DEST_DIR
 		rm -rf $DEST_DIR

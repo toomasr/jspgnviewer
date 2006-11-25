@@ -16,3 +16,5 @@ test:
 wp:
 	./res/makeRelease.sh wp
 
+snap:
+	./res/makeRelease.sh snap
