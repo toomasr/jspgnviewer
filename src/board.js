@@ -41,11 +41,16 @@
 								 ,"queen":"bQueen.gif"
 								 ,"king":"bKing.gif"
 								 ,"pawn":"bPawn.gif"}
+			,"btns" : {"ffward":"buttons/ffward.gif"
+									,"rwind":"buttons/rwind.gif"
+									,"forward":"buttons/forward.gif"
+									,"back":"buttons/back.gif"
+									,"toggle":"buttons/toggle.gif"
+									,"flip":"buttons/flip.gif"}
 		};
-		for (i in imageNames.white)
-			 imageNames.white[i] = this.imagePrefix+imageNames.white[i]
-		for (i in imageNames.black)
-			 imageNames.black[i] = this.imagePrefix+imageNames.black[i]
+		for ( i in imageNames)
+			 for (j in imageNames[i])
+					imageNames[i][j] = this.imagePrefix+imageNames[i][j]
 		// end of static
 		this.pos = new Array()
 
@@ -76,7 +81,7 @@
 		 
 		 var tmp = document.createElement("tr")
 		 tmp.appendChild(boardTd)
-		 //tmp.appendChild(movesTd)
+		 tmp.appendChild(movesTd)
 		 topTableTb.appendChild(tmp)
 
 		 topTableTb.appendChild(document.createElement("tr")).appendChild(btnTd)
@@ -127,9 +132,7 @@
 		 btnTd.align = 'center'
 
 		 // rwnd
-		 var input = document.createElement("input")
-		 input.type = "button"
-		 input.value = "|<<"
+		 var input = this.getImg("rwind","btns")
 		 
 		 input.onclick = function() {
 				startPosition(tmp)
@@ -137,9 +140,7 @@
 		 btnTd.appendChild(input)
 
 		 // back
-		 input = document.createElement("input")
-		 input.type = "button"
-		 input.value = "<"
+		 input = this.getImg("back","btns")
 		 
 		 input.onclick = function() {
 			makeBwMove(tmp)
@@ -148,20 +149,16 @@
 		 btnTd.appendChild(input)
 		
 		 // flip the board
-		 input = document.createElement("input")
-		 input.type = "button"
-		 input.value = "||"
+		 input = this.getImg("flip","btns")
 		 
 		 input.onclick = function() {
 			flipBoard(tmp)
 		 }
 
-		 //btnTd.appendChild(input)
+		 btnTd.appendChild(input)
 		 
 		 // hide
-		 input = document.createElement("input")
-		 input.type = "button"
-		 input.value = "||"
+		 input = this.getImg("toggle","btns")
 		 
 		 input.onclick = function() {
 			hideMoves(tmp)
@@ -170,9 +167,7 @@
 		 btnTd.appendChild(input)
 		 
 		 // next btn
-		 input = document.createElement("input");
-		 input.type = "button"
-		 input.value = ">"
+		 input = this.getImg("forward","btns")
 
 		 input.onclick = function() {
 			makeMove(tmp)
@@ -181,9 +176,7 @@
 		 btnTd.appendChild(input)
 		 
 		 // ffwd
-		 input = document.createElement("input");
-		 input.type = "button"
-		 input.value = ">>|"
+		 input = this.getImg("ffward","btns")
 
 		 input.onclick = function() {
 				endPosition(tmp)
@@ -269,7 +262,15 @@
 
 							board.drawSquare(frst)
 							board.drawSquare(snd)
-							
+						}
+						if (move.enP) {
+							 var x = move.enP.x, y = move.enP.y
+							 if (board.flipped) {
+								 x=7-x
+								 y=7-y
+							}
+							var sq = board.pos[x][y]
+							sq.appendChild(board.getImg(move.enP.piece, move.enP.color))
 						}
 						board.markLastMove()
 					}
@@ -327,8 +328,29 @@
 						for(var i=0;i < move.actions.length;i++) {
 							board.drawSquare(move.actions[i]);	 
 						}
+						
+						board.drawEnPassante(move)
+
 						board.deMarkLastMove()
 						board.markLastMove()
+					}
+
+					this.drawEnPassante = function(move) {
+						if (!move.enP)
+							 return;
+						var x = move.enP.x, y = move.enP.y
+						this.pos[x][y]
+						if (this.flipped) {
+							x = 7-x
+							y = 7-y
+						}
+						var sq = this.pos[x][y]
+						sq.color = null
+						sq.piece = null
+
+						sq.removeChild(sq.firstChild)
+						this.pos[x][y].color = null
+						this.pos[x][y].piece = null
 					}
 
 					this.drawSquare = function(square) {
@@ -346,7 +368,7 @@
 							sq.removeChild(sq.firstChild)
 
 						if (sq.piece) {
-							sq.appendChild(this.getPieceImg(sq.piece,sq.color))
+							sq.appendChild(this.getImg(sq.piece,sq.color))
 						}
 					}
          
@@ -357,12 +379,12 @@
          this.populatePieces = function() {
           // pawns
           for (var i = 0;i < 8; i++) {
-						img = this.getPieceImg('pawn','white')
+						img = this.getImg('pawn','white')
             this.pos[6][i].appendChild(img);
             this.pos[6][i].piece = 'pawn';
             this.pos[6][i].color = 'white';
             
-						img = this.getPieceImg('pawn','black')
+						img = this.getImg('pawn','black')
             this.pos[1][i].appendChild(img);
             this.pos[1][i].piece = 'pawn';
             this.pos[1][i].color = 'black';
@@ -370,53 +392,53 @@
 
          // rooks, bishops, knights
          for(var i = 0; i < 2; i++) {
-						img = this.getPieceImg('rook','white')
+						img = this.getImg('rook','white')
             this.pos[7][i*7].appendChild(img)
             this.pos[7][i*7].piece = 'rook'
             this.pos[7][i*7].color = 'white'
           
-						img = this.getPieceImg('rook','black')
+						img = this.getImg('rook','black')
             this.pos[0][i*7].appendChild(img)
             this.pos[0][i*7].piece = 'rook'
             this.pos[0][i*7].color = 'black'
           
-						img = this.getPieceImg('knight','white')
+						img = this.getImg('knight','white')
             this.pos[7][i*5+1].appendChild(img)
             this.pos[7][i*5+1].piece = 'knight'
             this.pos[7][i*5+1].color = 'white'
          
-						img = this.getPieceImg('knight','black')
+						img = this.getImg('knight','black')
             this.pos[0][i*5+1].appendChild(img)
             this.pos[0][i*5+1].piece = 'knight'
             this.pos[0][i*5+1].color = 'black'
          
-						img = this.getPieceImg('bishop','white')
+						img = this.getImg('bishop','white')
             this.pos[7][i*3+2].appendChild(img)
             this.pos[7][i*3+2].piece = 'bishop'
             this.pos[7][i*3+2].color = 'white'
          
-						img = this.getPieceImg('bishop','black')
+						img = this.getImg('bishop','black')
             this.pos[0][i*3+2].appendChild(img)
             this.pos[0][i*3+2].piece = 'bishop'
             this.pos[0][i*3+2].color = 'black'
          }
          
-					img = this.getPieceImg('queen','white')
+					img = this.getImg('queen','white')
 					this.pos[7][3].appendChild(img)
 					this.pos[7][3].piece = 'queen'
 					this.pos[7][3].color = 'white'
 
-					img = this.getPieceImg('king','white')
+					img = this.getImg('king','white')
 					this.pos[7][4].appendChild(img)
 					this.pos[7][4].piece = 'king'
 					this.pos[7][4].color = 'white'
 
-					img = this.getPieceImg('queen','black')
+					img = this.getImg('queen','black')
 					this.pos[0][3].appendChild(img)
 					this.pos[0][3].piece = 'queen'
 					this.pos[0][3].color = 'black'
 
-					img = this.getPieceImg('king','black')
+					img = this.getImg('king','black')
 					this.pos[0][4].appendChild(img)
 					this.pos[0][4].piece = 'king'
 					this.pos[0][4].color = 'black'
@@ -558,7 +580,7 @@
 					var p =document.createTextNode('')
 				}
 
-				this.getPieceImg = function(piece, color) {
+				this.getImg = function(piece, color) {
 					var img = new Image()
 					img.src = imageNames[color][piece]
 					img.width = 30
@@ -583,7 +605,7 @@
 					if (to.firstChild)
 						 to.removeChild(to.firstChild)
 					if (to.piece) {
-						to.appendChild(this.getPieceImg(to.piece, to.color))
+						to.appendChild(this.getImg(to.piece, to.color))
 					}
 				}
 

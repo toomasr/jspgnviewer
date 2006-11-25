@@ -188,6 +188,7 @@ function Converter(pgn) {
 	*/
 	this.convertMove = function(board) {
 		var to = this.pgn.nextMove()
+		var oldTo = to
 		if (to == null)
 			return;
 		var color = to[1]
@@ -263,19 +264,28 @@ function Converter(pgn) {
 				toCoords = getSquare(coords[3])
 			}
 			else {
-				alert("can't figure out which piece to move "+to)   
+				alert("Can't figure out which piece to move '"+oldTo+"'")   
 			}
 			from = this.vBoard[fromCoords[0]][fromCoords[1]]
 			to = this.vBoard[toCoords[0]][toCoords[1]]
 				
-		 	var enPassante = null
-		 	enPassante = getEnPassante(this, fromCoords[0], fromCoords[1],
-															 toCoords[0], toCoords[1])
 			
-			result = movePiece(from, to ,prom, enPassante)
 			// in case of castling we don't have a null value
 			if (!myMove)
 				 myMove = new MyMove()
+		 	
+		 	var enPassante = null
+			enPassante = getEnPassante(this, fromCoords[0], fromCoords[1],
+															 toCoords[0], toCoords[1])
+			
+			if (enPassante) {
+				var sq = this.vBoard[enPassante[0]][enPassante[1]]
+				var enP = new MySquare(enPassante[0], enPassante[1]
+														,sq.piece, sq.color)
+				myMove.enP = enP
+			}
+			
+			result = movePiece(from, to ,prom)
 			
 			myMove.oPiece = result[2].piece
 			myMove.oColor = result[2].color
@@ -286,7 +296,7 @@ function Converter(pgn) {
 			
 			myMove.add(new MySquare(toCoords[0], toCoords[1]
 													,result[1].piece, result[1].color))
-			
+
 			return myMove
 		}
 		
@@ -631,7 +641,7 @@ function Converter(pgn) {
 					return "white"==color?"black":"white"
 				}
         
-				movePiece = function(from, to, prom, passante) {
+				movePiece = function(from, to, prom) {
 					var hist = to.clone()
 					var tmpPiece = from.piece
 					var pPiece = null
@@ -676,6 +686,8 @@ function Converter(pgn) {
 				// in case of promotion have to remember the prev
 				// piece
 				this.pPiece = null
+				//
+				this.enP = null
 
 				this.add = function(action) {
 					 this.actions[this.actions.length] = action

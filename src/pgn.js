@@ -33,9 +33,12 @@ function Pgn(pgn) {
 
 	/* constructor */
 
+	// strip comments
+	this.pgn = this.pgn.replace(/\{[^}]*\}/g,'')
+
 	// the properties
 	var reprop = /\[([^\]]*)\]/gi
-	var matches = pgn.match(reprop)
+	var matches = this.pgn.match(reprop)
 	if (matches) {
 		 for(var i = 0;i < matches.length; i++) {
 			 // lose the brackets
@@ -63,7 +66,7 @@ function Pgn(pgn) {
 	for(var i = 1;;i++) {
 		re = i+"\.(\\n| )([^.]*)"
 		
-		var result = pgn.match(re)
+		var result = this.pgn.match(re)
 		
 		if (result == null)
 			break
@@ -72,7 +75,8 @@ function Pgn(pgn) {
 			if (gameOverre[j].test(tmp[1]))
 			tmp[1] = null
 		}
-	
+		if (0 == tmp[1].length)	
+			 tmp[1] = null
 		var move = new Move(tmp[0], tmp[1])
 		this.moves[this.moves.length] = move
 	}
@@ -86,13 +90,13 @@ function Pgn(pgn) {
 		 }
 	}
 
-	if (/1\/2-1\/2/.test(pgn)) {
+	if (/1\/2-1\/2/.test(this.pgn)) {
 		this.props['result'] = '1/2-1/2'
 	}
-	else if (/1-0/.test(pgn)) {
+	else if (/1-0/.test(this.pgn)) {
 		this.props['result'] = '1-0'   
 	}
-	else if (/0-1/.test.pgn) {
+	else if (/0-1/.test(this.pgn)) {
 		this.props['result'] = '0-1'
 	}
 	else {
