@@ -70,6 +70,7 @@
 
 		 var boardTd = document.createElement("td")
 		 var btnTd = document.createElement("td")
+		 btnTd.style.valign = "top"
 		 var propsTd = document.createElement("td")
 		 
 		 // movesTable
@@ -583,8 +584,6 @@
 				this.getImg = function(piece, color) {
 					var img = new Image()
 					img.src = imageNames[color][piece]
-					img.width = 30
-					img.height = 30
 					
 					return img
 				}
