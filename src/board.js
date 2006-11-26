@@ -70,7 +70,6 @@
 
 		 var boardTd = document.createElement("td")
 		 var btnTd = document.createElement("td")
-		 btnTd.style.valign = "top"
 		 var propsTd = document.createElement("td")
 		 
 		 // movesTable
@@ -133,56 +132,70 @@
 		 btnTd.align = 'center'
 
 		 // rwnd
+		 var hrefS = document.createElement("a")
+		 hrefS.href = "javascript:void(0)"
+		 var href = hrefS.cloneNode(false)
 		 var input = this.getImg("rwind","btns")
+		 href.appendChild(input)
 		 
 		 input.onclick = function() {
 				startPosition(tmp)
 		 }
-		 btnTd.appendChild(input)
+		 btnTd.appendChild(href)
 
 		 // back
 		 input = this.getImg("back","btns")
+		 href = hrefS.cloneNode(false)
+		 href.appendChild(input)
 		 
 		 input.onclick = function() {
 			makeBwMove(tmp)
 		 }
 			
-		 btnTd.appendChild(input)
+		 btnTd.appendChild(href)
 		
 		 // flip the board
 		 input = this.getImg("flip","btns")
+		 href = hrefS.cloneNode(false)
+		 href.appendChild(input)
 		 
 		 input.onclick = function() {
 			flipBoard(tmp)
 		 }
 
-		 btnTd.appendChild(input)
+		 btnTd.appendChild(href)
 		 
 		 // hide
 		 input = this.getImg("toggle","btns")
+		 href = hrefS.cloneNode(false)
+		 href.appendChild(input)
 		 
 		 input.onclick = function() {
 			hideMoves(tmp)
 		 }
 
-		 btnTd.appendChild(input)
+		 btnTd.appendChild(href)
 		 
 		 // next btn
 		 input = this.getImg("forward","btns")
+		 href = hrefS.cloneNode(false)
+		 href.appendChild(input)
 
 		 input.onclick = function() {
 			makeMove(tmp)
 		 }
 
-		 btnTd.appendChild(input)
+		 btnTd.appendChild(href)
 		 
 		 // ffwd
 		 input = this.getImg("ffward","btns")
+		 href = hrefS.cloneNode(false)
+		 href.appendChild(input)
 
 		 input.onclick = function() {
 				endPosition(tmp)
 		 }
-		 btnTd.appendChild(input)
+		 btnTd.appendChild(href)
 	 }
 
 		flipBoard = function(board) {
@@ -340,18 +353,16 @@
 						if (!move.enP)
 							 return;
 						var x = move.enP.x, y = move.enP.y
-						this.pos[x][y]
 						if (this.flipped) {
 							x = 7-x
 							y = 7-y
 						}
 						var sq = this.pos[x][y]
+						
 						sq.color = null
 						sq.piece = null
 
 						sq.removeChild(sq.firstChild)
-						this.pos[x][y].color = null
-						this.pos[x][y].piece = null
 					}
 
 					this.drawSquare = function(square) {
@@ -584,6 +595,7 @@
 				this.getImg = function(piece, color) {
 					var img = new Image()
 					img.src = imageNames[color][piece]
+					img.border = 0
 					
 					return img
 				}

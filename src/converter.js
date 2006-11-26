@@ -283,6 +283,8 @@ function Converter(pgn) {
 				var enP = new MySquare(enPassante[0], enPassante[1]
 														,sq.piece, sq.color)
 				myMove.enP = enP
+				this.vBoard[enPassante[0]][enPassante[1]].color = null
+				this.vBoard[enPassante[0]][enPassante[1]].piece = null
 			}
 			
 			result = movePiece(from, to ,prom)
