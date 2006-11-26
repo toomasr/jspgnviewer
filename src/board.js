@@ -24,7 +24,7 @@
 		window[this.id] = this
 
 		// static
-		this.imagePrefix = "../img/"
+		this.imagePrefix = "img/"
 		if (arguments.length == 2)
 			 this.imagePrefix = arguments[1]
 		var imageNames = {
