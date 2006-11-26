@@ -75,7 +75,7 @@ function Pgn(pgn) {
 			if (gameOverre[j].test(tmp[1]))
 			tmp[1] = null
 		}
-		if (0 == tmp[1].length)	
+		if (tmp[1] && 0 == tmp[1].length)	
 			 tmp[1] = null
 		var move = new Move(tmp[0], tmp[1])
 		this.moves[this.moves.length] = move

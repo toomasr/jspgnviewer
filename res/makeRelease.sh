@@ -53,7 +53,7 @@ if [ $# -eq 1 ];then
 	if [ $1 == 'wp' ]; then
 		echo "Updating tom.jabber.ee wordpress plugin"
 		scp $WP_DEST_DIR/pgnview.php toomas@jabber.ee:/home/toomas/public_html/chessblog/wp-content/plugins/pgnview/pgnview.php
-		scp $WP_DEST_DIR/jsPgnViewer.js toomas@jabber.ee:/home/toomas/public_html/chessblog/wp-content/plugins/pgnview/jsPgnViewer.js
+		scp $JS_DEST_DIR/jsPgnViewer.js toomas@jabber.ee:/home/toomas/public_html/chessblog/wp-content/plugins/pgnview/jsPgnViewer.js
 	elif [ $1 == 'test' ];then
 		echo "Updating tom.jabber.ee test page"
 		scp $JS_DEST_DIR/jsPgnViewer.js toomas@jabber.ee:/home/toomas/public_html/jspgnviewer/jsPgnViewer.js
@@ -71,7 +71,7 @@ if [ $# -eq 1 ];then
 		echo "Making and uploading jspgnviewer release"
 		cd $DEST_DIR
 		NAME="jspgnviewer-"`cat ../jsVersion`".tar.gz"
-		tar -cvzf $NAME jspgnviewer
+		tar --exclude=.svn -cvzf $NAME jspgnviewer
 		scp $NAME toomas@jabber.ee:/home/toomas/public_html/jspgnviewer/downloads/$NAME
 		cd $OLD_DIR
 	elif [ $1 == 'snap' ];then

@@ -81,7 +81,7 @@
 		 
 		 var tmp = document.createElement("tr")
 		 tmp.appendChild(boardTd)
-		 tmp.appendChild(movesTd)
+		 //tmp.appendChild(movesTd)
 		 topTableTb.appendChild(tmp)
 
 		 topTableTb.appendChild(document.createElement("tr")).appendChild(btnTd)
@@ -174,7 +174,7 @@
 			hideMoves(tmp)
 		 }
 
-		 btnTd.appendChild(href)
+		 //btnTd.appendChild(href)
 		 
 		 // next btn
 		 input = this.getImg("forward","btns")
