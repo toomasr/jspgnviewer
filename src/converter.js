@@ -152,7 +152,7 @@ function Converter(pgn) {
 	}
 	
 	this.resetToEnd = function() {
-		 this.iteIndex = this.moves.length-1
+		 this.iteIndex = this.moves.length
 	}
 
 	this.resetToStart = function() {

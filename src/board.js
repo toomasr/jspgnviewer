@@ -76,6 +76,7 @@
 		 topTable.style.border = "1px solid #000000"
 
 		 var boardTd = document.createElement("td")
+		 boardTd.style.width = "255px"
 		 var btnTd = document.createElement("td")
 		 btnTd.vAlign = 'top'
 		 var propsTd = document.createElement("td")
@@ -83,14 +84,13 @@
 		 // movesTable
 		 var movesTd = document.createElement("td")
 		 this.movesTd = movesTd
-		 movesTd.style.width = "400px"
+		 movesTd.style.overflow = "auto"
 		 movesTd.rowSpan = 3
 		 movesTd.valign = "top"
 		 
 		 var tmp = document.createElement("tr")
 		 tmp.appendChild(boardTd)
-		 if (this.options && this.options['showMovesPane'])
-		 	tmp.appendChild(movesTd)
+		 tmp.appendChild(movesTd)
 		 topTableTb.appendChild(tmp)
 
 		 topTableTb.appendChild(document.createElement("tr")).appendChild(btnTd)
@@ -228,6 +228,9 @@
 		 }
 		 btnTd.appendChild(href)
 		 updateMoveInfo(this)
+		 
+		 if (!(this.options && this.options['showMovesPane']))
+			hideMoves(this)
 	 }
 
 		flipBoard = function(board) {
@@ -262,9 +265,6 @@
 								makeMove(this, true)
 							updateMoveInfo(this)
 							updateMovePane(this)
-							if (this.lastSquare && this.lastSquare.lastBg) {
-								this.lastSquare.style.background = this.lastSquare.lastBg
-							}
 							this.deMarkLastMove()
 							this.markLastMove()
 						}
@@ -273,9 +273,6 @@
 								makeBwMove(this, true)
 							updateMoveInfo(this)
 							updateMovePane(this)
-							if (this.lastSquare && this.lastSquare.lastBg) {
-								this.lastSquare.style.background = this.lastSquare.lastBg
-							}
 							this.deMarkLastMove()
 							this.markLastMove()
 						}
@@ -286,9 +283,9 @@
 						var vBoard = board.conv.getEndPos(board.flipped)
 						board.syncBoard(vBoard);
 						board.conv.resetToEnd()
-						board.markLastMove()
 						updateMoveInfo(board)
 						updateMovePane(board, true)
+						board.markLastMove()
 					}
 
 					startPosition = function(board) {
@@ -301,7 +298,6 @@
 					}
 
 					makeBwMove = function(board, noUpdate) {
-						board.deMarkLastMove(true)
 						var move = board.conv.prevMove()
 						if (move == null)
 							 return;
@@ -336,17 +332,16 @@
 							sq.appendChild(board.getImg(move.enP.piece, move.enP.color))
 						}
 						if (!noUpdate) {
-							 board.markLastMove()
-							 updateMoveInfo(board)
-							 updateMovePane(board, true)
+							board.deMarkLastMove(true)
+							board.markLastMove()
+							updateMoveInfo(board)
+							updateMovePane(board, true)
 						}
 					}
 
 					this.markLastMove = function() {
 						try {
 							var move = this.conv.moves[this.conv.iteIndex-1].actions[1];
-							if (this.conv.getCurMoveNo() == this.conv.moves.length-1) 
-								 move = this.conv.getCurMove().actions[1]
 							var piece = this.pos[move.x][move.y]
 							if (this.flipped) {
 								piece = this.pos[7-move.x][7-move.y]
@@ -379,6 +374,10 @@
 								piece = this.pos[7-move.x][7-move.y]
 							if (piece.lastBg)
 								piece.style.background = piece.lastBg
+						}
+						if (this.lastSquare && this.lastSquare.lastBg) {
+							this.lastSquare.style.background = this.lastSquare.lastBg
+							this.lastSquare = null
 						}
 					}
 
@@ -580,12 +579,14 @@
 						var tmp3 = document.createElement("b")
 
 						tmp3.style.fontFamily = "Tahoma, Arial, sans-serif"
+						tmp3.style.fontSize = "8pt"
 						tmp3.appendChild(document.createTextNode(" "+(i+1)+". "))
 						cont.appendChild(tmp3)
 						
 						link.href = 'javascript:void(window['+this.id+']'
 												+'.skipToMove('+i+','+0+'))'
 						link.appendChild(tmp)
+						link.style.fontSize = "8pt"
 						cont.appendChild(link)
 						this.movesOnPane[this.movesOnPane.length] = link
 
@@ -593,6 +594,7 @@
 							cont.appendChild(document.createTextNode(" "))
 							tmp = document.createTextNode(tmp2[i].black)
 							link = document.createElement("a")
+							link.style.fontSize = "8pt"
 							link.appendChild(tmp)
 							link.href = 'javascript:void(window['+this.id+']'
 												+'.skipToMove('+i+','+1+'))'
