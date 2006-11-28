@@ -1,12 +1,24 @@
 TODO
+	ver-0.2 - 03.12.2006
+		 * Functional
+			 o DONE - Highlight current move in move pane. 
+		 * Usability improvements
+			 o DONE - WP-PLUGIN: <noscript> for no JS support
+			 o DONE - Tooltips for buttons
+			 o DONE- Make the move pane configurable
+			 		Board takes an optional assoc of options
+						+ imagePrefix - the prefix of the image location (defaults to "img/")
+						+ showMovesPane - show the moves pane (defaults to false)
+			 o Disable non functional buttons [waiting feedback from designer]
+			 o Some info about the current move 
+		 * Testing
+			 o Have to try different PGN files 
+		 * Documentation
+			 o Source code needs docs
+			 o All README.txt's are empty. 
+
 	Serious:
-  	+ en passante
-			- Have to get a pgn with en passante
-		+ JS should be more relaxed when it comes to
-			the pgn format (wp tinyMCE editor adds extra tags (br, p) that
-			i strip with php's strip_tags and the output differs on how
-			tinyMCE acted upon pasting the content. FF & Opera are cool,
-			Konq is going crazy at the moment.
+		+ imagePrefix not working - FIXED - update site
 
 	Normal:
 		+ Read the PGN spec
@@ -36,7 +48,3 @@ Use-cases
 		*) Choose chess set & css
 		*) A link will be generated where you can play the game(s)
 
-	UC3 - Blog integration
-		*) You are writing a blog entry
-		*) You include your games
-		*) In the blog entry you can play through the game(s)

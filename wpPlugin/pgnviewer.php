@@ -38,7 +38,8 @@ function tr_pgnview_callback($str) {
 	// the div that will contain the graphical board
 	$rtrn .= '<div id="'.$now.'_board"></div>';
 	// initialize the board
-	$rtrn .= '<script>var brd = new Board('.$now.',"wp-content/pgnviewer/img/");brd.init()</script>';
+	$rtrn .= '<script>var brd = new Board('.$now.',{"imagePrefix":"wp-content/pgnviewer/img/"});brd.init()</script>';
+	$rtrn .= '<noscript>You have JavaScript disabled and you are not seeing a graphical interactive chessboard!</noscript>';
 
 	return $rtrn;
 }

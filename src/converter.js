@@ -119,7 +119,8 @@ function Converter(pgn) {
 		var move = null;
 		do {
 			 move = this.convertMove()
-			 this.moves[this.moves.length] = move
+			 if (move)
+			 	this.moves[this.moves.length] = move
 		}
 		while(move);
 	}
@@ -128,12 +129,18 @@ function Converter(pgn) {
 		Result iterator
 	*/
 
+	this.getCurMove = function() {
+		if (this.moves.length>this.iteIndex)
+			return this.moves[this.iteIndex]
+		return null
+	}
+
 	this.getCurMoveNo = function() {
 		 return this.iteIndex
 	}
 	
 	this.nextMove = function() {
-		if (this.moves.length>(this.iteIndex+1))
+		if (this.moves.length>this.iteIndex)
 			return this.moves[this.iteIndex++]
 		return null
 	}
@@ -250,6 +257,7 @@ function Converter(pgn) {
 				result = movePiece(from, to, prom)
 				
 				myMove = new MyMove()
+				myMove.moveStr = oldTo[0]
 				myMove.oPiece = result[2].piece
 				myMove.oColor = result[2].color
 				myMove.pPiece = result[3]
@@ -292,6 +300,7 @@ function Converter(pgn) {
 			myMove.oPiece = result[2].piece
 			myMove.oColor = result[2].color
 			myMove.pPiece = result[3]
+			myMove.moveStr = oldTo[0]
 
 			myMove.add(new MySquare(fromCoords[0], fromCoords[1]
 													,result[0].piece, result[0].color))
@@ -690,6 +699,8 @@ function Converter(pgn) {
 				this.pPiece = null
 				//
 				this.enP = null
+				//
+				this.moveStr = null
 
 				this.add = function(action) {
 					 this.actions[this.actions.length] = action

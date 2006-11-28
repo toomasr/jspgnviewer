@@ -14,19 +14,25 @@
  * limitations under the License.
 **/
 
-	function Board(divId) {
+	function Board(divId, options) {
 		var pgn = new Pgn(document.getElementById(divId).firstChild.nodeValue);
 		this.conv = new Converter(pgn)
 		this.conv.convert()
+		this.movesOnPane = new Array()
 
 		this.flipped = false
 		this.id = (new Date()).getTime()
 		window[this.id] = this
+		this.options = options
+		this.moveInput = null
+		this.lastBold = null
+		this.lastBoldIdx = null
+		this.lastSquare = null
 
 		// static
 		this.imagePrefix = "img/"
-		if (arguments.length == 2)
-			 this.imagePrefix = arguments[1]
+		if (this.options && this.options['imagePrefix'])
+			 this.imagePrefix = this.options['imagePrefix']
 		var imageNames = {
 			"white" : {"rook":"wRook.gif"
 								 ,"bishop":"wBishop.gif"
@@ -48,9 +54,6 @@
 									,"toggle":"buttons/toggle.gif"
 									,"flip":"buttons/flip.gif"}
 		};
-		for ( i in imageNames)
-			 for (j in imageNames[i])
-					imageNames[i][j] = this.imagePrefix+imageNames[i][j]
 		// end of static
 		this.pos = new Array()
 
@@ -58,8 +61,12 @@
 			this.pos[i] = new Array()
       
 	 this.init = function() {
-		 // the main frame
-		 var boardFrame = document.getElementById(divId+"_board");
+		// prefix the images correctly
+		for ( i in imageNames)
+			 for (j in imageNames[i])
+					imageNames[i][j] = this.imagePrefix+imageNames[i][j]
+		// the main frame
+		var boardFrame = document.getElementById(divId+"_board");
 		 
 		 // toplevel table
 		 var topTable = document.createElement("table")
@@ -70,6 +77,7 @@
 
 		 var boardTd = document.createElement("td")
 		 var btnTd = document.createElement("td")
+		 btnTd.vAlign = 'top'
 		 var propsTd = document.createElement("td")
 		 
 		 // movesTable
@@ -81,7 +89,8 @@
 		 
 		 var tmp = document.createElement("tr")
 		 tmp.appendChild(boardTd)
-		 //tmp.appendChild(movesTd)
+		 if (this.options && this.options['showMovesPane'])
+		 	tmp.appendChild(movesTd)
 		 topTableTb.appendChild(tmp)
 
 		 topTableTb.appendChild(document.createElement("tr")).appendChild(btnTd)
@@ -130,12 +139,15 @@
 		 var tmp = this
 		 // button td
 		 btnTd.align = 'center'
+		 btnTd.valign = 'middle'
 
 		 // rwnd
 		 var hrefS = document.createElement("a")
 		 hrefS.href = "javascript:void(0)"
 		 var href = hrefS.cloneNode(false)
 		 var input = this.getImg("rwind","btns")
+		 input.alt = 'Rewind to the beginning'
+		 input.title = 'Rewind to the beginning'
 		 href.appendChild(input)
 		 
 		 input.onclick = function() {
@@ -145,6 +157,8 @@
 
 		 // back
 		 input = this.getImg("back","btns")
+		 input.alt = 'One move back'
+		 input.title = 'One move back'
 		 href = hrefS.cloneNode(false)
 		 href.appendChild(input)
 		 
@@ -156,6 +170,8 @@
 		
 		 // flip the board
 		 input = this.getImg("flip","btns")
+		 input.alt = 'Flip the board'
+		 input.title = 'Flip the board'
 		 href = hrefS.cloneNode(false)
 		 href.appendChild(input)
 		 
@@ -165,8 +181,19 @@
 
 		 btnTd.appendChild(href)
 		 
+		 // current move
+		 var input = document.createElement("input")
+		 input.style.fontSize = "7pt"
+		 input.size = "9"
+		 input.style.border = "1px solid #000000"
+		 this.moveInput = input
+		 btnTd.appendChild(input)
+		 // end of current move
+
 		 // hide
 		 input = this.getImg("toggle","btns")
+		 input.alt = 'Show moves pane'
+		 input.title = 'Show moves pane'
 		 href = hrefS.cloneNode(false)
 		 href.appendChild(input)
 		 
@@ -174,10 +201,12 @@
 			hideMoves(tmp)
 		 }
 
-		 //btnTd.appendChild(href)
+		 btnTd.appendChild(href)
 		 
 		 // next btn
 		 input = this.getImg("forward","btns")
+		 input.alt = 'Play one move'
+		 input.title = 'Play one move'
 		 href = hrefS.cloneNode(false)
 		 href.appendChild(input)
 
@@ -189,6 +218,8 @@
 		 
 		 // ffwd
 		 input = this.getImg("ffward","btns")
+		 input.alt = 'Fast-forward to the end'
+		 input.title = 'Fast-forward to the end'
 		 href = hrefS.cloneNode(false)
 		 href.appendChild(input)
 
@@ -196,6 +227,7 @@
 				endPosition(tmp)
 		 }
 		 btnTd.appendChild(href)
+		 updateMoveInfo(this)
 	 }
 
 		flipBoard = function(board) {
@@ -226,22 +258,37 @@
 					this.skipToMove = function(no, color) {
 						var rNo = no*2+color+1
 						if (this.conv.getCurMoveNo()<rNo) {
-							 while(this.conv.getCurMoveNo()<rNo)
-							 	makeMove(this)
+							while(this.conv.getCurMoveNo()<rNo)
+								makeMove(this, true)
+							updateMoveInfo(this)
+							updateMovePane(this)
+							if (this.lastSquare && this.lastSquare.lastBg) {
+								this.lastSquare.style.background = this.lastSquare.lastBg
+							}
+							this.deMarkLastMove()
+							this.markLastMove()
 						}
 						else if (this.conv.getCurMoveNo()>rNo) {
-							while(this.conv.getCurMoveNo()>rNo) {
-								 makeBwMove(this)
+							while(this.conv.getCurMoveNo()>rNo)
+								makeBwMove(this, true)
+							updateMoveInfo(this)
+							updateMovePane(this)
+							if (this.lastSquare && this.lastSquare.lastBg) {
+								this.lastSquare.style.background = this.lastSquare.lastBg
 							}
+							this.deMarkLastMove()
+							this.markLastMove()
 						}
 					}
 
 					endPosition = function(board) {
-						board.deMarkLastMove(true)
+						board.deMarkLastMove()
 						var vBoard = board.conv.getEndPos(board.flipped)
 						board.syncBoard(vBoard);
 						board.conv.resetToEnd()
 						board.markLastMove()
+						updateMoveInfo(board)
+						updateMovePane(board, true)
 					}
 
 					startPosition = function(board) {
@@ -249,9 +296,11 @@
 						var vBoard = board.conv.getStartPos(board.flipped)
 						board.syncBoard(vBoard)
 						board.conv.resetToStart()
+						updateMoveInfo(board)
+						updateMovePane(board)
 					}
 
-					makeBwMove = function(board) {
+					makeBwMove = function(board, noUpdate) {
 						board.deMarkLastMove(true)
 						var move = board.conv.prevMove()
 						if (move == null)
@@ -286,31 +335,41 @@
 							var sq = board.pos[x][y]
 							sq.appendChild(board.getImg(move.enP.piece, move.enP.color))
 						}
-						board.markLastMove()
+						if (!noUpdate) {
+							 board.markLastMove()
+							 updateMoveInfo(board)
+							 updateMovePane(board, true)
+						}
 					}
 
 					this.markLastMove = function() {
 						try {
-							 var move = this.conv.moves[this.conv.iteIndex-1].actions[1]
-							 var piece = this.pos[move.x][move.y]
-							 if (this.flipped) {
-							 	piece = this.pos[7-move.x][7-move.y]
-							 }
-							 // on konq the bg contains "initial initial initial "
-							 // i guess xtra information. Anyways setting the
-							 // background to a color containing the "initial"
-							 // parts fails. Go figure
-							 piece.lastBg = piece.style.background.replace(/initial/g, "")
-							 piece.style.background = "#e89292"
+							var move = this.conv.moves[this.conv.iteIndex-1].actions[1];
+							if (this.conv.getCurMoveNo() == this.conv.moves.length-1) 
+								 move = this.conv.getCurMove().actions[1]
+							var piece = this.pos[move.x][move.y]
+							if (this.flipped) {
+								piece = this.pos[7-move.x][7-move.y]
+							}
+							// on konq the bg contains "initial initial initial "
+							// i guess xtra information. Anyways setting the
+							// background to a color containing the "initial"
+							// parts fails. Go figure
+							piece.lastBg = piece.style.background.replace(/initial/g, "")
+							piece.style.background = "#e89292"
+							this.lastSquare = piece
 						}
 						catch (e) {}
 					}
 
 					this.deMarkLastMove = function() {
 						var move = this.conv.moves[this.conv.iteIndex-2]
-						if (arguments.length || !move) {
+						if (arguments.length && arguments[0]) {
 							move = this.conv.moves[this.conv.iteIndex-1]
 						}
+						
+						if (this.conv.iteIndex+1 == this.conv.moves.length)
+							 move = this.conv.getCurMove()
 
 						if (move) {
 							move = move.actions[1]
@@ -334,7 +393,20 @@
 						}
 					}
 
-					makeMove = function(board) {
+					updateMoveInfo = function(board) {
+						var idx = board.conv.getCurMoveNo()-1
+						if (board.conv.getCurMoveNo() == board.conv.moves.length-1)
+							idx = board.conv.getCurMoveNo()
+						var move = board.conv.moves[idx]
+						if (move && move.moveStr) {
+							 var str = Math.floor((idx==0?1:idx)/2+1)+". "+move.moveStr
+							 board.moveInput.value = str
+						}
+						else
+							 board.moveInput.value = ""
+					}
+
+					makeMove = function(board, noUpdate) {
 						var move = board.conv.nextMove()
 						if (move == null)
 							 return;
@@ -344,9 +416,43 @@
 						}
 						
 						board.drawEnPassante(move)
+						if (!noUpdate) {
+							 board.deMarkLastMove()
+							 board.markLastMove()
 
-						board.deMarkLastMove()
-						board.markLastMove()
+							 updateMoveInfo(board)
+							 updateMovePane(board)
+						}
+					}
+
+					updateMovePane = function(board, bw) {
+						// highlight the move in the move's pane
+						var idx = board.conv.getCurMoveNo()
+						board.movesOnPane[this.lastBoldIdx] = deMakeBold(this.lastBold)
+						if (bw)
+							 idx+=1
+						this.lastBold = null
+						this.lastBoldIdx = null
+						if (board.movesOnPane[idx-1]) {
+							board.movesOnPane[idx-1] = makeBold(board.movesOnPane[idx-1])
+							this.lastBold = board.movesOnPane[idx-1]
+							this.lastBoldIdx = idx-1
+						}
+					}
+
+					makeBold = function(el) {
+						var b = document.createElement("b")
+						b.appendChild(el.cloneNode(true))
+						el.parentNode.replaceChild(b, el)
+						return b
+					}
+
+					deMakeBold = function(el) {
+						if (!el)
+							 return;
+						var rtrn = el.firstChild.cloneNode(true)
+						el.parentNode.replaceChild(rtrn, el)
+						return rtrn
 					}
 
 					this.drawEnPassante = function(move) {
@@ -481,6 +587,7 @@
 												+'.skipToMove('+i+','+0+'))'
 						link.appendChild(tmp)
 						cont.appendChild(link)
+						this.movesOnPane[this.movesOnPane.length] = link
 
 						if (tmp2[i].black != null) {
 							cont.appendChild(document.createTextNode(" "))
@@ -490,12 +597,14 @@
 							link.href = 'javascript:void(window['+this.id+']'
 												+'.skipToMove('+i+','+1+'))'
 							cont.appendChild(link)
+							this.movesOnPane[this.movesOnPane.length] = link
 						}
 					}
 					txt = document.createTextNode("  "+this.conv.pgn.props['result'])
 					tmp2 = document.createElement("b")
 					tmp2.appendChild(txt)
 					cont.appendChild(tmp2)
+					this.movesOnPane[this.movesOnPane.length] = tmp2
 				}
 
 				this.populateProps = function(container) {
@@ -507,6 +616,8 @@
 					// end of init the style
 					
 					var tbl = document.createElement('table')
+					tbl.cellPadding = "0"
+					tbl.cellSpacing = "0"
 					var tblTb = document.createElement("tbody")
 					tbl.appendChild(tblTb)
 
@@ -517,7 +628,7 @@
 					var tr = document.createElement('tr')
 					tblTb.appendChild(tr)
 					
-					var td = tdS.cloneNode(false)
+					var td = tdS.cloneNode(true)
 					td.style.fontWeight = "bold"
 					tr.appendChild(td)
 
