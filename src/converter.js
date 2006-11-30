@@ -325,9 +325,11 @@ function Converter(pgn) {
 			Find the pawn from location.
 		*/
 		function findFromPawn(pos, to, color) {
+			var oldTo = to
 			var tmp = getSquare(to)
 			var x = tmp[1], y = tmp[0]
        
+			// taking move or with xtra information
 			if (tmp[2][0] != -1 || tmp[3] != -1) {
 				var froms = new Array(
 					new Array(tmp[0]+1,tmp[1]-1),
@@ -335,30 +337,53 @@ function Converter(pgn) {
 					new Array(tmp[0]-1,tmp[1]-1),
 					new Array(tmp[0]-1,tmp[1]+1)
 				)
-              
+
 				for(var i = 0;i<froms.length;i++) {
 					try {
 						if (pos[froms[i][0]][froms[i][1]].piece == 'pawn'
-								&& pos[froms[i][0]][froms[i][1]].color == color)
-								
-								return new Array(froms[i][0], froms[i][1])
+								&& pos[froms[i][0]][froms[i][1]].color == color) {
+								// we have the file information too
+								if (tmp[3] != -1 && tmp[3] == froms[i][1]) {
+									// no back taking
+									if (y < froms[i][0] && color == "black")
+										 continue;
+									if (y > froms[i][0] && color == "white")
+										 continue;
+									return new Array(froms[i][0], froms[i][1])
+								}
+								//else
+								//	return new Array(froms[i][0], froms[i][1])
+						}
 					}
 					catch (e) {}
 				}
 			}
 			else {
+				// non-taking move
 				try {
 					for(var i = 0; i < 8; i++) {
-						if (pos[i][x].piece == 'pawn' 
-								&& pos[i][x].color == color) {
-								
-								return new Array(i, x);
+						var j = (color == 'white')?7-i:i
+						if (pos[j][x].piece == 'pawn' 
+								&& pos[j][x].color == color) {
+							if (Math.abs(j-y)>2) {
+								 continue;
+							}
+							// we might be looking at the wrong pawn
+							// there can be one between src and dst
+							if (2 == Math.abs(j-y)) {
+								var j2 = (color == 'white')?(j-1):j+1
+								if (pos[j2][x].piece == 'pawn'
+									 && pos[j2][x].color == color) {
+									 return new Array(j2, x)
+								}
+							}
+							return new Array(j, x);
 						}
 					}
 				}
 				catch (e) {}
 			}
-			alert('Could not find a move with a pawn')
+			throw("Could not find a move with a pawn '"+oldTo+"'")
 		}
 
         /*
@@ -496,6 +521,7 @@ function Converter(pgn) {
           Find the rook's from location.
         */
         function findFromRook(pos, to, color) {
+					var oldTo = to
           to = getSquare(to)
           var extra = to[2]
           var froms = new Array()
@@ -505,24 +531,75 @@ function Converter(pgn) {
             froms[froms.length] = new Array(i,to[1])
           }
           
-          var rtrns = new Array();
-          for (var i=0;i<froms.length;i++) {
-             var tmp = pos[froms[i][0]][froms[i][1]]
-             if (tmp.piece == 'rook' && tmp.color == color){
-              if (extra[0] != -1 && froms[i][1] != extra[0]) {
-                continue;
-              }
-              else if(extra[1] != -1 && froms[i][0] != extra[1]) {
-                continue;
-              }
-              rtrns[rtrns.length] = froms[i]
-             }
-          }
-          
-          if (rtrns.length<2) {
-             return rtrns[0]
-          }
-          else {
+					// it ain't that simple, what if 2 rooks
+					// can move to the same piece but one of
+					// them is blocked by another piece
+					// then we actually have to go from the dest
+					// coord to 4 directions until we find the
+					// bloody rook or die trying
+					var rtrns = new Array()
+					for (var i = 1;i<8;i++) {
+						try {
+							 var tmp = pos[to[0]+i][to[1]]
+							 if (tmp && tmp.piece == 'rook' && tmp.color == color) {
+								 rtrns[rtrns.length] = new Array(to[0]+i, to[1])
+							 }
+							 else if (tmp.piece) {
+									break;
+							 }
+						}
+						catch(e){}
+					}
+					for (var i = 1;i<8;i++) {
+						try {
+							 var tmp = pos[to[0]-i][to[1]]
+							 if (tmp && tmp.piece == 'rook' && tmp.color == color) {
+								 rtrns[rtrns.length] = new Array(to[0]-i, to[1])
+							 }
+							 else if (tmp.piece) {
+									break;
+							 }
+						}
+						catch(e){}
+					}
+					for (var i = 1;i<8;i++) {
+						try {
+							 var tmp = pos[to[0]][to[1]+i]
+							 if (tmp && tmp.piece == 'rook' && tmp.color == color) {
+								 rtrns[rtrns.length] = new Array(to[0], to[1]+i)
+							 }
+							 else if (tmp.piece) {
+									break;
+							 }
+						}
+						catch(e){}
+					}
+					for (var i = 1;i<8;i++) {
+						try {
+							 var tmp = pos[to[0]][to[1]-i]
+							 if (tmp && tmp.piece == 'rook' && tmp.color == color) {
+								 rtrns[rtrns.length] = new Array(to[0], to[1]-i)
+							 }
+							 else if (tmp.piece) {
+									break;
+							 }
+						}
+						catch(e){}
+					}
+					// only one option
+					if (rtrns.length == 1)
+						 return rtrns[0]
+					if (extra[0] != -1 || extra[1] != -1) {
+						 // more than one rook can move there
+						 // use the extra informatin (eg b from Rbd7
+						 for (var i = 0;i < rtrns.length;i++) {
+							 if (extra[0] != -1 && extra[0] == rtrns[i][1])
+										return rtrns[i]
+							 else if (extra[1] != -1 && extra[1] == rtrns[i][0])
+									return rtrns[i]
+						 }
+					}
+					else if (2 == rtrns.length) {
              var a = rtrns[0]
              var b = rtrns[1]
              // if on the same row/line, the closes has to move
@@ -533,16 +610,18 @@ function Converter(pgn) {
               return a
              }
              else {
+                //alert("2nd "+to+" ... " + a + " ... " + b)
               return b
              }
-          }
-          alert('No rook move found')
+					}
+          throw("No rook move found '"+oldTo+"'")
         }
 
         /* 
           Find the knight's from location.
         */
         function findFromKnight(pos, to, color) {
+					 var oldTo = to
            to = getSquare(to)
            var extra = to[2]
            var froms = new Array(
@@ -574,7 +653,7 @@ function Converter(pgn) {
              }
              catch (e) {}
            }
-           alert('No knight move found')
+           throw("No knight move found. '"+oldTo+"'")
         }
 
         /*
@@ -600,12 +679,20 @@ function Converter(pgn) {
           if (coord.indexOf("+") != -1)
             coord = coord.substring(0, coord.indexOf("+"))
           // let's trim the piece prefix
-          if (/^[A-Z]/.test(coord))
-            coord = coord.substring(1)
-          // the move is a taking move, we have to look for different
+          if (/^[A-Z]/.test(coord)) {
+            coord = coord.substr(1)
+					}
+          
+					// the move is a taking move, we have to look for different
           // files then with pawns
           if (/x/.test(coord)) {
             var tmp = coord.split("x")   
+						if (tmp[0].length) {
+							if (/[a-z]/.test(tmp[0]))
+								extra[0] = 7-map[tmp[0]]
+							else if (/[0-9]/.test(tmp[0]))
+								extra[1] = 8-tmp[0]
+						}
             coord = tmp[1]
             taking = 7-map[tmp[0]]
           }

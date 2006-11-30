@@ -76,7 +76,7 @@
 		 topTable.style.border = "1px solid #000000"
 
 		 var boardTd = document.createElement("td")
-		 boardTd.style.width = "255px"
+		 boardTd.style.width = "257px"
 		 var btnTd = document.createElement("td")
 		 btnTd.vAlign = 'top'
 		 var propsTd = document.createElement("td")
@@ -301,6 +301,13 @@
 						var move = board.conv.prevMove()
 						if (move == null)
 							 return;
+						
+						if (!noUpdate) {
+							board.deMarkLastMove(true)
+							board.markLastMove()
+							updateMoveInfo(board)
+							updateMovePane(board, true)
+						}
 
 						for(var i=move.actions.length;i > 1;i-=2) {
 							var frst = move.actions[i-1].clone()
@@ -330,12 +337,6 @@
 							}
 							var sq = board.pos[x][y]
 							sq.appendChild(board.getImg(move.enP.piece, move.enP.color))
-						}
-						if (!noUpdate) {
-							board.deMarkLastMove(true)
-							board.markLastMove()
-							updateMoveInfo(board)
-							updateMovePane(board, true)
 						}
 					}
 
@@ -410,11 +411,6 @@
 						if (move == null)
 							 return;
 						
-						for(var i=0;i < move.actions.length;i++) {
-							board.drawSquare(move.actions[i]);	 
-						}
-						
-						board.drawEnPassante(move)
 						if (!noUpdate) {
 							 board.deMarkLastMove()
 							 board.markLastMove()
@@ -422,6 +418,12 @@
 							 updateMoveInfo(board)
 							 updateMovePane(board)
 						}
+						
+						for(var i=0;i < move.actions.length;i++) {
+							board.drawSquare(move.actions[i]);	 
+						}
+						
+						board.drawEnPassante(move)
 					}
 
 					updateMovePane = function(board, bw) {

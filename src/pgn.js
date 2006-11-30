@@ -42,16 +42,17 @@ function Pgn(pgn) {
 	if (matches) {
 		 for(var i = 0;i < matches.length; i++) {
 			 // lose the brackets
-			 matches[i] = matches[i].substring(1, matches[i].length-1)
+			 tmpMatches = matches[i].substring(1, matches[i].length-1)
 			 // split by the first space
-			 var key = matches[i].substring(0, matches[i].indexOf(" "))
-			 var value = matches[i].substring(matches[i].indexOf(" ")+1)
+			 var key = tmpMatches.substring(0, tmpMatches.indexOf(" "))
+			 var value = tmpMatches.substring(tmpMatches.indexOf(" ")+1)
 			 if (value.charAt(0) == '"')
 				 value = value.substr(1)
 			 if (value.charAt(value.length-1) == '"')
 				 value = value.substr(0, value.length-1)
 			 
 			 this.props[key] = value;
+			 this.pgn = this.pgn.replace(matches[i], "")
 		 }
 	}
 
@@ -64,10 +65,9 @@ function Pgn(pgn) {
 	// the moves
 	var re;
 	for(var i = 1;;i++) {
-		re = i+"\.(\\n| )([^.]*)"
+		re = i+"\\.(\\n| )?([^.]*)"
 		
 		var result = this.pgn.match(re)
-		
 		if (result == null)
 			break
 		var tmp = result[2].replace(/\n/g, " ").split(" ")
@@ -100,7 +100,7 @@ function Pgn(pgn) {
 		this.props['result'] = '0-1'
 	}
 	else {
-		this.props['result'] = 'Was not able to extract result info'   
+		this.props['result'] = ''   
 	}
 
 	this.nextMove = function() {
@@ -118,8 +118,9 @@ function Pgn(pgn) {
 											'white')
 			}
 	
-			if (rtrn[0] == null) rtrn = null
-				return rtrn
+			if (rtrn[0] == null || rtrn[0].length == 0)
+				rtrn = null
+			return rtrn
 			}
 		catch (e) {
 			return null
@@ -130,5 +131,9 @@ function Pgn(pgn) {
 function Move(white, black) {
 	this.white = white
 	this.black = black
+
+	this.toString = function() {
+		return this.white+" "+this.black
+	}
 }
 
