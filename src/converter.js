@@ -272,7 +272,7 @@ function Converter(pgn) {
 				toCoords = getSquare(coords[3])
 			}
 			else {
-				alert("Can't figure out which piece to move '"+oldTo+"'")   
+				throw("Can't figure out which piece to move '"+oldTo+"'")   
 			}
 			from = this.vBoard[fromCoords[0]][fromCoords[1]]
 			to = this.vBoard[toCoords[0]][toCoords[1]]
@@ -431,7 +431,7 @@ function Converter(pgn) {
                }
                catch (e) {}
              } 
-          alert('No move found for the bishop '+oldTo)
+          throw('No move found for the bishop '+oldTo)
         }
 
         /* 
@@ -459,7 +459,7 @@ function Converter(pgn) {
             }
             catch (e) {}
           }
-          alert('No king move found')
+          throw('No king move found')
         }
 
         /* 
@@ -610,7 +610,6 @@ function Converter(pgn) {
               return a
              }
              else {
-                //alert("2nd "+to+" ... " + a + " ... " + b)
               return b
              }
 					}
@@ -769,7 +768,7 @@ function Converter(pgn) {
 								to.piece = 'queen'
 								break
 							default:
-								alert('Unknown promotion')
+								throw('Unknown promotion')
 						}
 					}	 
 
