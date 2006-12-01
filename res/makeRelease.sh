@@ -49,6 +49,7 @@ cat $SRC_DIR/board.js >> $JS_DEST_DIR/jsPgnViewer.js
 
 cp $TEST_DIR/testPage.html $JS_DEST_DIR/
 cp $SRC_DIR/README.txt $JS_DEST_DIR/
+cp License.txt $JS_DEST_DIR/
 
 cp $WP_DIR/pgnviewer.php $WP_DEST_DIR/pgnviewer.php
 

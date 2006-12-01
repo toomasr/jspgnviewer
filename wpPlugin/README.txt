@@ -15,7 +15,7 @@
 *                                                                  *
 * Toomas Römer (toomasr[at]gmail.com                               *
 *                                                                  *
-* Consult the License.txt for usage - Apache License ver 2.0       *
+* Consult the pgnviewer.php for the license of the plugin.         *
 *                                                                  *
 ********************************************************************
 * WP plugin: http://tom.jabber.ee/chess/index.php?n=Main.WpPlugin  *
