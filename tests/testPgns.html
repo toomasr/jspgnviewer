@@ -12,6 +12,11 @@
 			</script>
 
 		<script>
+			function startTest() {
+				if (confirm("Are you sure? It takes ages and u might want to use your browser for something more interesting")) {
+					 f()
+				}
+			}
 			function f() {
 				for (var i = 1;i<2028;i++) {
 					var pgn = new Pgn(document.getElementById("testGame"+i).firstChild.nodeValue);	 
@@ -31,8 +36,8 @@
 		</script>
   </head>
 
-  <body onLoad="f()">
-
+  <body>
+<input type="button" value="Start testing" onClick="startTest()"/>
 <div id='testGame1' style='visibility:hidden;display:none'>
 [Site "London"]
 [Date "1984.??.??"]

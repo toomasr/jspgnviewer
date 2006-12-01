@@ -19,6 +19,11 @@ TODO
 
 	Serious:
 		+ imagePrefix not working - FIXED - update site
+		+ When 2 same pieces can make a move but no additional
+			information is given about which to move but only
+			one of the pieces can be played there because
+			otherwise the king would be checked. No such logic
+			yet.
 
 	Normal:
 		+ Read the PGN spec
