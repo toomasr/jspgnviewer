@@ -5,7 +5,6 @@
 * files with a graphical board in your browser. It is intended to  *
 * be as minimal as possible and easily configurable.               *
 *                                                                  *
-*                                                                  *
 * The features include traversing the game back- and forward. You  *
 *	can view the moves and skip to any position. Just as simple as   *
 *	that.                                                            *
@@ -13,7 +12,7 @@
 * The plugin lets you share your chess games in your blog. Just    *
 * paste your PGN to the your post between <pgn> tags and voila!    *
 *                                                                  *
-* Toomas Römer (toomasr[at]gmail.com                               *
+* Toomas Römer (toomasr[at]gmail.com)                               *
 *                                                                  *
 * Consult the pgnviewer.php for the license of the plugin.         *
 *                                                                  *

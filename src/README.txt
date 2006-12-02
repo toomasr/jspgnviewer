@@ -9,7 +9,7 @@
 *	can view the moves and skip to any position. Just as simple as   *
 *	that.                                                            *
 *                                                                  *
-* Toomas Römer (toomasr[at]gmail.com                               *
+* Toomas Römer (toomasr[at]gmail.com)                              *
 *                                                                  *
 * Consult the License.txt for usage - Apache License ver 2.0       *
 *                                                                  *
