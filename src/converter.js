@@ -54,6 +54,8 @@ function Converter(pgn) {
 	this.iteIndex = 0
 	this.flippedI = false
 	this.flippedV = false
+
+	this.wKingX, this.wKingY, this.bKingX, this.bKingY
 	
 	/* Virtual board initialization */
 	for(var i = 0; i < 8; i++) {
@@ -99,12 +101,14 @@ function Converter(pgn) {
 	
 	this.vBoard[7][4].piece = 'king'
 	this.vBoard[7][4].color = 'white'
+	this.wKingX = 7, this.wKingY = 4
 
 	this.vBoard[0][3].piece = 'queen'
 	this.vBoard[0][3].color = 'black'
 
 	this.vBoard[0][4].piece = 'king'
 	this.vBoard[0][4].color = 'black'
+	this.bKingX = 0, this.bKingY = 4
 
 	// let's clone the initial pos
 	for (var i = 0;i < 8;i++){
@@ -253,6 +257,11 @@ function Converter(pgn) {
 				
 				from = this.vBoard[fromCoords[0]][fromCoords[1]]
 				to = this.vBoard[toCoords[0]][toCoords[1]]
+				// update king location
+				if ('king' == to.piece && 'white' == to.color)
+					 this.wKingX = toCoords[0], this.wKingY = toCoords[1]
+				else if ('king' == to.piece && 'black' == to.color)
+					 this.bKingX = toCoords[0], this.bKingY = toCoords[1]
 				
 				result = movePiece(from, to, prom)
 				
@@ -276,6 +285,12 @@ function Converter(pgn) {
 			}
 			from = this.vBoard[fromCoords[0]][fromCoords[1]]
 			to = this.vBoard[toCoords[0]][toCoords[1]]
+				
+			// update king location
+			if ('king' == to.piece && 'white' == to.color)
+				this.wKingX = toCoords[0], this.wKingY = toCoords[1]
+			else if ('king' == to.piece && 'black' == to.color)
+				this.bKingX = toCoords[0], this.bKingY = toCoords[1]
 				
 			
 			// in case of castling we don't have a null value
@@ -774,6 +789,10 @@ function Converter(pgn) {
 
 					return new Array(from, to, hist, pPiece)
 				}
+		
+		this.isKingChecked = function() {
+			// diagonals
+		}
 	}
       
       function MyMove() {

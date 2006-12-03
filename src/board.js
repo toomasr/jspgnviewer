@@ -28,11 +28,13 @@
 		this.lastBold = null
 		this.lastBoldIdx = null
 		this.lastSquare = null
+		this.visuals = {"pgn":{}}
 
 		// static
 		this.imagePrefix = "img/"
-		if (this.options && this.options['imagePrefix'])
+		if (this.options && this.options['imagePrefix']) {
 			 this.imagePrefix = this.options['imagePrefix']
+		}
 		var imageNames = {
 			"white" : {"rook":"wRook.gif"
 								 ,"bishop":"wBishop.gif"
@@ -67,170 +69,177 @@
 					imageNames[i][j] = this.imagePrefix+imageNames[i][j]
 		// the main frame
 		var boardFrame = document.getElementById(divId+"_board");
-		 
-		 // toplevel table
-		 var topTable = document.createElement("table")
-		 var topTableTb = document.createElement("tbody")
-		 topTable.appendChild(topTableTb)
-		 
-		 topTable.style.border = "1px solid #000000"
-
-		 var boardTd = document.createElement("td")
-		 boardTd.style.width = "257px"
-		 var btnTd = document.createElement("td")
-		 btnTd.vAlign = 'top'
-		 var propsTd = document.createElement("td")
-		 
-		 // movesTable
-		 var movesTd = document.createElement("td")
-		 this.movesTd = movesTd
-		 movesTd.style.overflow = "auto"
-		 movesTd.rowSpan = 3
-		 movesTd.valign = "top"
-		 
-		 var tmp = document.createElement("tr")
-		 tmp.appendChild(boardTd)
-		 tmp.appendChild(movesTd)
-		 topTableTb.appendChild(tmp)
-
-		 topTableTb.appendChild(document.createElement("tr")).appendChild(btnTd)
-		 topTableTb.appendChild(document.createElement("tr")).appendChild(propsTd)
-
-
-		 var board = document.createElement("table")
-		 var boardTb = document.createElement("tbody")
-		 board.appendChild(boardTb)
-		 
-		 board.style.top = boardFrame.style.top;
-		 board.style.left = boardFrame.style.left;
-		 board.style.borderCollapse = "collapse"
-		 
-		 boardFrame.appendChild(topTable);
-		 boardTd.appendChild(board)
-		 
-		 var width = 31;
-		 var height = 31;
-
-		 // white pieces
-		 for(var i = 0; i < 8; i++) {
-				var tr = document.createElement("tr")
-				var flip = (i % 2)?1:0;
-				for(var j = 0; j < 8; j++) {
-				 var td = document.createElement("td")   
-
-				 td.style.height = height+"px"
-				 td.style.width = width+"px"
-				 td.style.border = "1px solid #000000"
-				 td.style.padding = "0px"
-				 var color = !flip?(j%2)?"#4b4b4b":"#ffffff":!(j%2)?"#4b4b4b":"#ffffff";
-				 
-				 td.style.background = color
-
-				 this.pos[i][j] = td;
-				 tr.appendChild(td)
-				}
-				boardTb.appendChild(tr)
-		 }
-		 this.populatePieces()
-		 this.populateProps(propsTd)
-		 this.populateMoves(movesTd)
-	 
-		 // in java i could do Board.this in anon function
-		 var tmp = this
-		 // button td
-		 btnTd.align = 'center'
-		 btnTd.valign = 'middle'
-
-		 // rwnd
-		 var hrefS = document.createElement("a")
-		 hrefS.href = "javascript:void(0)"
-		 var href = hrefS.cloneNode(false)
-		 var input = this.getImg("rwind","btns")
-		 input.alt = 'Rewind to the beginning'
-		 input.title = 'Rewind to the beginning'
-		 href.appendChild(input)
-		 
-		 input.onclick = function() {
-				startPosition(tmp)
-		 }
-		 btnTd.appendChild(href)
-
-		 // back
-		 input = this.getImg("back","btns")
-		 input.alt = 'One move back'
-		 input.title = 'One move back'
-		 href = hrefS.cloneNode(false)
-		 href.appendChild(input)
-		 
-		 input.onclick = function() {
-			makeBwMove(tmp)
-		 }
-			
-		 btnTd.appendChild(href)
 		
-		 // flip the board
-		 input = this.getImg("flip","btns")
-		 input.alt = 'Flip the board'
-		 input.title = 'Flip the board'
-		 href = hrefS.cloneNode(false)
-		 href.appendChild(input)
-		 
-		 input.onclick = function() {
+		// toplevel table
+		var topTable = document.createElement("table")
+		var topTableTb = document.createElement("tbody")
+		topTable.appendChild(topTableTb)
+		
+		topTable.style.border = "1px solid #000000"
+
+		var boardTd = document.createElement("td")
+		boardTd.style.width = "257px"
+		var btnTd = document.createElement("td")
+		btnTd.vAlign = 'top'
+		var propsTd = document.createElement("td")
+		
+		// movesTable
+		var movesTd = document.createElement("td")
+		this.movesTd = movesTd
+		if (this.options['movesPaneWidth'])
+			movesTd.style.width = this.options['movesPaneWidth']
+		else
+			movesTd.style.overflow = "auto"
+		movesTd.rowSpan = 3
+		movesTd.valign = "top"
+		
+		var tmp = document.createElement("tr")
+		tmp.appendChild(boardTd)
+		tmp.appendChild(movesTd)
+		topTableTb.appendChild(tmp)
+
+		topTableTb.appendChild(document.createElement("tr")).appendChild(btnTd)
+		topTableTb.appendChild(document.createElement("tr")).appendChild(propsTd)
+
+
+		var board = document.createElement("table")
+		var boardTb = document.createElement("tbody")
+		board.appendChild(boardTb)
+		
+		board.style.top = boardFrame.style.top;
+		board.style.left = boardFrame.style.left;
+		board.style.borderCollapse = "collapse"
+		
+		boardFrame.appendChild(topTable);
+		boardTd.appendChild(board)
+		
+		var width = 31;
+		var height = 31;
+		this.options['blackSqColor'] = "#4b4b4b"
+		this.options['whiteSqColor'] = "#ffffff"
+		var whiteC = this.options['whiteSqColor']
+		var blackC = this.options['blackSqColor']
+
+		// white pieces
+		for(var i = 0; i < 8; i++) {
+			var tr = document.createElement("tr")
+			var flip = (i % 2)?1:0;
+			for(var j = 0; j < 8; j++) {
+				var td = document.createElement("td")   
+
+				td.style.height = height+"px"
+				td.style.width = width+"px"
+				td.style.border = "1px solid #000000"
+				td.style.padding = "0px"
+				var color = !flip?(j%2)?blackC:whiteC:!(j%2)?blackC:whiteC
+				
+				td.style.background = color
+
+				this.pos[i][j] = td;
+				tr.appendChild(td)
+			}
+			boardTb.appendChild(tr)
+		}
+		this.populatePieces()
+		this.populateProps(propsTd)
+		this.populateMoves(movesTd)
+	 
+		// in java i could do Board.this in anon function
+		var tmp = this
+		// button td
+		btnTd.align = 'center'
+		btnTd.valign = 'middle'
+
+		// rwnd
+		var hrefS = document.createElement("a")
+		hrefS.href = "javascript:void(0)"
+		var href = hrefS.cloneNode(false)
+		var input = this.getImg("rwind","btns")
+		input.alt = 'Rewind to the beginning'
+		input.title = 'Rewind to the beginning'
+		href.appendChild(input)
+		
+		input.onclick = function() {
+			startPosition(tmp)
+		}
+		btnTd.appendChild(href)
+
+		// back
+		input = this.getImg("back","btns")
+		input.alt = 'One move back'
+		input.title = 'One move back'
+		href = hrefS.cloneNode(false)
+		href.appendChild(input)
+		
+		input.onclick = function() {
+			makeBwMove(tmp)
+		}
+			
+		btnTd.appendChild(href)
+		
+		// flip the board
+		input = this.getImg("flip","btns")
+		input.alt = 'Flip the board'
+		input.title = 'Flip the board'
+		href = hrefS.cloneNode(false)
+		href.appendChild(input)
+		
+		input.onclick = function() {
 			flipBoard(tmp)
-		 }
+		}
 
-		 btnTd.appendChild(href)
-		 
-		 // current move
-		 var input = document.createElement("input")
-		 input.style.fontSize = "7pt"
-		 input.size = "9"
-		 input.style.border = "1px solid #000000"
-		 this.moveInput = input
-		 btnTd.appendChild(input)
-		 // end of current move
+		btnTd.appendChild(href)
+		
+		// current move
+		var input = document.createElement("input")
+		input.style.fontSize = "7pt"
+		input.size = "9"
+		input.style.border = "1px solid #000000"
+		this.moveInput = input
+		btnTd.appendChild(input)
+		// end of current move
 
-		 // hide
-		 input = this.getImg("toggle","btns")
-		 input.alt = 'Show moves pane'
-		 input.title = 'Show moves pane'
-		 href = hrefS.cloneNode(false)
-		 href.appendChild(input)
-		 
-		 input.onclick = function() {
-			hideMoves(tmp)
-		 }
+		// hide
+		input = this.getImg("toggle","btns")
+		input.alt = 'Show moves pane'
+		input.title = 'Show moves pane'
+		href = hrefS.cloneNode(false)
+		href.appendChild(input)
+		
+		if (!this.options['showMovesPane'])
+			 this.options['showMovesPane'] = false
+		
+		input.onclick = function() {
+			toggleMoves(tmp, "flip")
+		}
 
-		 btnTd.appendChild(href)
-		 
-		 // next btn
-		 input = this.getImg("forward","btns")
-		 input.alt = 'Play one move'
-		 input.title = 'Play one move'
-		 href = hrefS.cloneNode(false)
-		 href.appendChild(input)
+		btnTd.appendChild(href)
+		
+		// next btn
+		input = this.getImg("forward","btns")
+		input.alt = 'Play one move'
+		input.title = 'Play one move'
+		href = hrefS.cloneNode(false)
+		href.appendChild(input)
 
-		 input.onclick = function() {
+		input.onclick = function() {
 			makeMove(tmp)
-		 }
+		}
 
-		 btnTd.appendChild(href)
-		 
-		 // ffwd
-		 input = this.getImg("ffward","btns")
-		 input.alt = 'Fast-forward to the end'
-		 input.title = 'Fast-forward to the end'
-		 href = hrefS.cloneNode(false)
-		 href.appendChild(input)
+		btnTd.appendChild(href)
+		
+		// ffwd
+		input = this.getImg("ffward","btns")
+		input.alt = 'Fast-forward to the end'
+		input.title = 'Fast-forward to the end'
+		href = hrefS.cloneNode(false)
+		href.appendChild(input)
 
-		 input.onclick = function() {
+		input.onclick = function() {
 				endPosition(tmp)
-		 }
-		 btnTd.appendChild(href)
-		 updateMoveInfo(this)
-		 
-		 if (!(this.options && this.options['showMovesPane']))
-			hideMoves(this)
+		}
+		btnTd.appendChild(href)
+		updateMoveInfo(this)
 	 }
 
 		flipBoard = function(board) {
@@ -286,6 +295,10 @@
 						updateMoveInfo(board)
 						updateMovePane(board, true)
 						board.markLastMove()
+					}
+
+					this.startPosition = function(){
+						startPosition(this)
 					}
 
 					startPosition = function(board) {
@@ -382,15 +395,30 @@
 						}
 					}
 
-					hideMoves = function(board) {
-						if (board.movesTd.style.display != "none") {
-							 board.movesTd.style.display = "none"
-							 board.movesTd.style.visibility = "hidden"
+					/*
+						Toggle moves pane, actually not toggle but
+						showing it depending the 'flag'.
+					*/
+					this.toggleMoves = function(flag) {
+						if (flag == "flip")
+							flag = this.movesTd.style.visibility=="hidden"
+						if (flag) {
+							this.movesTd.style.display = "block"
+							this.movesTd.style.visibility = "visible"
 						}
 						else {
-							 board.movesTd.style.display = "block"
-							 board.movesTd.style.visibility = "visible"
+							this.movesTd.style.display = "none"
+							this.movesTd.style.visibility = "hidden"
 						}
+					}
+
+					/*
+						Non-member toggle function. The onClick that I'm
+						setting must not be a member function. I'm just
+						using it to proxy.
+					*/
+					toggleMoves = function(board, flag) {
+						board.toggleMoves(flag)
 					}
 
 					updateMoveInfo = function(board) {
@@ -490,57 +518,85 @@
 							sq.appendChild(this.getImg(sq.piece,sq.color))
 						}
 					}
-         
-         /*
-         * Draw the board with all the pieces in the initial
-         * position
-         */
-         this.populatePieces = function() {
-          // pawns
-          for (var i = 0;i < 8; i++) {
+
+					this.updatePGNInfo = function() {
+						if (this.conv.pgn.props['White'])
+							this.visuals['pgn']['players'].nodeValue = 
+									this.conv.pgn.props['White']+" - "+
+									this.conv.pgn.props['Black']
+						if (this.visuals['pgn']['WhiteElo'])
+							this.visuals['pgn']['elos'].nodeValue = 
+									this.conv.pgn.props['WhiteElo']+" - "+
+									this.conv.pgn.props['BlackElo']
+						if (this.visuals['pgn']['Event'])	
+							this.visuals['pgn']['event'].nodeValue =
+									this.conv.pgn.props['Event']+", "
+									+this.conv.pgn.props['Date']
+					}
+
+					this.updateSettings = function() {
+						var blacks = this.options['blackSqColor']
+						var whites = this.options['whiteSqColor']
+						
+						for(var i=0;i<8;i++){
+							var flip = (i%2)?true:false
+							for(var j=0;j<8;j++){
+								var color = flip?(j%2)?whites:blacks:!(j%2)?whites:blacks
+								this.pos[i][j].style.background = color
+							}
+						}
+					}
+
+					/*
+					 * Draw the board with all the pieces in the initial
+					 * position
+					*/
+					this.populatePieces = function() {
+					// pawns
+					for (var i = 0;i < 8; i++) {
 						img = this.getImg('pawn','white')
-            this.pos[6][i].appendChild(img);
-            this.pos[6][i].piece = 'pawn';
-            this.pos[6][i].color = 'white';
+						this.pos[6][i].appendChild(img);
+						this.pos[6][i].piece = 'pawn';
+						this.pos[6][i].color = 'white';
             
 						img = this.getImg('pawn','black')
-            this.pos[1][i].appendChild(img);
-            this.pos[1][i].piece = 'pawn';
-            this.pos[1][i].color = 'black';
-          }
+						this.pos[1][i].appendChild(img);
+						this.pos[1][i].piece = 'pawn';
+						this.pos[1][i].color = 'black';
+					}
 
-         // rooks, bishops, knights
-         for(var i = 0; i < 2; i++) {
+					// rooks, bishops, knights
+					for(var i = 0; i < 2; i++) {
 						img = this.getImg('rook','white')
-            this.pos[7][i*7].appendChild(img)
-            this.pos[7][i*7].piece = 'rook'
-            this.pos[7][i*7].color = 'white'
-          
+						this.pos[7][i*7].appendChild(img)
+						this.pos[7][i*7].piece = 'rook'
+						this.pos[7][i*7].color = 'white'
+
 						img = this.getImg('rook','black')
-            this.pos[0][i*7].appendChild(img)
-            this.pos[0][i*7].piece = 'rook'
-            this.pos[0][i*7].color = 'black'
-          
+						this.pos[0][i*7].appendChild(img)
+						this.pos[0][i*7].piece = 'rook'
+						this.pos[0][i*7].color = 'black'
+
 						img = this.getImg('knight','white')
-            this.pos[7][i*5+1].appendChild(img)
-            this.pos[7][i*5+1].piece = 'knight'
-            this.pos[7][i*5+1].color = 'white'
-         
+						this.pos[7][i*5+1].appendChild(img)
+						this.pos[7][i*5+1].piece = 'knight'
+						this.pos[7][i*5+1].color = 'white'
+
 						img = this.getImg('knight','black')
-            this.pos[0][i*5+1].appendChild(img)
-            this.pos[0][i*5+1].piece = 'knight'
-            this.pos[0][i*5+1].color = 'black'
+						this.pos[0][i*5+1].appendChild(img)
+						this.pos[0][i*5+1].piece = 'knight'
+						this.pos[0][i*5+1].color = 'black'
          
 						img = this.getImg('bishop','white')
-            this.pos[7][i*3+2].appendChild(img)
-            this.pos[7][i*3+2].piece = 'bishop'
-            this.pos[7][i*3+2].color = 'white'
-         
+						this.pos[7][i*3+2].appendChild(img)
+						this.pos[7][i*3+2].piece = 'bishop'
+						this.pos[7][i*3+2].color = 'white'
+
 						img = this.getImg('bishop','black')
-            this.pos[0][i*3+2].appendChild(img)
-            this.pos[0][i*3+2].piece = 'bishop'
-            this.pos[0][i*3+2].color = 'black'
-         }
+						this.pos[0][i*3+2].appendChild(img)
+						this.pos[0][i*3+2].piece = 'bishop'
+						this.pos[0][i*3+2].color = 'black'
+					}
          
 					img = this.getImg('queen','white')
 					this.pos[7][3].appendChild(img)
@@ -564,13 +620,19 @@
 				}
 
 				this.populateMoves = function(cont) {
+					if (!this.options['showMovesPane']) {
+						 cont.style.visibility="hidden"
+						 cont.style.display="none"
+					}
 					cont.vAlign = "top"
 					var tmp2=this.conv.pgn.moves
 					var p = document.createElement("p")
 					p.style.fontSize = "9pt"
 					p.style.fontFace = "Tahoma, Arial, sans-serif"
 					p.style.fontWeight = "bold"
-					var txt = document.createTextNode(this.conv.pgn.props['White']
+					var txt = document.createTextNode("")
+					if (this.conv.pgn.props['White'])
+						var txt = document.createTextNode(this.conv.pgn.props['White']
 										+" - "+this.conv.pgn.props['Black'])
 					p.appendChild(txt)
 					cont.appendChild(p)
@@ -637,8 +699,7 @@
 					tr.appendChild(td)
 
 					var txt = document.createTextNode('')
-					txt.nodeValue = this.conv.pgn.props['White']+" - "+
-													this.conv.pgn.props['Black']
+					this.visuals['pgn']['players'] = txt
 					td.appendChild(txt)
 					//
 					
@@ -650,8 +711,7 @@
 					tr.appendChild(td)
 
 					txt = document.createTextNode('')
-					txt.nodeValue = this.conv.pgn.props['WhiteElo']+" - "+
-													this.conv.pgn.props['BlackElo']
+					this.visuals['pgn']['elos'] = txt
 					td.appendChild(txt)
 					//
 					
@@ -663,48 +723,10 @@
 					tr.appendChild(td)
 
 					txt = document.createTextNode('')
-					txt.nodeValue = this.conv.pgn.props['Event']+", "
-													+this.conv.pgn.props['Date']
+					this.visuals['pgn']['event'] = txt
 					td.appendChild(txt)
 					//
-
-					return;
-
-					// white - black
-					var td = document.createElement('td')
-					tr.appendChild(td)
-					td.appendChild(document.createTextNode(
-						this.conv.pgn.props['White']
-					))
-					td.align = 'right'
-					
-					td = document.createElement('td')
-					td.appendChild(document.createTextNode(
-						this.conv.pgn.props['Black']
-					))
-					tr.appendChild(td)
-					// end of white - black
-					
-					// white - black
-					tr = document.createElement('tr')
-					tblTb.appendChild(tr)
-					
-					td = document.createElement('td')
-					td.width = "50%"
-					tr.appendChild(td)
-					td.appendChild(document.createTextNode(
-						this.conv.pgn.props['WhiteElo']
-					))
-					td.align = 'right'
-					
-					td = document.createElement('td')
-					td.appendChild(document.createTextNode(
-						this.conv.pgn.props['BlackElo']
-					))
-					tr.appendChild(td)
-					// end of white - black
-					
-					var p =document.createTextNode('')
+					this.updatePGNInfo()
 				}
 
 				this.getImg = function(piece, color) {
