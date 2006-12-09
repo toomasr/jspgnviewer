@@ -471,7 +471,8 @@ function Converter(pgn) {
 			for (var i = 1;i<8;i++) {
 				 tmp = pos[to[0]+i][to[1]]
 				 if (tmp && "queen" == tmp.piece && tmp.color == color) {
-						 rtrns[rtrns.length] = new Array(to[0]+i, to[1])
+						rtrns[rtrns.length] = new Array(to[0]+i, to[1])
+						break
 				 }
 				 else if (tmp.piece)
 						break
@@ -483,7 +484,8 @@ function Converter(pgn) {
 			for (var i = 1;i<8;i++) {
 				 tmp = pos[to[0]][to[1]+i]
 				 if (tmp && "queen" == tmp.piece && tmp.color == color) {
-						 rtrns[rtrns.length] = new Array(to[0], to[1]+i)
+						rtrns[rtrns.length] = new Array(to[0], to[1]+i)
+						break
 				 }
 				 else if (tmp.piece)
 						break
@@ -495,7 +497,8 @@ function Converter(pgn) {
 			for (var i = 1;i<8;i++) {
 				 tmp = pos[to[0]-i][to[1]]
 				 if (tmp && "queen" == tmp.piece && tmp.color == color) {
-						 rtrns[rtrns.length] = new Array(to[0]-i, to[1])
+						rtrns[rtrns.length] = new Array(to[0]-i, to[1])
+						break
 				 }
 				 else if (tmp.piece)
 						break
@@ -508,6 +511,7 @@ function Converter(pgn) {
 				tmp = pos[to[0]][to[1]-i]
 				if (tmp && "queen" == tmp.piece && tmp.color == color) {
 						rtrns[rtrns.length] = new Array(to[0], to[1]-i)
+						break
 				}
 				else if (tmp.piece)
 					break
@@ -520,6 +524,7 @@ function Converter(pgn) {
 				tmp = pos[to[0]-i][to[1]-i]
 				if (tmp && "queen" == tmp.piece && tmp.color == color) {
 					rtrns[rtrns.length] = new Array(to[0]-i, to[1]-i)
+					break
 				}
 				else if (tmp.piece)
 					break
@@ -532,6 +537,7 @@ function Converter(pgn) {
 				tmp = pos[to[0]+i][to[1]+i]
 				if (tmp && "queen" == tmp.piece && tmp.color == color) {
 					rtrns[rtrns.length] = new Array(to[0]+i, to[1]+i)
+					break
 				}
 				else if (tmp.piece)
 					break
@@ -544,6 +550,7 @@ function Converter(pgn) {
 				tmp = pos[to[0]-i][to[1]+i]
 				if (tmp && "queen" == tmp.piece && tmp.color == color) {
 					rtrns[rtrns.length] = new Array(to[0]-i, to[1]+i)
+					break
 				}
 				else if (tmp.piece)
 					break
@@ -556,6 +563,7 @@ function Converter(pgn) {
 				tmp = pos[to[0]+i][to[1]-i]
 				if (tmp && "queen" == tmp.piece && tmp.color == color) {
 					rtrns[rtrns.length] = new Array(to[0]+i, to[1]-i)
+					break
 				}
 				else if (tmp.piece)
 					break
@@ -600,6 +608,7 @@ function Converter(pgn) {
 				tmp = pos[to[0]+i][to[1]]
 				if (tmp && tmp.piece == 'rook' && tmp.color == color) {
 					rtrns[rtrns.length] = new Array(to[0]+i, to[1])
+					break
 				}
 				else if (tmp.piece) {
 					break;
@@ -614,6 +623,7 @@ function Converter(pgn) {
 				tmp = pos[to[0]-i][to[1]]
 				if (tmp && tmp.piece == 'rook' && tmp.color == color) {
 					rtrns[rtrns.length] = new Array(to[0]-i, to[1])
+					break
 				}
 				else if (tmp.piece) {
 					break
@@ -628,6 +638,7 @@ function Converter(pgn) {
 				tmp = pos[to[0]][to[1]+i]
 				if (tmp && tmp.piece == 'rook' && tmp.color == color) {
 					rtrns[rtrns.length] = new Array(to[0], to[1]+i)
+					break
 				}
 				else if (tmp.piece) {
 					break
@@ -642,6 +653,7 @@ function Converter(pgn) {
 				tmp = pos[to[0]][to[1]-i]
 				if (tmp && tmp.piece == 'rook' && tmp.color == color) {
 					rtrns[rtrns.length] = new Array(to[0], to[1]-i)
+					break
 				}
 				else if (tmp.piece) {
 					break
@@ -665,14 +677,17 @@ function Converter(pgn) {
 			}
 		}
 		else if (2 == rtrns.length) {
-			// first let's try the check rule, if it fails
-			// we use the other one
+			// let's try the check rule, if it fails
 			for (var i = 0;i < rtrns.length; i++) {
 				var from = pos[rtrns[i][0]][rtrns[i][1]]
+				var oldTo = pos[to[0]][to[1]]
+				
 				pos[rtrns[i][0]][rtrns[i][1]] = new vSquare()
+				pos[to[0]][to[1]] = from
 
 				var checked = isKingChecked(brd,from.color, pos)
 				pos[rtrns[i][0]][rtrns[i][1]] = from
+				pos[to[0]][to[1]] = oldTo
 				if (checked)
 					continue
 				else
@@ -884,8 +899,8 @@ function Converter(pgn) {
 		try {
 			for (var i = 1;i < 7; i++) {
 				tmp = brd.vBoard[x+i][y+i]
-					if (tmp.color == col)
-						break;
+				if (tmp.color == col)
+					break;
 					if (tmp.color == op &&
 								("bishop" == tmp.piece || "queen" == tmp.piece))
 					return true
@@ -912,6 +927,52 @@ function Converter(pgn) {
 					break;
 				if (tmp.color == op &&
 							("bishop" == tmp.piece || "queen" == tmp.piece))
+					return true
+			}
+		}
+		catch (e) {}
+
+		// horizontals, verticals - looking for rooks and queens
+		try {
+			for (var i = 1;i < 7; i++) {
+				tmp = brd.vBoard[x][y+i]
+				if (tmp.color == col)
+					break;
+				if (tmp.color == op &&
+							("rook" == tmp.piece || "queen" == tmp.piece))
+					return true
+			}
+		}
+		catch (e) {}
+		try {
+			for (var i = 1;i < 7; i++) {
+				tmp = brd.vBoard[x][y-i]
+				if (tmp.color == col)
+					break;
+				if (tmp.color == op &&
+							("rook" == tmp.piece || "queen" == tmp.piece))
+					return true
+			}
+		}
+		catch (e) {}
+		try {
+			for (var i = 1;i < 7; i++) {
+				tmp = brd.vBoard[x+1][y]
+				if (tmp.color == col)
+					break;
+				if (tmp.color == op &&
+							("rook" == tmp.piece || "queen" == tmp.piece))
+					return true
+			}
+		}
+		catch (e) {}
+		try {
+			for (var i = 1;i < 7; i++) {
+				tmp = brd.vBoard[x-i][y]
+				if (tmp.color == col)
+					break;
+				if (tmp.color == op &&
+							("rook" == tmp.piece || "queen" == tmp.piece))
 					return true
 			}
 		}
