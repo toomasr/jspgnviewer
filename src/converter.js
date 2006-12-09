@@ -212,7 +212,7 @@ function Converter(pgn) {
 		var pawnre = /^[a-z]+[1-8]/
 		var knightre = /^N[0-9]?[a-z]+[1-8]/
 		var bishre = /^B[a-z]+[1-8]/
-		var queenre = /^Q[a-z]+[1-8]/
+		var queenre = /^Q[0-9]?[a-z]+[1-8]/
 		var rookre = /^R[0-9]?[a-z]+[1-8]/
 		var lCastlere = /^(0|O)-(0|O)-(0|O)/i
 		var sCastlere = /^(0|O)-(0|O)/i
@@ -220,27 +220,28 @@ function Converter(pgn) {
 		var prom = ""
 		
 		var toCoords = getSquare(to)
-		var fromCoords, from, to, result, tmp, myMove = null
+		var fromCoords, from, to, result, tmp, myMove = null, pawnM = false
 		if (pawnre.test(to)) {
 			// let see if it is a promotional move
 			if (/^[a-z]+[1-8]=[A-Z]/.test(to))
 				prom = to.charAt(to.indexOf('=')+1)
-				fromCoords = findFromPawn(this.vBoard, to, color)
-			}
+			fromCoords = findFromPawn(this.vBoard, to, toCoords, color)
+			pawnM = true
+		}
 			else if (knightre.test(to)) {
-				fromCoords = findFromKnight(this.vBoard, to, color)
+				fromCoords = findFromKnight(this, to, toCoords, color)
 			}
 			else if (bishre.test(to)) {
-				fromCoords = findFromBish(this.vBoard, to, color)
+				fromCoords = findFromBish(this.vBoard, to, toCoords, color)
 			}
 			else if (queenre.test(to)) {
-				fromCoords = findFromQueen(this.vBoard, to, color) 
+				fromCoords = findFromQueen(this.vBoard, to, toCoords, color) 
 			}
 			else if (rookre.test(to)) {
-				fromCoords = findFromRook(this.vBoard, to, color)
+				fromCoords = findFromRook(this, to, toCoords, color)
 			}
 			else if (kingre.test(to)) {
-				fromCoords = findFromKing(this.vBoard, to, color)   
+				fromCoords = findFromKing(this.vBoard, to, toCoords, color)   
 			}
 			else if (sCastlere.test(to)) {
 				var bCoords = new Array('e8','g8','h8','f8')
@@ -258,9 +259,9 @@ function Converter(pgn) {
 				from = this.vBoard[fromCoords[0]][fromCoords[1]]
 				to = this.vBoard[toCoords[0]][toCoords[1]]
 				// update king location
-				if ('king' == to.piece && 'white' == to.color)
+				if ('king' == from.piece && 'white' == from.color)
 					 this.wKingX = toCoords[0], this.wKingY = toCoords[1]
-				else if ('king' == to.piece && 'black' == to.color)
+				else if ('king' == from.piece && 'black' == from.color)
 					 this.bKingX = toCoords[0], this.bKingY = toCoords[1]
 				
 				result = movePiece(from, to, prom)
@@ -287,9 +288,9 @@ function Converter(pgn) {
 			to = this.vBoard[toCoords[0]][toCoords[1]]
 				
 			// update king location
-			if ('king' == to.piece && 'white' == to.color)
+			if ('king' == from.piece && 'white' == from.color)
 				this.wKingX = toCoords[0], this.wKingY = toCoords[1]
-			else if ('king' == to.piece && 'black' == to.color)
+			else if ('king' == from.piece && 'black' == from.color)
 				this.bKingX = toCoords[0], this.bKingY = toCoords[1]
 				
 			
@@ -298,7 +299,8 @@ function Converter(pgn) {
 				 myMove = new MyMove()
 		 	
 		 	var enPassante = null
-			enPassante = getEnPassante(this, fromCoords[0], fromCoords[1],
+			if (pawnM)
+				enPassante = getEnPassante(this, fromCoords[0], fromCoords[1],
 															 toCoords[0], toCoords[1])
 			
 			if (enPassante) {
@@ -339,9 +341,7 @@ function Converter(pgn) {
 		/*
 			Find the pawn from location.
 		*/
-		function findFromPawn(pos, to, color) {
-			var oldTo = to
-			var tmp = getSquare(to)
+		findFromPawn = function(pos, to, tmp, color) {
 			var x = tmp[1], y = tmp[0]
        
 			// taking move or with xtra information
@@ -376,8 +376,9 @@ function Converter(pgn) {
 			else {
 				// non-taking move
 				try {
+					var j
 					for(var i = 0; i < 8; i++) {
-						var j = (color == 'white')?7-i:i
+						j = (color == 'white')?7-i:i
 						if (pos[j][x].piece == 'pawn' 
 								&& pos[j][x].color == color) {
 							if (Math.abs(j-y)>2) {
@@ -398,20 +399,20 @@ function Converter(pgn) {
 				}
 				catch (e) {}
 			}
-			throw("Could not find a move with a pawn '"+oldTo+"'")
+			throw("Could not find a move with a pawn '"+toSAN+"'")
 		}
 
         /*
           Find the bishop from location.
         */
-        function findFromBish(pos, to, color) {
-					var oldTo = to
-          to = getSquare(to)
+        function findFromBish(pos, toSAN, toCoords, color) {
+          var to = toCoords
           var rtrn
+					var coord
              for(var i = 0;i < 8; i++) {
 							 // diagonal down right
                try {
-                  var coord = pos[to[0]+i][to[1]+i]
+                  coord = pos[to[0]+i][to[1]+i]
                   if (coord.piece == 'bishop'
                      && coord.color == color) {
                      return new Array(to[0]+i, to[1]+i)
@@ -420,7 +421,7 @@ function Converter(pgn) {
                catch (e) {}
                
                try {
-                  var coord = pos[to[0]-i][to[1]-i]
+                  coord = pos[to[0]-i][to[1]-i]
                   if (coord.piece == 'bishop'
                      && coord.color == color) {
                      return new Array(to[0]-i, to[1]-i)
@@ -429,7 +430,7 @@ function Converter(pgn) {
                catch (e) {}
                
                try {
-                  var coord = pos[to[0]+i][to[1]-i]
+                  coord = pos[to[0]+i][to[1]-i]
                   if (coord.piece == 'bishop'
                      && coord.color == color) {
                      return new Array(to[0]+i, to[1]-i)
@@ -438,7 +439,7 @@ function Converter(pgn) {
                catch (e) {}
                
                try {
-                  var coord = pos[to[0]-i][to[1]+i]
+                  coord = pos[to[0]-i][to[1]+i]
                   if (coord.piece == 'bishop'
                      && coord.color == color) {
                      return new Array(to[0]-i, to[1]+i)
@@ -446,14 +447,14 @@ function Converter(pgn) {
                }
                catch (e) {}
              } 
-          throw('No move found for the bishop '+oldTo)
+          throw('No move found for the bishop '+toSAN)
         }
 
         /* 
           Find the king from location.
         */
-        function findFromKing(pos, to, color) {
-          to = getSquare(to)
+        function findFromKing(pos, toSAN, toCoords, color) {
+          var to = toCoords
           var froms = new Array(
             new Array(to[0], to[1]+1),
             new Array(to[0], to[1]-1),
@@ -466,9 +467,10 @@ function Converter(pgn) {
             new Array(to[0]-1, to[1]-1) 
            )
 
+					var tmp
           for(var i=0;i<froms.length;i++) {
             try {
-              var tmp = pos[froms[i][0]][froms[i][1]]
+              tmp = pos[froms[i][0]][froms[i][1]]
               if (tmp.piece == 'king' && tmp.color == color)
                 return froms[i]
             }
@@ -480,71 +482,131 @@ function Converter(pgn) {
         /* 
           Find the queen's from location.
         */
-        function findFromQueen(pos, to, color) {
-          to = getSquare(to) 
-
-          // the lines
-          for (var i = 0; i < 8; i++) {
-             var tmp
-             
-             try {
-              tmp = pos[i][to[1]]
-              if (tmp.piece == 'queen' && tmp.color == color)
-                 return new Array(i, to[1])
-             }
-             catch (e) {}
-
-             try {
-              tmp = pos[to[0]][i]
-              if (tmp.piece == 'queen' && tmp.color == color)
-                 return new Array(to[0],i)
-             }
-             catch (e) {}
-             
-             try {
-              tmp = pos[to[0]+i][to[1]+i]
-              if (tmp.piece == 'queen' && tmp.color == color)
-                 return new Array(to[0]+i, to[1]+i)
-             }
-             catch (e) {}
-
-             try {
-              tmp = pos[to[0]-i][to[1]-i]
-              if (tmp.piece == 'queen' && tmp.color == color)
-                 return new Array(to[0]-i,to[1]-i)
-             }
-             catch (e) {}
-             
-             try {
-              tmp = pos[to[0]+i][to[1]-i]
-              if (tmp.piece == 'queen' && tmp.color == color)
-                 return new Array(to[0]+i, to[1]-i)
-             }
-             catch (e) {}
-             
-             try {
-              tmp = pos[to[0]-i][to[1]+i]
-              if (tmp.piece == 'queen' && tmp.color == color)
-                 return new Array(to[0]-i, to[1]+i)
-             }
-             catch (e) {}
-          }
-
-        }
+        function findFromQueen(pos, toSAN, to, color) {
+					var op = "white"==color?"black":"white"
+					var extra = to[2]
+					var rtrns = new Array()
+					
+					var tmp
+					try {
+						for (var i = 1;i<8;i++) {
+							 tmp = pos[to[0]+i][to[1]]
+							 if (tmp && "queen" == tmp.piece && tmp.color == color) {
+									 rtrns[rtrns.length] = new Array(to[0]+i, to[1])
+							 }
+							 else if (tmp.piece)
+									break
+         	}
+					}
+					catch (e) {}
+					
+					try {
+						for (var i = 1;i<8;i++) {
+							 tmp = pos[to[0]][to[1]+i]
+							 if (tmp && "queen" == tmp.piece && tmp.color == color) {
+									 rtrns[rtrns.length] = new Array(to[0], to[1]+i)
+							 }
+							 else if (tmp.piece)
+									break
+         		}
+					 }
+					 catch (e) {}
+					
+					try {
+						for (var i = 1;i<8;i++) {
+							 tmp = pos[to[0]-i][to[1]]
+							 if (tmp && "queen" == tmp.piece && tmp.color == color) {
+									 rtrns[rtrns.length] = new Array(to[0]-i, to[1])
+							 }
+							 else if (tmp.piece)
+									break
+         		}
+					}
+					catch (e) {}
+					
+					try {
+						for (var i = 1;i<8;i++) {
+							 tmp = pos[to[0]][to[1]-i]
+							 if (tmp && "queen" == tmp.piece && tmp.color == color) {
+									 rtrns[rtrns.length] = new Array(to[0], to[1]-i)
+							 }
+							 else if (tmp.piece)
+									break
+         	}
+				}
+				catch (e) {}
+					
+				try {
+					for (var i = 1;i<8;i++) {
+							 tmp = pos[to[0]-i][to[1]-i]
+							 if (tmp && "queen" == tmp.piece && tmp.color == color) {
+									 rtrns[rtrns.length] = new Array(to[0]-i, to[1]-i)
+							 }
+							 else if (tmp.piece)
+									break
+         	}
+				}
+				catch (e) {}
+					
+				try {
+					for (var i = 1;i<8;i++) {
+							 tmp = pos[to[0]+i][to[1]+i]
+							 if (tmp && "queen" == tmp.piece && tmp.color == color) {
+									 rtrns[rtrns.length] = new Array(to[0]+i, to[1]+i)
+							 }
+							 else if (tmp.piece)
+									break
+         	}
+				}
+				catch (e) {}
+					
+					try {
+						for (var i = 1;i<8;i++) {
+							 tmp = pos[to[0]-i][to[1]+i]
+							 if (tmp && "queen" == tmp.piece && tmp.color == color) {
+									 rtrns[rtrns.length] = new Array(to[0]-i, to[1]+i)
+							 }
+							 else if (tmp.piece)
+									break
+         	}
+				}
+				catch (e) {}
+					
+				try {
+					for (var i = 1;i<8;i++) {
+							 tmp = pos[to[0]+i][to[1]-i]
+							 if (tmp && "queen" == tmp.piece && tmp.color == color) {
+									 rtrns[rtrns.length] = new Array(to[0]+i, to[1]-i)
+							 }
+							 else if (tmp.piece)
+									break
+         	}
+				}
+				catch (e) {}
+					// only one option
+					if (rtrns.length == 1)
+						 return rtrns[0]
+					if (extra[0] != -1 || extra[1] != -1) {
+						 // more than one queen can move there
+						 // use the extra informatin (eg b from Qbd7
+						 for (var i = 0;i < rtrns.length;i++) {
+							 if (extra[0] != -1 && extra[0] == rtrns[i][1])
+										return rtrns[i]
+							 else if (extra[1] != -1 && extra[1] == rtrns[i][0])
+									return rtrns[i]
+						 }
+					}
+          throw("No queen move found '"+toSAN+"'")
+				}
 
         /* 
           Find the rook's from location.
         */
-        function findFromRook(pos, to, color) {
-					var oldTo = to
-          to = getSquare(to)
+        findFromRook = function(brd, toSAN, toCoords, color) {
+					var op = "white"==color?"black":"white"
+          var to = toCoords
+					var pos = brd.vBoard
           var extra = to[2]
-          var froms = new Array()
-
-          for(var i = 0;i < 8; i++) {
-            froms[froms.length] = new Array(to[0], i)
-            froms[froms.length] = new Array(i,to[1])
-          }
           
 					// it ain't that simple, what if 2 rooks
 					// can move to the same piece but one of
@@ -604,6 +666,7 @@ function Converter(pgn) {
 					// only one option
 					if (rtrns.length == 1)
 						 return rtrns[0]
+					
 					if (extra[0] != -1 || extra[1] != -1) {
 						 // more than one rook can move there
 						 // use the extra informatin (eg b from Rbd7
@@ -615,29 +678,31 @@ function Converter(pgn) {
 						 }
 					}
 					else if (2 == rtrns.length) {
-             var a = rtrns[0]
-             var b = rtrns[1]
-             // if on the same row/line, the closes has to move
-             // this is a case where no extra information about
-             // the rook to move is given, the closest moves
-             if (Math.abs(to[0]-a[0]) < Math.abs(to[0]-b[0])
-                || Math.abs(to[1]-a[1]) < Math.abs(to[1]-b[1])) {
-              return a
-             }
-             else {
-              return b
-             }
+						 // first let's try the check rule, if it fails
+						 // we use the other one
+						 for (var i = 0;i < rtrns.length; i++) {
+							var from = pos[rtrns[i][0]][rtrns[i][1]]
+							pos[rtrns[i][0]][rtrns[i][1]] = new vSquare()
+
+							var checked = isKingChecked(brd,from.color, pos)
+							pos[rtrns[i][0]][rtrns[i][1]] = from
+							if (checked)
+								continue
+							else
+								 return rtrns[i]
+						 }
 					}
-          throw("No rook move found '"+oldTo+"'")
+          throw("No rook move found '"+toSAN+"'")
         }
 
         /* 
           Find the knight's from location.
         */
-        function findFromKnight(pos, to, color) {
-					 var oldTo = to
-           to = getSquare(to)
+        findFromKnight = function(brd, toSAN, toCoords, color) {
+					 var to = toCoords
            var extra = to[2]
+					 var pos = brd.vBoard
+					 var rtrns = new Array()
            var froms = new Array(
             new Array(to[0]+2, to[1]+1),
             new Array(to[0]+2, to[1]-1),
@@ -662,12 +727,28 @@ function Converter(pgn) {
                  else if(extra[1] != -1 && froms[i][0] != extra[1]) {
                   continue;
                  }
-                 return new Array(froms[i][0], froms[i][1])
-              }
+              	 rtrns[rtrns.length] = new Array(froms[i][0], froms[i][1])
+							}
              }
              catch (e) {}
            }
-           throw("No knight move found. '"+oldTo+"'")
+					 if (rtrns.length>1) {
+						for (var i = 0; i< rtrns.length;i++){
+							var from = pos[rtrns[i][0]][rtrns[i][1]]
+							pos[rtrns[i][0]][rtrns[i][1]] = new vSquare()
+
+							var checked = isKingChecked(brd, from.color, pos)
+							pos[rtrns[i][0]][rtrns[i][1]] = from
+							if (checked)
+								continue
+							else
+								 return rtrns[i]
+						}
+						return rtrns[0]
+					 }
+					 else if (rtrns.length == 1)
+							return rtrns[0]
+           throw("No knight move found. '"+toSAN+"'")
         }
 
         /*
@@ -790,8 +871,60 @@ function Converter(pgn) {
 					return new Array(from, to, hist, pPiece)
 				}
 		
-		this.isKingChecked = function() {
-			// diagonals
+		isKingChecked = function(brd, col) {
+			var op = "black", x = brd.wKingX, y = brd.wKingY
+			if ("black" == col) {
+				op = "white"
+				x = brd.bKingX, y = brd.bKingY
+			}
+			// diagonals, looking for bishops, queens
+			var tmp
+			try {
+				 for (var i = 1;i < 7; i++) {
+					 tmp = brd.vBoard[x-i][y-i]
+					 if (tmp.color == col)
+							break;
+					 if (tmp.color == op &&
+								("bishop" == tmp.piece || "queen" == tmp.piece))
+					 return true
+				 }
+			}
+			catch (e) {}
+			try {
+				 for (var i = 1;i < 7; i++) {
+					 tmp = brd.vBoard[x+i][y+i]
+					 if (tmp.color == col)
+							break;
+					 if (tmp.color == op &&
+								("bishop" == tmp.piece || "queen" == tmp.piece))
+					 return true
+				 }
+			}
+			catch (e) {}
+			try {
+				 for (var i = 1;i < 7; i++) {
+					 tmp = brd.vBoard[x+i][y-i]
+					 if (tmp.color == col)
+							break;
+					 if (tmp.color == op &&
+								("bishop" == tmp.piece || "queen" == tmp.piece))
+					 return true
+				 }
+			}
+			catch (e) {}
+			try {
+				 for (var i = 1;i < 7; i++) {
+					 tmp = brd.vBoard[x-i][y+i]
+					 if (tmp.color == col)
+							break;
+					 if (tmp.color == op &&
+								("bishop" == tmp.piece || "queen" == tmp.piece))
+					 return true
+				 }
+			}
+			catch (e) {}
+
+			return false
 		}
 	}
       

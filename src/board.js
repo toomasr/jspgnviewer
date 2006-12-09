@@ -636,11 +636,12 @@
 										+" - "+this.conv.pgn.props['Black'])
 					p.appendChild(txt)
 					cont.appendChild(p)
-
+					
+					var link, tmp, tmp3
 					for (var i = 0;i < tmp2.length;i++) {
-						var link = document.createElement("a")
-						var tmp = document.createTextNode(tmp2[i].white)
-						var tmp3 = document.createElement("b")
+						link = document.createElement("a")
+						tmp = document.createTextNode(tmp2[i].white)
+						tmp3 = document.createElement("b")
 
 						tmp3.style.fontFamily = "Tahoma, Arial, sans-serif"
 						tmp3.style.fontSize = "8pt"
