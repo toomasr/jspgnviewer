@@ -462,7 +462,7 @@ function Converter(pgn) {
 		Find the queen's from location.
 	*/
 	function findFromQueen(pos, toSAN, to, color) {
-		var op = "white"==color?"black":"white"
+		var op = getOppColor(color)
 		var extra = to[2]
 		var rtrns = new Array()
 					
@@ -582,7 +582,7 @@ function Converter(pgn) {
 		Find the rook's from location.
 	*/
 	findFromRook = function(brd, toSAN, toCoords, color) {
-		var op = "white"==color?"black":"white"
+		var op = getOppColor(color)
 		var to = toCoords
 		var pos = brd.vBoard
 		var extra = to[2]
@@ -861,9 +861,10 @@ function Converter(pgn) {
 	}
 		
 	isKingChecked = function(brd, col) {
-		var op = "black", x = brd.wKingX, y = brd.wKingY
+		var op = getOppColor(col)
+		
+		var x = brd.wKingX, y = brd.wKingY
 		if ("black" == col) {
-			op = "white"
 			x = brd.bKingX, y = brd.bKingY
 		}
 		// diagonals, looking for bishops, queens
