@@ -1,1 +1,9 @@
+***************************
+* JS PGN VIEWER CHANGELOG *
+***************************
 
+23.12.2006 - jsPgnViewer 0.3.1
+
+Bugfixes
+	More foolproof PGN parsing. Extra spaces were making the
+	parser go off.

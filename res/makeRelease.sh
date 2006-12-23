@@ -91,6 +91,9 @@ if [ $# -eq 1 ];then
 	elif [ $1 == 'clean' ];then
 		echo "clean "$DEST_DIR
 		rm -rf $DEST_DIR
+	elif [ $1 == 'change' ];then
+		echo "Uploading Changelog.txt"
+		scp Changelog.txt toomas@jabber.ee:/home/toomas/public_html/jspgnviewer/downloads/Changelog.txt
 	fi
 fi
 

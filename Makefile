@@ -18,3 +18,6 @@ wp:
 
 snap:
 	./res/makeRelease.sh snap
+
+change:
+	./res/makeRelease.sh change

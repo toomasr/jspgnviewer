@@ -70,7 +70,15 @@ function Pgn(pgn) {
 		var result = this.pgn.match(re)
 		if (result == null)
 			break
-		var tmp = result[2].replace(/\n/g, " ").split(" ")
+		// newlines to spaces
+		result[2] = result[2].replace(/\n/g, " ")
+		// leave only one space in the middle
+		while(result[2].indexOf("  ")!=-1)
+			 result[2] = result[2].replace("  ", " ")
+		// possible first space gets removed
+		if (" "==result[2].charAt(0))
+			result[2] = result[2].substring(1)
+		var tmp = result[2].split(" ")
 		for (var j = 0;j<gameOverre.length;j++) {
 			if (gameOverre[j].test(tmp[1]))
 			tmp[1] = null

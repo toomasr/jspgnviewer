@@ -23,7 +23,10 @@
 		this.flipped = false
 		this.id = (new Date()).getTime()
 		window[this.id] = this
-		this.options = options
+		if (options)
+			this.options = options
+		else
+			this.options = {}
 		this.moveInput = null
 		this.lastBold = null
 		this.lastBoldIdx = null
@@ -270,16 +273,22 @@
 					this.skipToMove = function(no, color) {
 						var rNo = no*2+color+1
 						if (this.conv.getCurMoveNo()<rNo) {
-							while(this.conv.getCurMoveNo()<rNo)
+							var i = 0
+							while(this.conv.getCurMoveNo()<rNo && i < 200) {
 								makeMove(this, true)
+								i++
+							}
 							updateMoveInfo(this)
 							updateMovePane(this)
 							this.deMarkLastMove()
 							this.markLastMove()
 						}
 						else if (this.conv.getCurMoveNo()>rNo) {
-							while(this.conv.getCurMoveNo()>rNo)
+							var i = 0
+							while(this.conv.getCurMoveNo()>rNo && i < 200) {
 								makeBwMove(this, true)
+								i++
+							}
 							updateMoveInfo(this)
 							updateMovePane(this)
 							this.deMarkLastMove()
