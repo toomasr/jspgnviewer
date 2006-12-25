@@ -30,7 +30,7 @@ Installation
 			accompanying images that come with the plugin.
     * Log in to the administration interface of WordPress and activate
 			the plugin "PgnViewer".
-    * You're installation is ready. 
+    * Your installation is ready.
 
 Using the plugin
     * Start writing a post using your WordPress
