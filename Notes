@@ -1,43 +1,7 @@
 TODO
-	ver-0.2 - 03.12.2006
-		 * Functional
-			 o DONE - Highlight current move in move pane. 
-		 * Usability improvements
-			 o DONE - WP-PLUGIN: <noscript> for no JS support
-			 o DONE - Tooltips for buttons
-			 o DONE- Make the move pane configurable
-			 		Board takes an optional assoc of options
-						+ imagePrefix - the prefix of the image location (defaults to "img/")
-						+ showMovesPane - show the moves pane (defaults to false)
-			 o Disable non functional buttons [waiting feedback from designer]
-			 o Some info about the current move 
-		 * Testing
-			 o Have to try different PGN files 
-		 * Documentation
-			 o Source code needs docs
-			 o All README.txt's are empty. 
-
-	Serious:
-		+ imagePrefix not working - FIXED - update site
-		+ When 2 same pieces can make a move but no additional
-			information is given about which to move but only
-			one of the pieces can be played there because
-			otherwise the king would be checked. No such logic
-			yet.
-
 	Normal:
-		+ Read the PGN spec
-			+ think what to do with comments
-			+ variations
-		+ get new images from Riivo - EMAIL SENT
-		+ test the page with IE 6, 7
-			+ when i alert the innerHTML of the div I get the contents it should have
-				but nothing is displayed :(
-			+ mnz, helmer, martti, johh can be testers
 	
 	Any:
-		+ write about starting devel with wordpress
-		+ Make development page (wiki) at pgnview.com
 
 Use-cases
 
@@ -47,6 +11,7 @@ Use-cases
 		*) Choose chess set & css
 		*) Generate - voila
 
+	chesspastebin.com
 	UC2 - Host your PGN files
 		*) You paste the pgn
 		*) Choose which ones to include
