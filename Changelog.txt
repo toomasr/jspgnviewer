@@ -2,6 +2,10 @@
 * JS PGN VIEWER CHANGELOG *
 ***************************
 
+27.01.2007 - WP plugin
+Bugfix
+	See http://code.google.com/p/jspgnviewer/issues/detail?id=5
+
 23.12.2006 - jsPgnViewer 0.3.1
 
 Bugfixes
