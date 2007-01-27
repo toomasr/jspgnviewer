@@ -26,6 +26,7 @@ Author URI: http://tom.jabber.ee
 */
 
 function tr_pgnview_callback($str) {
+	$siteurl = get_option("siteurl");
 	// wow, i had a millisecond collision :)
 	// this should sort it out
 	$now = time()+mt_rand();
@@ -38,14 +39,16 @@ function tr_pgnview_callback($str) {
 	// the div that will contain the graphical board
 	$rtrn .= '<div id="'.$now.'_board"></div>';
 	// initialize the board
-	$rtrn .= '<script>var brd = new Board('.$now.',{"imagePrefix":"wp-content/pgnviewer/img/"});brd.init()</script>';
+	$rtrn .= '<script>var brd = new Board('.$now.',{"imagePrefix":"'.
+				$siteurl.'/wp-content/pgnviewer/img/"});brd.init()</script>';
 	$rtrn .= '<noscript>You have JavaScript disabled and you are not seeing a graphical interactive chessboard!</noscript>';
 
 	return $rtrn;
 }
 
 function tr_add_script_tags($_) {
-	echo "<script src='wp-content/plugins/pgnviewer/jsPgnViewer.js'></script>\n";
+	$siteurl = get_option("siteurl");
+	echo "<script src='${siteurl}/wp-content/plugins/pgnviewer/jsPgnViewer.js'></script>\n";
 }
 
 function tr_pgnview($content) {
