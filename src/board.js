@@ -38,39 +38,17 @@
 		if (this.options && this.options['imagePrefix']) {
 			 this.imagePrefix = this.options['imagePrefix']
 		}
-		var imageNames = {
-			"white" : {"rook":"wRook.gif"
-								 ,"bishop":"wBishop.gif"
-								 ,"knight":"wKnight.gif"
-								 ,"queen":"wQueen.gif"
-								 ,"king":"wKing.gif"
-								 ,"pawn":"wPawn.gif"}
-            
-			,"black" : {"rook":"bRook.gif"
-								 ,"bishop":"bBishop.gif"
-								 ,"knight":"bKnight.gif"
-								 ,"queen":"bQueen.gif"
-								 ,"king":"bKing.gif"
-								 ,"pawn":"bPawn.gif"}
-			,"btns" : {"ffward":"buttons/ffward.gif"
-									,"rwind":"buttons/rwind.gif"
-									,"forward":"buttons/forward.gif"
-									,"back":"buttons/back.gif"
-									,"toggle":"buttons/toggle.gif"
-									,"flip":"buttons/flip.gif"}
-		};
+		var brdI = new BoardImages()
+		var imageNames = brdI.imageNames['default']
+		brdI = null
 		// end of static
 		this.pos = new Array()
 
 		for(var i = 0;i<8;i++)
 			this.pos[i] = new Array()
       
-	 this.init = function() {
-		// prefix the images correctly
-		for ( i in imageNames)
-			 for (j in imageNames[i])
-					imageNames[i][j] = this.imagePrefix+imageNames[i][j]
-		// the main frame
+		this.init = function() {
+			// the main frame
 		var boardFrame = document.getElementById(divId+"_board");
 		
 		// toplevel table
@@ -82,6 +60,9 @@
 
 		var boardTd = document.createElement("td")
 		boardTd.style.width = "257px"
+		var btnTdNext = document.createElement("td")
+		btnTdNext.vAlign = 'top'
+		btnTdNext.align = 'center'
 		var btnTd = document.createElement("td")
 		btnTd.vAlign = 'top'
 		var propsTd = document.createElement("td")
@@ -93,7 +74,7 @@
 			movesTd.style.width = this.options['movesPaneWidth']
 		else
 			movesTd.style.overflow = "auto"
-		movesTd.rowSpan = 3
+		movesTd.rowSpan = 4
 		movesTd.valign = "top"
 		
 		var tmp = document.createElement("tr")
@@ -102,6 +83,7 @@
 		topTableTb.appendChild(tmp)
 
 		topTableTb.appendChild(document.createElement("tr")).appendChild(btnTd)
+		topTableTb.appendChild(document.createElement("tr")).appendChild(btnTdNext)
 		topTableTb.appendChild(document.createElement("tr")).appendChild(propsTd)
 
 
@@ -194,12 +176,14 @@
 		btnTd.appendChild(href)
 		
 		// current move
+		// it is initialized in updateMoveInfo
 		var input = document.createElement("input")
 		input.style.fontSize = "7pt"
 		input.size = "9"
-		input.style.border = "1px solid #000000"
+		input.style.border = "0px solid #000000"
+		input.style.textAlign = 'center'
 		this.moveInput = input
-		btnTd.appendChild(input)
+		btnTdNext.appendChild(input)
 		// end of current move
 
 		// hide
@@ -440,7 +424,7 @@
 							 board.moveInput.value = str
 						}
 						else
-							 board.moveInput.value = ""
+							 board.moveInput.value = "..."
 					}
 
 					makeMove = function(board, noUpdate) {
@@ -741,7 +725,7 @@
 
 				this.getImg = function(piece, color) {
 					var img = new Image()
-					img.src = imageNames[color][piece]
+					img.src = this.imagePrefix + imageNames[color][piece]
 					img.border = 0
 					
 					return img
@@ -776,3 +760,59 @@
 					brd.init()
 				}
 			}
+
+	/*
+		Provides support for different chess & button sets. Takes
+		two optional arguments. The first argument specifies the SET
+		identifier (defults to 'default') and the second is the
+		image prefix (defaults to "").
+	*/
+	function BoardImages() {
+		this.set = "default"
+		this.pref = ""
+		if (arguments.length>0)
+			this.set = arguments[0]
+		if (arguments.length>1)
+			this.pref = arguments[1]
+		this.imageNames = {
+			"default": {
+				"white" : {"rook":"wRook.gif"
+									 ,"bishop":"wBishop.gif"
+									 ,"knight":"wKnight.gif"
+									 ,"queen":"wQueen.gif"
+									 ,"king":"wKing.gif"
+									 ,"pawn":"wPawn.gif"}
+					
+				,"black" : {"rook":"bRook.gif"
+									 ,"bishop":"bBishop.gif"
+									 ,"knight":"bKnight.gif"
+									 ,"queen":"bQueen.gif"
+									 ,"king":"bKing.gif"
+									 ,"pawn":"bPawn.gif"}
+
+				,"btns" : {"ffward":"buttons/ffward.gif"
+										,"rwind":"buttons/rwind.gif"
+										,"forward":"buttons/forward.gif"
+										,"back":"buttons/back.gif"
+										,"toggle":"buttons/toggle.gif"
+										,"flip":"buttons/flip.gif"}
+			}
+		};
+
+		this.preload = function() {
+			var set = this.set
+			var pref = this.pref
+			if (arguments.length>0)
+				set = arguments[0]
+			if (arguments.length>1)
+				pref = arguments[1]
+			var img
+			for (i in this.imageNames[set]) {
+				for (j in this.imageNames[set][i]) {
+					img = new Image()
+					img.src = this.imageNames[set][i][j]
+				}
+			}	
+		}
+	}
+
