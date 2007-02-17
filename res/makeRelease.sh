@@ -43,7 +43,9 @@ if [ ! -d $WP_IMG_DIR ];then
 	 mkdir -p $WP_IMG_DIR
 fi
 
-cat $SRC_DIR/converter.js > $JS_DEST_DIR/jsPgnViewer.js
+JS_VERSION=`cat jsVersion`
+echo "/** Version: $JS_VERSION **/" > $JS_DEST_DIR/jsPgnViewer.js
+cat $SRC_DIR/converter.js >> $JS_DEST_DIR/jsPgnViewer.js
 cat $SRC_DIR/pgn.js >> $JS_DEST_DIR/jsPgnViewer.js
 cat $SRC_DIR/board.js >> $JS_DEST_DIR/jsPgnViewer.js
 
@@ -52,6 +54,17 @@ cp $SRC_DIR/README.txt $JS_DEST_DIR/
 cp License.txt $JS_DEST_DIR/
 
 cp $WP_DIR/pgnviewer.php $WP_DEST_DIR/pgnviewer.php
+WP_VERSION=`cat wpVersion`
+perl -pi -e "s/WP_VERSION/$WP_VERSION/" $WP_DEST_DIR/pgnviewer.php
+
+# Making jsPgnViewer release
+cp -r $IMG_DIR $JS_DEST_DIR
+
+# Making plugin release
+cp $WP_DIR/* $WP_DEST_DIR
+cp -r $IMG_DIR/* $WP_IMG_DIR
+cp $JS_DEST_DIR/jsPgnViewer.js $WP_DEST_DIR
+chmod -R 775 $DEST_DIR
 
 # functions
 # functions EOF
@@ -67,9 +80,6 @@ if [ $# -eq 1 ];then
 		scp $JS_DEST_DIR/testPage.html toomas@jabber.ee:/home/toomas/public_html/jspgnviewer/index.html
 	elif [ $1 == 'wpr' ];then
 		echo "Making and uploading wordpress plugin release"
-		cp $WP_DIR/* $WP_DEST_DIR
-		cp -r $IMG_DIR/* $WP_IMG_DIR
-		cp $JS_DEST_DIR/jsPgnViewer.js $WP_DEST_DIR
 		
 		cd $DEST_DIR
 		NAME="pgnviewer-"`cat ../wpVersion`".tar.gz"
@@ -78,7 +88,6 @@ if [ $# -eq 1 ];then
 		cd $OLD_DIR
 	elif [ $1 == 'jsr' ];then
 		echo "Making and uploading jspgnviewer release"
-		cp -r $IMG_DIR $JS_DEST_DIR
 		cd $DEST_DIR
 		NAME="jspgnviewer-"`cat ../jsVersion`".tar.gz"
 		tar --exclude=.svn -cvzf $NAME jspgnviewer

@@ -1,9 +1,11 @@
 # Build
 default:
+	@echo "Building ..."
 	./res/makeRelease.sh
 
 # Clean
 clean:
+	@echo "Clean-up crew has entered the building ..."
 	./res/makeRelease.sh clean
 
 # Upload the plugin to tom.jabber.ee
