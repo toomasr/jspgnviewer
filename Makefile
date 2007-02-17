@@ -1,23 +1,31 @@
+# Build
 default:
 	./res/makeRelease.sh
 
+# Clean
 clean:
 	./res/makeRelease.sh clean
 
+# Upload the plugin to tom.jabber.ee
 wpr:
 	./res/makeRelease.sh wpr
 
+# Upload a release to tom.jabber.ee 
 jsr:
 	./res/makeRelease.sh jsr
 
+# Update tom.jabber.ee test page
 test:
 	./res/makeRelease.sh test
 
+# Update tom.jabber.ee wordpress instance
 wp:
 	./res/makeRelease.sh wp
 
+# Upload snap to tom.jabber.ee
 snap:
 	./res/makeRelease.sh snap
 
+# Upload changelog
 change:
 	./res/makeRelease.sh change
