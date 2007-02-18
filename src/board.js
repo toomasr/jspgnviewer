@@ -60,6 +60,7 @@
 
 		var boardTd = document.createElement("td")
 		boardTd.style.width = "257px"
+		boardTd.vAlign = "top"
 		var btnTdNext = document.createElement("td")
 		btnTdNext.vAlign = 'top'
 		btnTdNext.align = 'center'

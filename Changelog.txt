@@ -2,8 +2,16 @@
 * JS PGN VIEWER CHANGELOG *
 ***************************
 
-27.01.2007 - WP plugin
-Bugfix
+18.02.2007 - jsPgnViewer/WP plugin 0.3.3
+Bugfix(es)
+	Image preloading + support for image sets
+		http://code.google.com/p/jspgnviewer/issues/detail?id=4
+	
+	Autoversioning JS and PHP files
+		http://code.google.com/p/jspgnviewer/issues/detail?id=7
+
+27.01.2007 - WP plugin 0.3.2
+Bugfix(es)
 	See http://code.google.com/p/jspgnviewer/issues/detail?id=5
 
 23.12.2006 - jsPgnViewer 0.3.1

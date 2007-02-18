@@ -66,6 +66,18 @@ cp -r $IMG_DIR/* $WP_IMG_DIR
 cp $JS_DEST_DIR/jsPgnViewer.js $WP_DEST_DIR
 chmod -R 775 $DEST_DIR
 
+# WPR release
+cd $DEST_DIR
+NAME="pgnviewer-"`cat ../wpVersion`".tar.gz"
+tar --exclude=.svn -cvzf $NAME pgnviewer
+cd $OLD_DIR
+
+# JSR release
+cd $DEST_DIR
+NAME="jspgnviewer-"`cat ../jsVersion`".tar.gz"
+tar --exclude=.svn -cvzf $NAME jspgnviewer
+cd $OLD_DIR
+
 # functions
 # functions EOF
 
@@ -82,8 +94,6 @@ if [ $# -eq 1 ];then
 		echo "Making and uploading wordpress plugin release"
 		
 		cd $DEST_DIR
-		NAME="pgnviewer-"`cat ../wpVersion`".tar.gz"
-		tar --exclude=.svn -cvzf $NAME pgnviewer
 		scp $NAME toomas@jabber.ee:/home/toomas/public_html/jspgnviewer/downloads/$NAME
 		cd $OLD_DIR
 	elif [ $1 == 'jsr' ];then
