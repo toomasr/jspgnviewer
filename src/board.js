@@ -64,15 +64,28 @@
 		this.init = function() {
 			// the main frame
 		var boardFrame = document.getElementById(divId+"_board");
-		
+
+		var mainTable = document.createElement("table")
+		mainTable.border = 0
+		var mainTableTb = document.createElement("tbody")
+		mainTable.appendChild(mainTableTb)
+		mainTable.style.border = "1px solid #000000"
+		var tmp = document.createElement("tr")
+		mainTableTb.appendChild(tmp)
+		var topLeftTd = document.createElement("td")
+		topLeftTd.vAlign = "top"
+		tmp.appendChild(topLeftTd)
+		var topRightTd = document.createElement("td")
+		topRightTd.vAlign = "top"
+		tmp.appendChild(topRightTd)
+
 		// toplevel table
 		var topTable = document.createElement("table")
+		topLeftTd.appendChild(topTable)
 		topTable.border = 0
 		var topTableTb = document.createElement("tbody")
 		topTable.appendChild(topTableTb)
 		
-		topTable.style.border = "1px solid #000000"
-
 		var boardTd = document.createElement("td")
 		boardTd.style.width = "257px"
 		boardTd.style.height = "257px"
@@ -94,13 +107,12 @@
 			movesTd.style.width = this.options['movesPaneWidth']
 		else
 			movesTd.style.overflow = "auto"
-		movesTd.rowSpan = 5
 		movesTd.valign = "top"
+		topRightTd.appendChild(movesTd)
 		
 		var tmp = document.createElement("tr")
 		tmp.style.height = "0%"
 		tmp.appendChild(boardTd)
-		tmp.appendChild(movesTd)
 		topTableTb.appendChild(tmp)
 
 		topTableTb.appendChild(document.createElement("tr")).appendChild(btnTd)
@@ -108,6 +120,7 @@
 		topTableTb.appendChild(document.createElement("tr")).appendChild(propsTd)
 		tmp = document.createElement("td")
 		var tmpStr = document.createTextNode("")
+		tmp.style.height = "auto"
 		tmp.appendChild(tmpStr)
 		topTableTb.appendChild(document.createElement("tr")).appendChild(tmp)
 
@@ -120,7 +133,7 @@
 		board.style.left = boardFrame.style.left;
 		board.style.borderCollapse = "collapse"
 		
-		boardFrame.appendChild(topTable);
+		boardFrame.appendChild(mainTable);
 		boardTd.appendChild(board)
 		
 		var width = 31;
