@@ -53,6 +53,7 @@
 		
 		// toplevel table
 		var topTable = document.createElement("table")
+		topTable.border = 0
 		var topTableTb = document.createElement("tbody")
 		topTable.appendChild(topTableTb)
 		
@@ -60,13 +61,17 @@
 
 		var boardTd = document.createElement("td")
 		boardTd.style.width = "257px"
+		boardTd.style.height = "257px"
 		boardTd.vAlign = "top"
 		var btnTdNext = document.createElement("td")
 		btnTdNext.vAlign = 'top'
 		btnTdNext.align = 'center'
+		btnTdNext.style.height = '10px'
 		var btnTd = document.createElement("td")
 		btnTd.vAlign = 'top'
+		btnTd.style.height = '10px'
 		var propsTd = document.createElement("td")
+		propsTd.style.height = '10px'
 		
 		// movesTable
 		var movesTd = document.createElement("td")
@@ -75,10 +80,11 @@
 			movesTd.style.width = this.options['movesPaneWidth']
 		else
 			movesTd.style.overflow = "auto"
-		movesTd.rowSpan = 4
+		movesTd.rowSpan = 5
 		movesTd.valign = "top"
 		
 		var tmp = document.createElement("tr")
+		tmp.style.height = "0%"
 		tmp.appendChild(boardTd)
 		tmp.appendChild(movesTd)
 		topTableTb.appendChild(tmp)
@@ -86,6 +92,10 @@
 		topTableTb.appendChild(document.createElement("tr")).appendChild(btnTd)
 		topTableTb.appendChild(document.createElement("tr")).appendChild(btnTdNext)
 		topTableTb.appendChild(document.createElement("tr")).appendChild(propsTd)
+		tmp = document.createElement("td")
+		var tmpStr = document.createTextNode("")
+		tmp.appendChild(tmpStr)
+		topTableTb.appendChild(document.createElement("tr")).appendChild(tmp)
 
 
 		var board = document.createElement("table")

@@ -22,6 +22,8 @@
 function Pgn(pgn) {
 	// properties of the game eg players, ELOs etc
 	this.props = new Object()
+	this.validProps = ['Event','Site','Date','Rount',
+							 'White','Black']
 	// the moves, one move contains the black and white move
 	this.moves = new Array()
 	// the current move in the game
