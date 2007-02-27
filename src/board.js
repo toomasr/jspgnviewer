@@ -38,6 +38,20 @@
 		if (this.options && this.options['imagePrefix']) {
 			 this.imagePrefix = this.options['imagePrefix']
 		}
+		this.opts = []
+		this.opts['moveFontSize'] = "8pt"
+		this.opts['moveFontColor'] = "#537c3a"
+		this.opts['moveFont'] = 'Tahoma, Arial, sans-serif'
+		
+		if (this.options && this.options['moveFontSize'])
+			this.opts['moveFontSize'] = this.options['moveFontSize']
+		
+		if (this.options && this.options['moveFontColor'])
+			this.opts['moveFontColor'] = this.options['moveFontColor']
+		
+		if (this.options && this.options['moveFont'])
+			this.opts['moveFont'] = this.options['moveFont']
+		
 		var brdI = new BoardImages()
 		var imageNames = brdI.imageNames['default']
 		brdI = null
@@ -649,13 +663,17 @@
 
 						tmp3.style.fontFamily = "Tahoma, Arial, sans-serif"
 						tmp3.style.fontSize = "8pt"
+						tmp3.style.color = "black"
 						tmp3.appendChild(document.createTextNode(" "+(i+1)+". "))
 						cont.appendChild(tmp3)
 						
 						link.href = 'javascript:void(window['+this.id+']'
 												+'.skipToMove('+i+','+0+'))'
 						link.appendChild(tmp)
-						link.style.fontSize = "8pt"
+						link.style.fontFamily = this.opts['moveFont']
+						link.style.fontSize = this.opts['moveFontSize']
+						link.style.color = this.opts['moveFontColor']
+						link.style.textDecoration = "none"
 						cont.appendChild(link)
 						this.movesOnPane[this.movesOnPane.length] = link
 
@@ -663,7 +681,10 @@
 							cont.appendChild(document.createTextNode(" "))
 							tmp = document.createTextNode(tmp2[i].black)
 							link = document.createElement("a")
-							link.style.fontSize = "8pt"
+							link.style.fontFamily = this.opts['moveFont']
+							link.style.fontSize = this.opts['moveFontSize']
+							link.style.color = this.opts['moveFontColor']
+							link.style.textDecoration = "none"
 							link.appendChild(tmp)
 							link.href = 'javascript:void(window['+this.id+']'
 												+'.skipToMove('+i+','+1+'))'
