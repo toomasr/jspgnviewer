@@ -42,7 +42,11 @@
 		this.opts['moveFontSize'] = "8pt"
 		this.opts['moveFontColor'] = "#537c3a"
 		this.opts['moveFont'] = 'Tahoma, Arial, sans-serif'
+		this.opts['flipped'] = false
 		
+		if (this.options && this.options['flipped'])
+			this.opts['flipped'] = true
+
 		if (this.options && this.options['moveFontSize'])
 			this.opts['moveFontSize'] = this.options['moveFontSize']
 		
@@ -107,7 +111,7 @@
 			movesTd.style.width = this.options['movesPaneWidth']
 		else
 			movesTd.style.overflow = "auto"
-		movesTd.valign = "top"
+		movesTd.vAlign = "top"
 		topRightTd.appendChild(movesTd)
 		
 		var tmp = document.createElement("tr")
@@ -164,6 +168,8 @@
 			boardTb.appendChild(tr)
 		}
 		this.populatePieces()
+		if (this.opts['flipped'])
+			flipBoard(this)
 		this.populateProps(propsTd)
 		this.populateMoves(movesTd)
 	 
@@ -708,6 +714,7 @@
 					txt = document.createTextNode("  "+this.conv.pgn.props['result'])
 					tmp2 = document.createElement("b")
 					tmp2.appendChild(txt)
+					tmp2.style.fontSize = "9pt"
 					cont.appendChild(tmp2)
 					this.movesOnPane[this.movesOnPane.length] = tmp2
 				}
