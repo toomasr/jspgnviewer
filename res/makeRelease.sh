@@ -49,7 +49,7 @@ cat $SRC_DIR/converter.js >> $JS_DEST_DIR/jsPgnViewer.js
 cat $SRC_DIR/pgn.js >> $JS_DEST_DIR/jsPgnViewer.js
 cat $SRC_DIR/board.js >> $JS_DEST_DIR/jsPgnViewer.js
 
-cp $TEST_DIR/testPage.html $JS_DEST_DIR/
+cp $TEST_DIR/samplePage.html $JS_DEST_DIR/
 cp $SRC_DIR/README.txt $JS_DEST_DIR/
 cp License.txt $JS_DEST_DIR/
 
@@ -89,7 +89,7 @@ if [ $# -eq 1 ];then
 	elif [ $1 == 'test' ];then
 		echo "Updating tom.jabber.ee test page"
 		scp $JS_DEST_DIR/jsPgnViewer.js toomas@jabber.ee:/home/toomas/public_html/jspgnviewer/jsPgnViewer.js
-		scp $JS_DEST_DIR/testPage.html toomas@jabber.ee:/home/toomas/public_html/jspgnviewer/index.html
+		scp $JS_DEST_DIR/samplePage.html toomas@jabber.ee:/home/toomas/public_html/jspgnviewer/index.html
 	elif [ $1 == 'wpr' ];then
 		echo "Making and uploading wordpress plugin release"
 		
