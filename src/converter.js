@@ -41,8 +41,16 @@ function Converter(pgn) {
 	this.flippedV = false
 
 	this.wKingX, this.wKingY, this.bKingX, this.bKingY
+	this.bishops = {'wwx':7, 'wwy':5,
+						'wbx':7, 'wby':2,
+						'bwx':0, 'bwy':2,
+						'bbx':0, 'bby':5}
+	this.bishopProm = false
+
 	this.wQueens = 1
 	this.bQueens = 1
+	this.wQueenX, this.wQueenY, this.bQueenX, this.bQueenY
+	this.queenProm = false
 	
 	/* Virtual board initialization */
 	for(var i = 0; i < 8; i++) {
@@ -77,13 +85,16 @@ function Converter(pgn) {
   
 		this.vBoard[7][i*3+2].piece = 'bishop'
 		this.vBoard[7][i*3+2].color = 'white'
+		this.vBoard[7][i*3+2].type = (i==0)?'black':'white'
 
 		this.vBoard[0][i*3+2].piece = 'bishop'
 		this.vBoard[0][i*3+2].color = 'black'
+		this.vBoard[0][i*3+2].type = (i==0)?'white':'black'
 	}
          
 	this.vBoard[7][3].piece = 'queen'
 	this.vBoard[7][3].color = 'white'
+	this.wQueenX = 7, this.wQueenY = 3
 	
 	this.vBoard[7][4].piece = 'king'
 	this.vBoard[7][4].color = 'white'
@@ -91,6 +102,7 @@ function Converter(pgn) {
 
 	this.vBoard[0][3].piece = 'queen'
 	this.vBoard[0][3].color = 'black'
+	this.bQueenX = 0, this.bQueenY = 3
 
 	this.vBoard[0][4].piece = 'king'
 	this.vBoard[0][4].color = 'black'
@@ -218,7 +230,7 @@ function Converter(pgn) {
 			fromCoords = findFromKnight(this, to, toCoords, color)
 		}
 		else if (bishre.test(to)) {
-			fromCoords = findFromBish(this.vBoard, to, toCoords, color)
+			fromCoords = findFromBish(this, this.vBoard, to, toCoords, color)
 		}
 		else if (queenre.test(to)) {
 			fromCoords = findFromQueen(this, this.vBoard, to, toCoords, color) 
@@ -278,7 +290,23 @@ function Converter(pgn) {
 			this.wKingX = toCoords[0], this.wKingY = toCoords[1]
 		else if ('king' == from.piece && 'black' == from.color)
 			this.bKingX = toCoords[0], this.bKingY = toCoords[1]
-			
+		// update bishops location
+		else if ('bishop' == from.piece) {
+			var x = from.color.charAt(0)+from.type.charAt(0)+'x'
+			var y = from.color.charAt(0)+from.type.charAt(0)+'y'
+			this.bishops[x] = toCoords[0]
+			this.bishops[y] = toCoords[1]
+		}
+		else if ('queen' == from.piece) {
+			if ('white' == from.color) {
+				this.wQueenX = toCoords[0],this.wQueenY = toCoords[1]
+			}
+			else {
+				this.bQueenX = toCoords[0],this.bQueenY = toCoords[1]
+			}
+		}
+		
+		// we take one queen away
 		if ('queen' == to.piece) {
 			if ('white' == to.color) {
 				this.wQueens--
@@ -305,6 +333,7 @@ function Converter(pgn) {
 			myMove.enP = enP
 			this.vBoard[enPassante[0]][enPassante[1]].color = null
 			this.vBoard[enPassante[0]][enPassante[1]].piece = null
+			this.vBoard[enPassante[0]][enPassante[1]].type = null
 		}
 			
 		result = movePiece(this, from, to ,prom)
@@ -313,6 +342,15 @@ function Converter(pgn) {
 		myMove.oColor = result[2].color
 		myMove.pPiece = result[3]
 		myMove.moveStr = oldTo[0]
+		
+		if (prom && "queen" == result[1].piece) {
+			if ('white' == result[1].color) {
+				this.wQueenX = toCoords[0],this.wQueenY = toCoords[1]
+			}
+			else {
+				this.bQueenX = toCoords[0],this.bQueenY = toCoords[1]
+			}
+		}
 
 		myMove.add(new MySquare(fromCoords[0], fromCoords[1]
 												,result[0].piece, result[0].color))
@@ -400,10 +438,18 @@ function Converter(pgn) {
 	/*
 		Find the bishop from location.
 	*/
-	function findFromBish(pos, toSAN, toCoords, color) {
+	function findFromBish(board, pos, toSAN, toCoords, color) {
 		var to = toCoords
 		var rtrn
 		var coord
+		// if no promotion to bishop has happened we can
+		// use the cached version of their locations
+		if (!board.bishopProm) {
+			var sgC = getSquareColor(to[0], to[1]).charAt(0);
+			var x = color.charAt(0)+sgC+"x"
+			var y = color.charAt(0)+sgC+"y"
+			return new Array(board.bishops[x], board.bishops[y])
+		}
 		for(var i = 0;i < 8; i++) {
 			// diagonal down right
 			try {
@@ -458,6 +504,14 @@ function Converter(pgn) {
 		var op = getOppColor(color)
 		var extra = to[2]
 		var rtrns = new Array()
+		
+		if (!board.queenProm) {
+			var x = board.wQueenX, y = board.wQueenY
+			if ("black" == color)
+				x = board.bQueenX, y = board.bQueenY
+			return new Array(x,y)
+		}
+
 		var controlNo = board.wQueens
 		if ( "black" == color)
 			controlNo = board.bQueens
@@ -765,6 +819,26 @@ function Converter(pgn) {
 		throw("No knight move found. '"+toSAN+"'")
 	}
 
+	/**
+		Returns "black" if the square specified by x and y
+		is black and returns "white" otherwise.
+	**/
+	function getSquareColor(x, y) {
+		x+=1, y+=1
+		if (y%2!=0) {
+			if (x%2!=0)
+				return "white"
+			else
+				return "black"
+		}
+		else {
+			if (x%2==0)
+				return "white"
+			else
+				return "black"
+		}
+	}
+
 	/*
 	 * Converts a SAN (Standard Algebraic Notation) into 
 	 * board coordinates. The SAN is in the format of
@@ -857,9 +931,11 @@ function Converter(pgn) {
 
 		to.piece = from.piece
 		to.color = from.color
+		to.type = from.type
 
 		from.piece = null
 		from.color = null
+		from.type = null
 
 		// promoting the piece
 		if (prom.length>0) {
@@ -872,16 +948,22 @@ function Converter(pgn) {
 					break
 				case 'B':
 					to.piece = 'bishop'
+					board.bishopProm = true
 					break
 				case 'N':
 					to.piece = 'knight'
 					break
 				case 'Q':
 					to.piece = 'queen'
-					if ('white' == to.color)
+					if ('white' == to.color) {
 						board.wQueens++
-					else
+					}
+					else {
 						board.bQueens++
+					}
+					if (board.wQueens>1 || board.bQueens>1) {
+						board.queenProm = true
+					}
 					break
 				default:
 					throw('Unknown promotion')
@@ -1043,15 +1125,18 @@ function MySquare(x, y, piece, color) {
 function vSquare() {
 	this.piece = null
 	this.color = null
+	this.type = ""
 	
 	this.toString = function() {
 		return "vSquare -- piece = "+this.piece+" color="+this.color
+					+" type="+this.type
 	}
 
 	this.clone = function() {
 		var sq = new vSquare()
 		sq.piece = this.piece
 		sq.color = this.color
+		sq.type = this.type
 		return sq
 	}
 }
