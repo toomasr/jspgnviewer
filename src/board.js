@@ -779,6 +779,8 @@
 					var img = new Image()
 					img.src = this.imagePrefix + imageNames[color][piece]
 					img.border = 0
+					img.style.padding = "0px"
+					img.style.margin = "0px"
 					
 					return img
 				}
