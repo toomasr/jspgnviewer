@@ -939,7 +939,6 @@ function Converter(pgn) {
 
 		// promoting the piece
 		if (prom.length>0) {
-			var image = new Image()
 			pPiece = tmpPiece
 
 			switch(prom) {
