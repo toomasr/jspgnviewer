@@ -781,7 +781,8 @@
 					img.border = 0
 					img.style.padding = "0px"
 					img.style.margin = "0px"
-					
+					img.style.border = "0px solid #cccccc"
+
 					return img
 				}
 
