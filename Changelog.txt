@@ -2,6 +2,11 @@
 * JS PGN VIEWER CHANGELOG *
 ***************************
 
+13.04.2007 - jsPgnViewer/WP plugin 0.3.7
+Bugfix(es)
+	CSS margin/padding for images ruins the graphical board
+		http://code.google.com/p/jspgnviewer/issues/detail?id=8
+
 24.03.2007 - jsPgnViewer/WP plugin 0.3.6
 Bugfix(es)
 	Optimizations for queens and bishops.
