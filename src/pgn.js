@@ -1,7 +1,7 @@
 /**
  * Copyright 2006 Toomas Römer
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the "License")
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
@@ -21,40 +21,40 @@
 
 function Pgn(pgn) {
 	// properties of the game eg players, ELOs etc
-	this.props = new Object()
+	this.props = new Object();
 	this.validProps = ['Event','Site','Date','Rount',
-							 'White','Black']
+							 'White','Black'];
 	// the moves, one move contains the black and white move
-	this.moves = new Array()
+	this.moves = new Array();
 	// the current move in the game
 	this.currentMove = 0;
 	// for outputting white and black moves separately
-	this.skip = 0
+	this.skip = 0;
 
-	this.pgn = pgn
+	this.pgn = pgn;
 
 	/* constructor */
 
 	// strip comments
-	this.pgn = this.pgn.replace(/\{[^}]*\}/g,'')
+	this.pgn = this.pgn.replace(/\{[^}]*\}/g,'');
 
-	// the properties
-	var reprop = /\[([^\]]*)\]/gi
-	var matches = this.pgn.match(reprop)
+	// the properties;
+	var reprop = /\[([^\]]*)\]/gi;
+	var matches = this.pgn.match(reprop);
 	if (matches) {
 		 for(var i = 0;i < matches.length; i++) {
 			 // lose the brackets
-			 tmpMatches = matches[i].substring(1, matches[i].length-1)
+			 tmpMatches = matches[i].substring(1, matches[i].length-1);
 			 // split by the first space
-			 var key = tmpMatches.substring(0, tmpMatches.indexOf(" "))
-			 var value = tmpMatches.substring(tmpMatches.indexOf(" ")+1)
+			 var key = tmpMatches.substring(0, tmpMatches.indexOf(" "));
+			 var value = tmpMatches.substring(tmpMatches.indexOf(" ")+1);
 			 if (value.charAt(0) == '"')
-				 value = value.substr(1)
+				 value = value.substr(1);
 			 if (value.charAt(value.length-1) == '"')
-				 value = value.substr(0, value.length-1)
+				 value = value.substr(0, value.length-1);
 			 
 			 this.props[key] = value;
-			 this.pgn = this.pgn.replace(matches[i], "")
+			 this.pgn = this.pgn.replace(matches[i], "");
 		 }
 	}
 
@@ -62,88 +62,88 @@ function Pgn(pgn) {
 		/1\/2-1\/2/,
 		/0-1/,
 		/1-0/
-	)
+	);
 
-	// the moves
+	// the moves;
 	var re;
 	for(var i = 1;;i++) {
-		re = i+"\\.(\\n| )?([^.]*)"
+		re = i+"\\.(\\n| )?([^.]*)";
 		
-		var result = this.pgn.match(re)
+		var result = this.pgn.match(re);
 		if (result == null)
-			break
+			break;
 		// newlines to spaces
-		result[2] = result[2].replace(/\n/g, " ")
+		result[2] = result[2].replace(/\n/g, " ");
 		// leave only one space in the middle
 		while(result[2].indexOf("  ")!=-1)
-			 result[2] = result[2].replace("  ", " ")
+			 result[2] = result[2].replace("  ", " ");
 		// possible first space gets removed
 		if (" "==result[2].charAt(0))
-			result[2] = result[2].substring(1)
+			result[2] = result[2].substring(1);
 		var tmp = result[2].split(" ")
 		for (var j = 0;j<gameOverre.length;j++) {
-			if (gameOverre[j].test(tmp[1]))
-			tmp[1] = null
+			if (gameOverre[j].test(tmp[1]));
+			tmp[1] = null;
 		}
-		if (tmp[1] && 0 == tmp[1].length)	
-			 tmp[1] = null
-		var move = new Move(tmp[0], tmp[1])
-		this.moves[this.moves.length] = move
+		if (tmp[1] && 0 == tmp[1].length)
+			 tmp[1] = null;
+		var move = new Move(tmp[0], tmp[1]);
+		this.moves[this.moves.length] = move;
 	}
 
 	// no moves
 	if (this.moves.length>0) {
 		 for(var i = 0; i < gameOverre.length; i++) {
 			 if (gameOverre[i].test(this.moves[this.moves.length-1][1])) {
-				 this.moves[this.moves.length-1][1] = null
+				 this.moves[this.moves.length-1][1] = null;
 			 }
 		 }
 	}
 
 	if (/1\/2-1\/2/.test(this.pgn)) {
-		this.props['result'] = '1/2-1/2'
+		this.props['result'] = '1/2-1/2';
 	}
 	else if (/1-0/.test(this.pgn)) {
-		this.props['result'] = '1-0'   
+		this.props['result'] = '1-0';
 	}
 	else if (/0-1/.test(this.pgn)) {
-		this.props['result'] = '0-1'
+		this.props['result'] = '0-1';
 	}
 	else {
-		this.props['result'] = ''   
+		this.props['result'] = '';
 	}
 
 	this.nextMove = function() {
-		var rtrn = null
+		var rtrn = null;
 		try{
 			if (this.skip) {
-				this.skip = 0
+				this.skip = 0;
 				rtrn = new Array(this.moves[this.currentMove].black,
 													'black');
-				this.currentMove++
+				this.currentMove++;
 			}
 			else {
-				this.skip = 1
+				this.skip = 1;
 				rtrn = new Array(this.moves[this.currentMove].white,
-											'white')
+											'white');
 			}
-	
+
 			if (rtrn[0] == null || rtrn[0].length == 0)
-				rtrn = null
-			return rtrn
-			}
+				rtrn = null;
+			return rtrn;
+		}
 		catch (e) {
-			return null
+			return null;
 		}
 	}
 }
 
 function Move(white, black) {
-	this.white = white
-	this.black = black
+	this.white = white;
+	this.black = black;
 
 	this.toString = function() {
-		return this.white+" "+this.black
+		return this.white+" "+this.black;
 	}
 }
 
