@@ -82,8 +82,8 @@ function Pgn(pgn) {
 			result[2] = result[2].substring(1);
 		var tmp = result[2].split(" ")
 		for (var j = 0;j<gameOverre.length;j++) {
-			if (gameOverre[j].test(tmp[1]));
-			tmp[1] = null;
+			if (gameOverre[j].test(tmp[1]))
+				tmp[1] = null;
 		}
 		if (tmp[1] && 0 == tmp[1].length)
 			 tmp[1] = null;

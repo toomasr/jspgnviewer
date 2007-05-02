@@ -292,7 +292,7 @@
 					}
 					catch (e) {}
 					
-					if (tmp);
+					if (tmp)
 						snd.appendChild(tmp);
 				}
 			}
@@ -473,7 +473,7 @@
 
 					makeMove = function(board, noUpdate) {
 						var move = board.conv.nextMove();
-						if (move == null);
+						if (move == null)
 							 return;
 						
 						if (!noUpdate) {
