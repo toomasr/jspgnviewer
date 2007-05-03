@@ -31,3 +31,7 @@ snap:
 # Upload changelog
 change:
 	./res/makeRelease.sh change
+
+# Packed test version
+packed:
+	./res/makeRelease.sh packed

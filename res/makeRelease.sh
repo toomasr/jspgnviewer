@@ -8,6 +8,7 @@ OLD_DIR=`pwd`
 
 PROJ_DIR="."
 DEST_DIR="bin"
+LIB_DIR="lib"
 SRC_DIR="src"
 WP_DIR="wpPlugin"
 WP_IMG_DIR="bin/pgnviewer/pgnviewer/img"
@@ -20,6 +21,7 @@ if [ ! -d $SRC_DIR ];then
 	 TEST_DIR="../tests"
 	 IMG_DIR="../img"
 	 WP_DIR="../wpPlugin"
+	 LIB_DIR="../lib"
 	 PROJ_DIR="../"
 	 WP_IMG_DIR="../"$WP_IMG_DIR
 fi
@@ -78,6 +80,7 @@ NAME="jspgnviewer-"`cat ../jsVersion`".tar.gz"
 tar --exclude=.svn -cvzf $NAME jspgnviewer
 cd $OLD_DIR
 
+
 # functions
 # functions EOF
 
@@ -113,6 +116,11 @@ if [ $# -eq 1 ];then
 	elif [ $1 == 'change' ];then
 		echo "Uploading Changelog.txt"
 		scp Changelog.txt toomas@jabber.ee:/home/toomas/public_html/jspgnviewer/downloads/Changelog.txt
+	elif [ $1 == 'packed' ];then
+		# pack the source with packer
+		cd $LIB_DIR
+		php5 example-file.php
+		cd $OLD_DIR
 	fi
 fi
 
