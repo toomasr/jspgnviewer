@@ -125,7 +125,7 @@ function Converter(pgn) {
 			 	this.moves[this.moves.length] = move;
 		}
 		while(move);
-	}
+	};
 	
 	/*
 		Result iterator
@@ -135,31 +135,31 @@ function Converter(pgn) {
 		if (this.moves.length>this.iteIndex)
 			return this.moves[this.iteIndex];
 		return null;
-	}
+	};
 
 	this.getCurMoveNo = function() {
 		 return this.iteIndex;
-	}
+	};
 	
 	this.nextMove = function() {
 		if (this.moves.length>this.iteIndex)
 			return this.moves[this.iteIndex++];
 		return null;
-	}
+	};
 
 	this.prevMove = function() {
 		if (this.iteIndex>0)
 			return this.moves[--this.iteIndex];
 		return null;
-	}
+	};
 	
 	this.resetToEnd = function() {
 		 this.iteIndex = this.moves.length;
-	}
+	};
 
 	this.resetToStart = function() {
 		this.iteIndex = 0;
-	}
+	};
 
 	/*
 		EOF Result Iterator
@@ -171,7 +171,7 @@ function Converter(pgn) {
 			 this.flippedI = !this.flippedI;
 		}
 		return this.initialBoard;
-	}
+	};
 
 	this.getEndPos = function(flipped) {
 		if (flipped!=this.flippedV) {
@@ -179,7 +179,7 @@ function Converter(pgn) {
 			this.flippedV = !this.flippedV;
 		}
 		return this.vBoard;
-	}
+	};
 
 	this.flipBoard = function(board) {
 		this.flipped = !this.flipped;
@@ -190,7 +190,7 @@ function Converter(pgn) {
 				board[7-i][7-j] = tmp;
 			}
 		}
-	}
+	};
 	
 	/*
 		Convert a move.
@@ -299,10 +299,12 @@ function Converter(pgn) {
 		}
 		else if ('queen' == from.piece) {
 			if ('white' == from.color) {
-				this.wQueenX = toCoords[0],this.wQueenY = toCoords[1];
+				this.wQueenX = toCoords[0];
+				this.wQueenY = toCoords[1];
 			}
 			else {
-				this.bQueenX = toCoords[0],this.bQueenY = toCoords[1];
+				this.bQueenX = toCoords[0];
+				this.bQueenY = toCoords[1];
 			}
 		}
 		
@@ -345,10 +347,12 @@ function Converter(pgn) {
 		
 		if (prom && "queen" == result[1].piece) {
 			if ('white' == result[1].color) {
-				this.wQueenX = toCoords[0],this.wQueenY = toCoords[1];
+				this.wQueenX = toCoords[0];
+				this.wQueenY = toCoords[1];
 			}
 			else {
-				this.bQueenX = toCoords[0],this.bQueenY = toCoords[1];
+				this.bQueenX = toCoords[0];
+				this.bQueenY = toCoords[1];
 			}
 		}
 
@@ -359,7 +363,7 @@ function Converter(pgn) {
 												,result[1].piece, result[1].color));
 
 		return myMove;
-	}
+	};
 		
 	 
 	/* FINDING FROM LOCATION FUNCTIONS
@@ -433,7 +437,7 @@ function Converter(pgn) {
 			catch (e) {}
 		}
 		throw("Could not find a move with a pawn '"+toSAN+"'");
-	}
+	};
 
 	/*
 		Find the bishop from location.
@@ -485,7 +489,7 @@ function Converter(pgn) {
 			catch (e) {}
 		}
 		throw('No move found for the bishop '+toSAN);
-}
+	};
 
 	/* 
 		Find the king from location.
@@ -495,7 +499,7 @@ function Converter(pgn) {
 		if ("black" == color)
 			x = board.bKingX, y = board.bKingY;
 		return new Array(x,y);
-	}
+	};
 
 	/* 
 		Find the queen's from location.
@@ -649,7 +653,7 @@ function Converter(pgn) {
 			}
 		}
 		throw("No queen move found '"+toSAN+"'");
-	}
+	};
 
 	/* 
 		Find the rook's from location.
@@ -760,7 +764,7 @@ function Converter(pgn) {
 			}
 		}
 		throw("No rook move found '"+toSAN+"'");
-	}
+	};
 
 	/* 
 		Find the knight's from location.
@@ -817,7 +821,7 @@ function Converter(pgn) {
 		else if (rtrns.length == 1)
 			return rtrns[0];
 		throw("No knight move found. '"+toSAN+"'");
-	}
+	};
 
 	/**
 		Returns "black" if the square specified by x and y
@@ -837,7 +841,7 @@ function Converter(pgn) {
 			else
 				return "black";
 		}
-	}
+	};
 
 	/*
 	 * Converts a SAN (Standard Algebraic Notation) into 
@@ -898,7 +902,7 @@ function Converter(pgn) {
 												7-map[coord.charAt(0)],
 												extra, taking);
 		return rtrn;
-	}
+	};
 
 	getEnPassante = function(brd, x1, y1, x2, y2) {
 		var from = brd.vBoard[x1][y1];
@@ -918,11 +922,11 @@ function Converter(pgn) {
 
 		// the piece we are looking for
 		return new Array(x1, y2);
-	}
+	};
 
 	getOppColor = function(color) {
 		return "white"==color?"black":"white";
-	}
+	};
         
 	movePiece = function(board, from, to, prom) {
 		var hist = to.clone();
@@ -969,7 +973,7 @@ function Converter(pgn) {
 			}
 		}
 		return new Array(from, to, hist, pPiece);
-	}
+	};
 		
 	isKingChecked = function(brd, col) {
 		var op = getOppColor(col);
@@ -1075,8 +1079,8 @@ function Converter(pgn) {
 		catch (e) {}
 
 		return false;
-	}
-}
+	};
+};
       
 function MyMove() {
 	this.actions = new Array();
@@ -1092,12 +1096,12 @@ function MyMove() {
 
 	this.add = function(action) {
 		this.actions[this.actions.length] = action;
-	}
+	};
 
 	this.toString = function() {
 		return "MyMove -- no. actions "+this.actions.length;
-	}
-}
+	};
+};
 
 function MySquare(x, y, piece, color) {
 	var colors = new Array('white','black');
@@ -1112,14 +1116,14 @@ function MySquare(x, y, piece, color) {
 		return "MySquare -- x = "+this.x+" y="+this.y
 							+" color="+this.color
 							+ " piece="+this.piece;
-	}
+	};
 
 	this.clone = function() {
 		var sq = new MySquare(this.x, this.y,
 		this.piece, this.color);
 		return sq;
-	}
-}
+	};
+};
 
 function vSquare() {
 	this.piece = null;
@@ -1129,7 +1133,7 @@ function vSquare() {
 	this.toString = function() {
 		return "vSquare -- piece = "+this.piece+" color="+this.color
 					+" type="+this.type;
-	}
+	};
 
 	this.clone = function() {
 		var sq = new vSquare();
@@ -1137,5 +1141,5 @@ function vSquare() {
 		sq.color = this.color;
 		sq.type = this.type;
 		return sq;
-	}
-}
+	};
+};

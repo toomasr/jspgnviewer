@@ -190,7 +190,7 @@
 			
 			input.onclick = function() {
 				startPosition(tmp);
-			}
+			};
 			btnTd.appendChild(href);
 
 			// back
@@ -202,7 +202,7 @@
 			
 			input.onclick = function() {
 				makeBwMove(tmp);
-			}
+			};
 
 			btnTd.appendChild(href);
 			
@@ -215,7 +215,7 @@
 			
 			input.onclick = function() {
 				flipBoard(tmp);
-			}
+			};
 
 			btnTd.appendChild(href);
 
@@ -242,7 +242,7 @@
 			
 			input.onclick = function() {
 				toggleMoves(tmp, "flip");
-			}
+			};
 
 			btnTd.appendChild(href);
 
@@ -255,7 +255,7 @@
 
 			input.onclick = function() {
 				makeMove(tmp);
-			}
+			};
 
 			btnTd.appendChild(href);
 
@@ -268,10 +268,10 @@
 
 			input.onclick = function() {
 					endPosition(tmp);
-			}
+			};
 			btnTd.appendChild(href);
 			updateMoveInfo(this);
-	 }
+	 };
 
 		flipBoard = function(board) {
 			board.deMarkLastMove(true);
@@ -296,7 +296,7 @@
 						snd.appendChild(tmp);
 				}
 			}
-		}
+		};
 
 					this.skipToMove = function(no, color) {
 						var rNo = no*2+color+1;
@@ -322,7 +322,7 @@
 							this.deMarkLastMove();
 							this.markLastMove();
 						}
-					}
+					};
 
 					endPosition = function(board) {
 						board.deMarkLastMove();
@@ -332,11 +332,11 @@
 						updateMoveInfo(board);
 						updateMovePane(board, true);
 						board.markLastMove();
-					}
+					};
 
-					this.startPosition = function(){
+					this.startPosition = function() {
 						startPosition(this)
-					}
+					};
 
 					startPosition = function(board) {
 						board.deMarkLastMove(true);
@@ -345,7 +345,7 @@
 						board.conv.resetToStart();
 						updateMoveInfo(board);
 						updateMovePane(board);
-					}
+					};
 
 					makeBwMove = function(board, noUpdate) {
 						var move = board.conv.prevMove();
@@ -388,7 +388,7 @@
 							var sq = board.pos[x][y];
 							sq.appendChild(board.getImg(move.enP.piece, move.enP.color));
 						}
-					}
+					};
 
 					this.markLastMove = function() {
 						try {
@@ -406,7 +406,7 @@
 							this.lastSquare = piece;
 						}
 						catch (e) {}
-					}
+					};
 
 					this.deMarkLastMove = function() {
 						var move = this.conv.moves[this.conv.iteIndex-2];
@@ -430,7 +430,7 @@
 							this.lastSquare.style.background = this.lastSquare.lastBg;
 							this.lastSquare = null;
 						}
-					}
+					};
 
 					/*
 						Toggle moves pane, actually not toggle but
@@ -447,7 +447,7 @@
 							this.movesTd.style.display = "none";
 							this.movesTd.style.visibility = "hidden";
 						}
-					}
+					};
 
 					/*
 						Non-member toggle function. The onClick that I'm
@@ -456,7 +456,7 @@
 					*/
 					toggleMoves = function(board, flag) {
 						board.toggleMoves(flag);
-					}
+					};
 
 					updateMoveInfo = function(board) {
 						var idx = board.conv.getCurMoveNo()-1;
@@ -469,7 +469,7 @@
 						}
 						else
 							 board.moveInput.value = "...";
-					}
+					};
 
 					makeMove = function(board, noUpdate) {
 						var move = board.conv.nextMove();
@@ -489,7 +489,7 @@
 						}
 						
 						board.drawEnPassante(move);
-					}
+					};
 
 					updateMovePane = function(board, bw) {
 						// highlight the move in the move's pane
@@ -504,14 +504,14 @@
 							this.lastBold = board.movesOnPane[idx-1];
 							this.lastBoldIdx = idx-1;
 						}
-					}
+					};
 
 					makeBold = function(el) {
 						var b = document.createElement("b");
 						b.appendChild(el.cloneNode(true));
 						el.parentNode.replaceChild(b, el);
 						return b;
-					}
+					};
 
 					deMakeBold = function(el) {
 						if (!el)
@@ -519,7 +519,7 @@
 						var rtrn = el.firstChild.cloneNode(true);
 						el.parentNode.replaceChild(rtrn, el);
 						return rtrn;
-					}
+					};
 
 					this.drawEnPassante = function(move) {
 						if (!move.enP)
@@ -535,7 +535,7 @@
 						sq.piece = null;
 
 						sq.removeChild(sq.firstChild);
-					}
+					};
 
 					this.drawSquare = function(square) {
 						var x = square.x, y = square.y;
@@ -554,7 +554,7 @@
 						if (sq.piece) {
 							sq.appendChild(this.getImg(sq.piece,sq.color));
 						}
-					}
+					};
 
 					this.updatePGNInfo = function() {
 						if (this.conv.pgn.props['White'])
@@ -569,7 +569,7 @@
 							this.visuals['pgn']['event'].nodeValue =
 									this.conv.pgn.props['Event']+", "
 									+this.conv.pgn.props['Date'];
-					}
+					};
 
 					this.updateSettings = function() {
 						var blacks = this.options['blackSqColor'];
@@ -582,7 +582,7 @@
 								this.pos[i][j].style.background = color;
 							}
 						}
-					}
+					};
 
 					/*
 					 * Draw the board with all the pieces in the initial
@@ -654,7 +654,7 @@
 					this.pos[0][4].appendChild(img);
 					this.pos[0][4].piece = 'king';
 					this.pos[0][4].color = 'black';
-				}
+				};
 
 				this.populateMoves = function(cont) {
 					if (!this.options['showMovesPane']) {
@@ -717,7 +717,7 @@
 					tmp2.style.fontSize = "9pt";
 					cont.appendChild(tmp2);
 					this.movesOnPane[this.movesOnPane.length] = tmp2;
-				}
+				};
 
 				this.populateProps = function(container) {
 					// init the style
@@ -773,7 +773,7 @@
 					td.appendChild(txt);
 					//;
 					this.updatePGNInfo();
-				}
+				};
 
 				this.getImg = function(piece, color) {
 					var img = new Image();
@@ -784,7 +784,7 @@
 					img.style.border = "0px solid #cccccc";
 
 					return img;
-				}
+				};
 
 				this.syncBoard = function(result) {
 					for(var i=0;i<8;i++) {
@@ -793,7 +793,7 @@
 													,this.pos[i][j]);
 						}
 					}
-				}
+				};
 
 				this.syncSquare = function(from, to) {
 					to.piece = from.piece;
@@ -804,7 +804,7 @@
 					if (to.piece) {
 						to.appendChild(this.getImg(to.piece, to.color));
 					}
-				}
+				};
 
 				function setUp(board, divId) {
 					var pgn = new Pgn(document.getElementById(divId).firstChild.nodeValue);
@@ -813,8 +813,8 @@
 
 					var brd = new Board(conv);
 					brd.init();
-				}
-			}
+				};
+			};
 
 	/*
 		Provides support for different chess & button sets. Takes
@@ -868,5 +868,5 @@
 					img.src = this.imageNames[set][i][j];
 				}
 			}
-		}
-	}
+		};
+	};

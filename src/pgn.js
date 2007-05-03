@@ -135,8 +135,8 @@ function Pgn(pgn) {
 		catch (e) {
 			return null;
 		}
-	}
-}
+	};
+};
 
 function Move(white, black) {
 	this.white = white;
@@ -144,6 +144,6 @@ function Move(white, black) {
 
 	this.toString = function() {
 		return this.white+" "+this.black;
-	}
-}
+	};
+};
 
