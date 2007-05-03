@@ -121,6 +121,9 @@ if [ $# -eq 1 ];then
 		cd $LIB_DIR
 		php5 example-file.php
 		cd $OLD_DIR
+	elif [ $1 == 'jsmin' ];then
+		# pack the source with packer
+		java -cp $LIB_DIR/jsmin JSMin $WP_DEST_DIR/jsPgnViewer.js > $DEST_DIR/packed.js
 	fi
 fi
 

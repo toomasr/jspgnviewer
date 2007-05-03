@@ -233,7 +233,7 @@ function Converter(pgn) {
 			fromCoords = findFromBish(this, this.vBoard, to, toCoords, color);
 		}
 		else if (queenre.test(to)) {
-			fromCoords = findFromQueen(this, this.vBoard, to, toCoords, color) ;
+			fromCoords = findFromQueen(this, this.vBoard, to, toCoords, color);
 		}
 		else if (rookre.test(to)) {
 			fromCoords = findFromRook(this, to, toCoords, color);
@@ -323,7 +323,7 @@ function Converter(pgn) {
 		if (!myMove)
 			 myMove = new MyMove();
 	 	
-	 	var enPassante = null
+	 	var enPassante = null;
 		if (pawnM)
 			enPassante = getEnPassante(this, fromCoords[0], fromCoords[1],
 														 toCoords[0], toCoords[1]);
@@ -516,7 +516,7 @@ function Converter(pgn) {
 			return new Array(x,y);
 		}
 
-		var controlNo = board.wQueens
+		var controlNo = board.wQueens;
 		if ( "black" == color)
 			controlNo = board.bQueens;
 					
@@ -583,7 +583,7 @@ function Converter(pgn) {
 		if (controlNo > rtrns.length) {
 			try {
 				for (var i = 1;i<8;i++) {
-					tmp = pos[to[0]-i][to[1]-i]
+					tmp = pos[to[0]-i][to[1]-i];
 					if (tmp && "queen" == tmp.piece && tmp.color == color) {
 						rtrns[rtrns.length] = new Array(to[0]-i, to[1]-i);
 						break;
@@ -672,9 +672,9 @@ function Converter(pgn) {
 		// bloody rook or die trying
 		var rtrns = new Array();
 		try {
-			var tmp
+			var tmp;
 			for (var i = 1;i<8;i++) {
-				tmp = pos[to[0]+i][to[1]]
+				tmp = pos[to[0]+i][to[1]];
 				if (tmp && tmp.piece == 'rook' && tmp.color == color) {
 					rtrns[rtrns.length] = new Array(to[0]+i, to[1]);
 					break;
@@ -687,7 +687,7 @@ function Converter(pgn) {
 		catch(e){}
 					
 		try {
-			var tmp
+			var tmp;
 			for (var i = 1;i<8;i++) {
 				tmp = pos[to[0]-i][to[1]];
 				if (tmp && tmp.piece == 'rook' && tmp.color == color) {

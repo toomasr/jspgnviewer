@@ -36,7 +36,7 @@
 		// static
 		this.imagePrefix = "img/";
 		if (this.options && this.options['imagePrefix']) {
-			 this.imagePrefix = this.options['imagePrefix']
+			 this.imagePrefix = this.options['imagePrefix'];
 		}
 		this.opts = [];
 		this.opts['moveFontSize'] = "8pt";

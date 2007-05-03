@@ -66,7 +66,7 @@ function Pgn(pgn) {
 
 	// the moves;
 	var re;
-	for(var i = 1;;i++) {
+	for(var i = 1;1!=2;i++) {
 		re = i+"\\.(\\n| )?([^.]*)";
 		
 		var result = this.pgn.match(re);
@@ -80,7 +80,7 @@ function Pgn(pgn) {
 		// possible first space gets removed
 		if (" "==result[2].charAt(0))
 			result[2] = result[2].substring(1);
-		var tmp = result[2].split(" ")
+		var tmp = result[2].split(" ");
 		for (var j = 0;j<gameOverre.length;j++) {
 			if (gameOverre[j].test(tmp[1]))
 				tmp[1] = null;

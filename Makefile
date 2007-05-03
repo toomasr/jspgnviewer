@@ -35,3 +35,7 @@ change:
 # Packed test version
 packed:
 	./res/makeRelease.sh packed
+
+# JSMIN packed test version
+jsmin:
+	./res/makeRelease.sh jsmin
