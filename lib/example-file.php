@@ -2,8 +2,10 @@
 // you can pass this script to PHP CLI to convert your file.
 
 // adapt these 2 paths to your files.
-$src = '../bin/pgnviewer/jsPgnViewer.js';
-$out = '../bin/packed.js';
+$src = '../bin/jsPgnViewer.js';
+$out = array('../bin/packed.js',
+				'../bin/jspgnviewer/jsPgnViewer.js',
+				'../bin/pgnviewer/jsPgnViewer.js');
 
 // or uncomment these lines to use the argc and argv passed by CLI :
 /*
@@ -30,5 +32,8 @@ $t2 = microtime(true);
 $time = sprintf('%.4f', ($t2 - $t1) );
 echo 'script ', $src, ' packed in ' , $out, ', in ', $time, ' s.', "\n";
 
-file_put_contents($out, $packed);
+foreach($out as $fileName) {
+	echo "Written packed contents to $fileName\n";
+	file_put_contents($fileName, $packed);
+}
 ?>
