@@ -39,3 +39,7 @@ packed:
 # JSMIN packed test version
 jsmin:
 	./res/makeRelease.sh jsmin
+
+# Packed wp
+packedwp:
+	./res/makeRelease.sh wp packed

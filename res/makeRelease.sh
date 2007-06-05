@@ -19,7 +19,7 @@ IMG_DIR="img"
 genPackedFormat() {
 		# pack the source with packer
 		cd $LIB_DIR
-		php5 example-file.php
+		php5 packerConf.php
 		cd $OLD_DIR
 		
 		cp $DEST_DIR/jsPgnViewer.js $JS_DEST_DIR/jsPgnViewerUnpacked.js

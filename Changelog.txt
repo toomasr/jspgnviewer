@@ -2,6 +2,18 @@
 * JS PGN VIEWER CHANGELOG *
 ***************************
 
+05.06.2007 - jsPgnViewer/WP plugin 0.3.8
+Change(s)
+	3 different versions:
+		+ (DEFAULT) packed with Packer (http://dean.edwards.name/packer/)
+		+ packed with JSMin (http://www.crockford.com/javascript/jsmin.html)
+		+ unpacked
+	
+		From now on all lines are semicolon terminated. And certain rules
+		apply to language constructs depending if packers get angry or not.
+		For a quick incomplete list check:
+			http://dean.edwards.name/packer/usage/sample.html
+
 13.04.2007 - jsPgnViewer/WP plugin 0.3.7
 Bugfix(es)
 	CSS margin/padding for images ruins the graphical board
