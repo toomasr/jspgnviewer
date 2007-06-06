@@ -34,7 +34,7 @@
 		this.visuals = {"pgn":{}};
 
 		// static
-		this.imagePrefix = "img/";
+		this.imagePrefix = "img/default/";
 		if (this.options && this.options['imagePrefix']) {
 			 this.imagePrefix = this.options['imagePrefix'];
 		}
@@ -46,32 +46,28 @@
 		this.opts['commentFontSize'] = "8pt"
 		this.opts['commentFontColor'] = "#6060df"
 		this.opts['commentFont'] = 'Tahoma, Arial, sans-serif'
-
-
-
+		
+		this.opts['boardSize'] = '257px'
+		this.opts['squareSize'] = '31px'
+			
+		this.opts['blackSqColor'] = "#4b4b4b";
+		this.opts['whiteSqColor'] = "#ffffff";
 		this.opts['flipped'] = false;
 
-		if (this.options && this.options['flipped'])
-			this.opts['flipped'] = true;
+		var options = ['flipped', 'moveFontSize', 'moveFontColor',
+										'moveFont', 'commentFontSize',
+										'commentFontColor', 'commentFont',
+										'boardSize', 'squareSize',
+										'blackSqColor', 'whiteSqColor'];
 
-		if (this.options && this.options['moveFontSize'])
-			this.opts['moveFontSize'] = this.options['moveFontSize'];
+		// if keys in options define new values then
+		// set the this.opts for that key with the 
+		// custom value
+		for (var i=0;i<options.length;i++) {
+			if (this.options && this.options[options[i]])
+				 this.opts[options[i]] = this.options[options[i]];
+		}
 		
-		if (this.options && this.options['moveFontColor'])
-			this.opts['moveFontColor'] = this.options['moveFontColor'];
-
-		if (this.options && this.options['moveFont'])
-			this.opts['moveFont'] = this.options['moveFont'];
-
-		if (this.options && this.options['commentFontSize'])
-			this.opts['commentFontSize'] = this.options['commentFontSize']
-		
-		if (this.options && this.options['commentFontColor'])
-			this.opts['commentFontColor'] = this.options['commentFontColor']
-		
-		if (this.options && this.options['commentFont'])
-			this.opts['commentFont'] = this.options['commentFont']
-
 		var brdI = new BoardImages();
 		var imageNames = brdI.imageNames['default'];
 		brdI = null;
@@ -94,6 +90,7 @@
 			mainTableTb.appendChild(tmp);
 			var topLeftTd = document.createElement("td");
 			topLeftTd.vAlign = "top";
+			topLeftTd.style.width = this.opts['boardSize'];
 			tmp.appendChild(topLeftTd);
 			var topRightTd = document.createElement("td");
 			topRightTd.vAlign = "top";
@@ -107,8 +104,8 @@
 			topTable.appendChild(topTableTb);
 			
 			var boardTd = document.createElement("td");
-			boardTd.style.width = "257px";
-			boardTd.style.height = "257px";
+			boardTd.style.width = this.opts['boardSize'];
+			boardTd.style.height = this.opts['boardSize'];
 			boardTd.vAlign = "top";
 			var btnTdNext = document.createElement("td");
 			btnTdNext.vAlign = 'top';
@@ -126,7 +123,7 @@
 			if (this.options['movesPaneWidth'])
 				movesTd.style.width = this.options['movesPaneWidth'];
 			else
-				movesTd.style.overflow = "auto";
+				movesTd.style.overflow = "hidden";
 			movesTd.vAlign = "top";
 			topRightTd.appendChild(movesTd);
 			
@@ -155,13 +152,9 @@
 
 			boardFrame.appendChild(mainTable);
 			boardTd.appendChild(board);
-
-			var width = 31;
-			var height = 31;
-			this.options['blackSqColor'] = "#4b4b4b";
-			this.options['whiteSqColor'] = "#ffffff";
-			var whiteC = this.options['whiteSqColor'];
-			var blackC = this.options['blackSqColor'];
+			
+			var whiteC = this.opts['whiteSqColor'];
+			var blackC = this.opts['blackSqColor'];
 
 			// white pieces
 			for(var i = 0; i < 8; i++) {
@@ -170,10 +163,12 @@
 				for(var j = 0; j < 8; j++) {
 					var td = document.createElement("td");
 
-					td.style.height = height+"px";
-					td.style.width = width+"px";
+					td.style.height = this.opts['squareSize'];
+					td.style.width = this.opts['squareSize'];
 					td.style.border = "1px solid #000000";
 					td.style.padding = "0px";
+					td.vAlign = "middle";
+					td.align = "center";
 					var color = !flip?(j%2)?blackC:whiteC:!(j%2)?blackC:whiteC;
 					
 					td.style.background = color;
