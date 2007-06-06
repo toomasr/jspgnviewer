@@ -1,5 +1,5 @@
 /**
- * Copyright 2006 Toomas Römer
+ * Copyright 2006 Toomas Rï¿½mer
  *
  * Licensed under the Apache License, Version 2.0 (the "License")
  * you may not use this file except in compliance with the License.
@@ -42,6 +42,13 @@
 		this.opts['moveFontSize'] = "8pt";
 		this.opts['moveFontColor'] = "#537c3a";
 		this.opts['moveFont'] = 'Tahoma, Arial, sans-serif';
+
+		this.opts['commentFontSize'] = "8pt"
+		this.opts['commentFontColor'] = "#6060df"
+		this.opts['commentFont'] = 'Tahoma, Arial, sans-serif'
+
+
+
 		this.opts['flipped'] = false;
 
 		if (this.options && this.options['flipped'])
@@ -55,6 +62,15 @@
 
 		if (this.options && this.options['moveFont'])
 			this.opts['moveFont'] = this.options['moveFont'];
+
+		if (this.options && this.options['commentFontSize'])
+			this.opts['commentFontSize'] = this.options['commentFontSize']
+		
+		if (this.options && this.options['commentFontColor'])
+			this.opts['commentFontColor'] = this.options['commentFontColor']
+		
+		if (this.options && this.options['commentFont'])
+			this.opts['commentFont'] = this.options['commentFont']
 
 		var brdI = new BoardImages();
 		var imageNames = brdI.imageNames['default'];
@@ -675,6 +691,9 @@
 					cont.appendChild(p);
 					
 					var link, tmp, tmp3;
+					var lastMoveIdx = 0;
+					var comment;
+
 					for (var i = 0;i < tmp2.length;i++) {
 						link = document.createElement("a");
 						tmp = document.createTextNode(tmp2[i].white);
@@ -694,8 +713,20 @@
 						link.style.color = this.opts['moveFontColor'];
 						link.style.textDecoration = "none";
 						cont.appendChild(link);
+
+						comment = this.conv.pgn.getComment(tmp2[i].white,lastMoveIdx);
+						if (comment[0]) {
+							var tmp4 = document.createElement("span")
+							tmp4.style.fontFamily = this.opts['commentFont'];
+							tmp4.style.fontSize = this.opts['commentFontSize'];
+							tmp4.style.color = this.opts['commentFontColor'];
+							tmp4.appendChild(document.createTextNode(comment[0]))
+							cont.appendChild(tmp4)
+							lastMoveIdx = comment[1];
+						}
+
 						this.movesOnPane[this.movesOnPane.length] = link;
-;
+
 						if (tmp2[i].black != null) {
 							cont.appendChild(document.createTextNode(" "));
 							tmp = document.createTextNode(tmp2[i].black);
@@ -708,6 +739,16 @@
 							link.href = 'javascript:void(window['+this.id+']'
 												+'.skipToMove('+i+','+1+'))';
 							cont.appendChild(link);
+							comment = this.conv.pgn.getComment(tmp2[i].black,lastMoveIdx);
+							if (comment[0]) {
+								var tmp4 = document.createElement("span")
+								tmp4.style.fontFamily = this.opts['commentFont'];
+								tmp4.style.fontSize = this.opts['commentFontSize'];
+								tmp4.style.color = this.opts['commentFontColor'];
+								tmp4.appendChild(document.createTextNode(comment[0]))
+								cont.appendChild(tmp4)
+								lastMoveIdx = comment[1];
+							}
 							this.movesOnPane[this.movesOnPane.length] = link;
 						}
 					}

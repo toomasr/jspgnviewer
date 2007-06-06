@@ -1,5 +1,5 @@
 /**
- * Copyright 2006 Toomas Römer
+ * Copyright 2006 Toomas Rï¿½mer
  *
  * Licensed under the Apache License, Version 2.0 (the "License")
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,6 @@
 	Representation of the PGN format. Different meta information
 	about the actual game(s) plus the moves and result of the game.
 */
-
 function Pgn(pgn) {
 	// properties of the game eg players, ELOs etc
 	this.props = new Object();
@@ -32,11 +31,15 @@ function Pgn(pgn) {
 	this.skip = 0;
 
 	this.pgn = pgn;
+	this.pgnRaw = pgn;
+	this.pgnStripped = stripIt(pgn);
 
 	/* constructor */
 
 	// strip comments
 	this.pgn = this.pgn.replace(/\{[^}]*\}/g,'');
+	// remove RAVs
+	this.pgn = this.pgn.replace(/\([^)]*\)/g,'')
 
 	// the properties;
 	var reprop = /\[([^\]]*)\]/gi;
@@ -61,7 +64,8 @@ function Pgn(pgn) {
 	var gameOverre = new Array(
 		/1\/2-1\/2/,
 		/0-1/,
-		/1-0/
+		/1-0/,
+		/\*/
 	);
 
 	// the moves;
@@ -136,6 +140,36 @@ function Pgn(pgn) {
 			return null;
 		}
 	};
+
+	this.getComment = function(move, idx) {
+		var i = this.pgnStripped.indexOf(move,idx);
+		if (i == -1) {
+			alert("getComment error, could not find move");
+			return [null,idx];
+		}
+		
+		for (var j=i+move.length;j<this.pgnStripped.length;j++) {
+			var c = this.pgnStripped.charAt(j);
+			switch (c) {
+				case ' ':
+					break;
+				case '_':	//found comment
+					for (var k=j;k<this.pgnStripped.length;k++) {
+						var c2 = this.pgnStripped.charAt(k);
+						switch (c2) {
+							case '_':	//found comment
+								break;
+							default:	//no comment
+								return [this.pgnRaw.substring(j,k),k];
+						}
+					}
+					break;
+				default:	//no comment
+					return [null,idx];
+			}
+		}
+		return [null,idx];
+	};
 };
 
 function Move(white, black) {
@@ -146,4 +180,38 @@ function Move(white, black) {
 		return this.white+" "+this.black;
 	};
 };
+
+function stripIt(val) {
+	var count = 0;
+	var out = new Array();
+	for (var i=0;i<val.length;i++) {
+		var c = val.charAt(i);
+		switch (c) {
+			case '(':
+				out[out.length] = '_';
+				count++;
+				break;
+			case '{':
+				out[out.length] = '_';
+				count++;
+				break;
+			case '}':
+				count--;
+				out[out.length] = '_';
+				break;
+			case ')':
+				count--;
+				out[out.length] = '_';
+				break;
+			default:
+				if (count > 0) {
+					out[out.length] = '_';
+				}
+				else {
+					out[out.length] = c;
+				}
+		}
+	}
+	return out.join("");
+}
 
