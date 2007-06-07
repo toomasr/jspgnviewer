@@ -436,7 +436,7 @@ function Converter(pgn) {
 			}
 			catch (e) {}
 		}
-		throw("Could not find a move with a pawn '"+toSAN+"'");
+		throw("Could not find a move with a pawn '"+to+"'");
 	};
 
 	/*
