@@ -40,7 +40,7 @@ function tr_pgnview_callback($str) {
 	$rtrn .= '<div id="'.$now.'_board"></div>';
 	// initialize the board
 	$rtrn .= '<script>var brd = new Board('.$now.',{"imagePrefix":"'.
-				$siteurl.'/wp-content/pgnviewer/img/"});brd.init()</script>';
+				$siteurl.'/wp-content/pgnviewer/img/default/"});brd.init()</script>';
 	$rtrn .= '<noscript>You have JavaScript disabled and you are not seeing a graphical interactive chessboard!</noscript>';
 
 	return $rtrn;

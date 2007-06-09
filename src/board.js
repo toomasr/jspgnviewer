@@ -37,12 +37,12 @@
 		this.opts['moveFontColor'] = "#537c3a";
 		this.opts['moveFont'] = 'Tahoma, Arial, sans-serif';
 
-		this.opts['commentFontSize'] = "8pt"
-		this.opts['commentFontColor'] = "#6060df"
-		this.opts['commentFont'] = 'Tahoma, Arial, sans-serif'
+		this.opts['commentFontSize'] = "8pt";
+		this.opts['commentFontColor'] = "#6060df";
+		this.opts['commentFont'] = 'Tahoma, Arial, sans-serif';
 		
-		this.opts['boardSize'] = '257px'
-		this.opts['squareSize'] = '31px'
+		this.opts['boardSize'] = '257px';
+		this.opts['squareSize'] = '31px';
 			
 		this.opts['blackSqColor'] = "#4b4b4b";
 		this.opts['whiteSqColor'] = "#ffffff";
@@ -706,12 +706,12 @@
 
 						comment = this.conv.pgn.getComment(tmp2[i].white,lastMoveIdx);
 						if (comment[0]) {
-							var tmp4 = document.createElement("span")
+							var tmp4 = document.createElement("span");
 							tmp4.style.fontFamily = this.opts['commentFont'];
 							tmp4.style.fontSize = this.opts['commentFontSize'];
 							tmp4.style.color = this.opts['commentFontColor'];
-							tmp4.appendChild(document.createTextNode(comment[0]))
-							cont.appendChild(tmp4)
+							tmp4.appendChild(document.createTextNode(comment[0]));
+							cont.appendChild(tmp4);
 							lastMoveIdx = comment[1];
 						}
 
@@ -731,12 +731,12 @@
 							cont.appendChild(link);
 							comment = this.conv.pgn.getComment(tmp2[i].black,lastMoveIdx);
 							if (comment[0]) {
-								var tmp4 = document.createElement("span")
+								var tmp4 = document.createElement("span");
 								tmp4.style.fontFamily = this.opts['commentFont'];
 								tmp4.style.fontSize = this.opts['commentFontSize'];
 								tmp4.style.color = this.opts['commentFontColor'];
-								tmp4.appendChild(document.createTextNode(comment[0]))
-								cont.appendChild(tmp4)
+								tmp4.appendChild(document.createTextNode(comment[0]));
+								cont.appendChild(tmp4);
 								lastMoveIdx = comment[1];
 							}
 							this.movesOnPane[this.movesOnPane.length] = link;
