@@ -21,7 +21,7 @@
 function Pgn(pgn) {
 	// properties of the game eg players, ELOs etc
 	this.props = new Object();
-	this.validProps = ['Event','Site','Date','Rount',
+	this.validProps = ['Event','Site','Date','Round',
 							 'White','Black'];
 	// the moves, one move contains the black and white move
 	this.moves = new Array();
@@ -39,7 +39,7 @@ function Pgn(pgn) {
 	// strip comments
 	this.pgn = this.pgn.replace(/\{[^}]*\}/g,'');
 	// remove RAVs
-	this.pgn = this.pgn.replace(/\([^)]*\)/g,'')
+	this.pgn = this.pgn.replace(/\([^)]*\)/g,'');
 
 	// the properties;
 	var reprop = /\[([^\]]*)\]/gi;

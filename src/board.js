@@ -23,22 +23,16 @@
 		this.flipped = false;
 		this.id = (new Date()).getTime();
 		window[this.id] = this;
-		if (options)
-			this.options = options;
-		else
-			this.options = {};
+		if (!options)
+			options={};
 		this.moveInput = null;
 		this.lastBold = null;
 		this.lastBoldIdx = null;
 		this.lastSquare = null;
 		this.visuals = {"pgn":{}};
 
-		// static
-		this.imagePrefix = "img/default/";
-		if (this.options && this.options['imagePrefix']) {
-			 this.imagePrefix = this.options['imagePrefix'];
-		}
 		this.opts = [];
+		this.opts['imagePrefix'] = "img/default/";
 		this.opts['moveFontSize'] = "8pt";
 		this.opts['moveFontColor'] = "#537c3a";
 		this.opts['moveFont'] = 'Tahoma, Arial, sans-serif';
@@ -53,19 +47,23 @@
 		this.opts['blackSqColor'] = "#4b4b4b";
 		this.opts['whiteSqColor'] = "#ffffff";
 		this.opts['flipped'] = false;
+		this.opts['showMovesPane'] = true;
 
-		var options = ['flipped', 'moveFontSize', 'moveFontColor',
+		var optionNames = ['flipped', 'moveFontSize', 'moveFontColor',
 										'moveFont', 'commentFontSize',
 										'commentFontColor', 'commentFont',
 										'boardSize', 'squareSize',
-										'blackSqColor', 'whiteSqColor'];
+										'blackSqColor', 'whiteSqColor',
+										'imagePrefix', 'showMovesPane',
+										'movesPaneWidth'];
 
 		// if keys in options define new values then
 		// set the this.opts for that key with the 
 		// custom value
-		for (var i=0;i<options.length;i++) {
-			if (this.options && this.options[options[i]])
-				 this.opts[options[i]] = this.options[options[i]];
+		for (var i=0;i<optionNames.length;i++) {
+			if (options && typeof(options[optionNames[i]]) != 'undefined') {
+				this.opts[optionNames[i]] = options[optionNames[i]];
+			}
 		}
 		
 		var brdI = new BoardImages();
@@ -120,8 +118,8 @@
 			// movesTable
 			var movesTd = document.createElement("td");
 			this.movesTd = movesTd;
-			if (this.options['movesPaneWidth'])
-				movesTd.style.width = this.options['movesPaneWidth'];
+			if (this.opts['movesPaneWidth'])
+				movesTd.style.width = this.opts['movesPaneWidth'];
 			else
 				movesTd.style.overflow = "hidden";
 			movesTd.vAlign = "top";
@@ -248,9 +246,6 @@
 			href = hrefS.cloneNode(false);
 			href.appendChild(input);
 
-			if (!this.options['showMovesPane'])
-				 this.options['showMovesPane'] = false;
-			
 			input.onclick = function() {
 				toggleMoves(tmp, "flip");
 			};
@@ -583,8 +578,8 @@
 					};
 
 					this.updateSettings = function() {
-						var blacks = this.options['blackSqColor'];
-						var whites = this.options['whiteSqColor'];
+						var blacks = this.opts['blackSqColor'];
+						var whites = this.opts['whiteSqColor'];
 						
 						for(var i=0;i<8;i++){
 							var flip = (i%2)?true:false;
@@ -668,7 +663,7 @@
 				};
 
 				this.populateMoves = function(cont) {
-					if (!this.options['showMovesPane']) {
+					if (!this.opts['showMovesPane']) {
 						 cont.style.visibility="hidden";
 						 cont.style.display="none";
 					}
@@ -812,8 +807,8 @@
 				};
 
 				this.getImg = function(piece, color) {
-					var img = new Image();
-					img.src = this.imagePrefix + imageNames[color][piece];
+					var img = document.createElement("img");
+					img.src = this.opts['imagePrefix'] + imageNames[color][piece];
 					img.border = 0;
 					img.style.padding = "0px";
 					img.style.margin = "0px";

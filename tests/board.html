@@ -24,8 +24,8 @@
 			src="../src/board.js">
 			</script>
 		<script language="javascript">
-			var brdi = new BoardImages("default", "../img/")
-			brdi.preload()
+			//var brdi = new BoardImages("default", "../img/default/")
+			//brdi.preload()
 		</script>
   </head>
 
@@ -60,10 +60,10 @@ Qd3 Nc5 22. Qd6 Qf5 23. Rd5 Ne6 24. f4 Qe4 25. Bd3 (25. Rxe5 {-2.25 v -4.19}
 
 </div>
 <script>
-	var brd = new Board('area', {'showMovesPane':true,
-											'movesPaneWidth':'300px',
-											'imagePrefix':'../img/',
-											'flipped':false})
+	var brd = new Board('area', {'imagePrefix':'../img/default/',
+		 														'movesPaneWidth':'300px',
+																'showMovesPane':true,
+																'flipped':false})
 	brd.init()
 </script>
           </td>
