@@ -466,8 +466,8 @@
 
 					updateMoveInfo = function(board) {
 						var idx = board.conv.getCurMoveNo()-1;
-						if (board.conv.getCurMoveNo() == board.conv.moves.length-1)
-							idx = board.conv.getCurMoveNo();
+						//if (board.conv.getCurMoveNo() == board.conv.moves.length-1)
+						//	idx = board.conv.getCurMoveNo();
 						var move = board.conv.moves[idx];
 						if (move && move.moveStr) {
 							 var str = Math.floor((idx==0?1:idx)/2+1)+". "+move.moveStr;
