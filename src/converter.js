@@ -540,7 +540,7 @@ function Converter(pgn) {
 				return i;
 			}
 		}
-	}
+	};
         
 	/*
 		Find the pawn from location.

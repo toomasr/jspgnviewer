@@ -22,7 +22,7 @@ function Pgn(pgn) {
 	// properties of the game eg players, ELOs etc
 	this.props = new Object();
 	this.validProps = ['Event','Site','Date','Round',
-							 'White','Black',"Result",'FEN'];
+								'White','Black','Result','FEN'];
 	// the moves, one move contains the black and white move
 	this.moves = new Array();
 	// the current move in the game
@@ -37,28 +37,26 @@ function Pgn(pgn) {
 	/* constructor */
 
 	// strip comments
-//	this.pgn = this.pgn.replace(/\{[^\}]*\}/g,'');
 	this.pgn = stripIt(pgn,true);
-	// remove RAVs
-//	this.pgn = this.pgn.replace(/\([^\)]*\)/g,'');
 
-	// the properties;
+	// Match all properties
 	var reprop = /\[([^\]]*)\]/gi;
 	var matches = this.pgn.match(reprop);
 	if (matches) {
-		 for(var i = 0;i < matches.length; i++) {
-			 // lose the brackets
-			 tmpMatches = matches[i].substring(1, matches[i].length-1);
-			 // split by the first space
-			 var key = tmpMatches.substring(0, tmpMatches.indexOf(" "));
-			 var value = tmpMatches.substring(tmpMatches.indexOf(" ")+1);
-			 if (value.charAt(0) == '"')
-				 value = value.substr(1);
-			 if (value.charAt(value.length-1) == '"')
-				 value = value.substr(0, value.length-1);
+		// extract information from each matched property
+		for(var i = 0;i < matches.length; i++) {
+			// lose the brackets
+			tmpMatches = matches[i].substring(1, matches[i].length-1);
+			// split by the first space
+			var key = tmpMatches.substring(0, tmpMatches.indexOf(" "));
+			var value = tmpMatches.substring(tmpMatches.indexOf(" ")+1);
+			if (value.charAt(0) == '"')
+				value = value.substr(1);
+			if (value.charAt(value.length-1) == '"')
+				value = value.substr(0, value.length-1);
 			 
-			 this.props[key] = value;
-			 this.pgn = this.pgn.replace(matches[i], "");
+			this.props[key] = value;
+			this.pgn = this.pgn.replace(matches[i], "");
 		 }
 	}
 
@@ -67,7 +65,7 @@ function Pgn(pgn) {
 	// newlines to spaces
 	this.pgn = this.pgn.replace(/\n/g, " ");
 	//trim
-	this.pgn = this.pgn.replace(/^\s+|\s+$/g, '')
+	this.pgn = this.pgn.replace(/^\s+|\s+$/g, '');
 
 	var gameOverre = new Array(
 		/1\/2-1\/2/,
@@ -82,6 +80,7 @@ function Pgn(pgn) {
 	var tmp = new Array();
 	tmp[1] = null;
 	var tmpidx = 0;	//make this 1 if FEN and black to move
+	
 	if (this.props["FEN"]) {
 		var fen = this.props['FEN'].split(/\/| /g);
 		if (fen[8] == 'b') {
@@ -89,6 +88,7 @@ function Pgn(pgn) {
 			this.skip = 1;
 		}
 	}
+	
 	for (var i=0;i<themoves.length-1;i++) {	//don't handle game end bit
 		if (themoves[i]) {
 			themoves[i] = themoves[i].replace(/^\s+|\s+$/g, '');
@@ -134,21 +134,6 @@ function Pgn(pgn) {
 		var move = new Move(tmp[0], tmp[1]);
 		this.moves[this.moves.length] = move;
 	}
-
-/*
-	if (/1\/2-1\/2/.test(this.pgn)) {
-		this.props['result'] = '1/2-1/2';
-	}
-	else if (/1-0/.test(this.pgn)) {
-		this.props['result'] = '1-0';
-	}
-	else if (/0-1/.test(this.pgn)) {
-		this.props['result'] = '0-1';
-	}
-	else {
-		this.props['result'] = '';
-	}
-*/
 
 	this.nextMove = function() {
 		var rtrn = null;
