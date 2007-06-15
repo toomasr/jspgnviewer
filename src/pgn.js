@@ -22,7 +22,7 @@ function Pgn(pgn) {
 	// properties of the game eg players, ELOs etc
 	this.props = new Object();
 	this.validProps = ['Event','Site','Date','Round',
-							 'White','Black'];
+							 'White','Black',"Result",'FEN'];
 	// the moves, one move contains the black and white move
 	this.moves = new Array();
 	// the current move in the game
@@ -37,9 +37,10 @@ function Pgn(pgn) {
 	/* constructor */
 
 	// strip comments
-	this.pgn = this.pgn.replace(/\{[^}]*\}/g,'');
+//	this.pgn = this.pgn.replace(/\{[^\}]*\}/g,'');
+	this.pgn = stripIt(pgn,true);
 	// remove RAVs
-	this.pgn = this.pgn.replace(/\([^)]*\)/g,'');
+//	this.pgn = this.pgn.replace(/\([^\)]*\)/g,'');
 
 	// the properties;
 	var reprop = /\[([^\]]*)\]/gi;
@@ -61,6 +62,13 @@ function Pgn(pgn) {
 		 }
 	}
 
+	// remove the properties
+	this.pgn = this.pgn.replace(/\[[^\]]*\]/g,'');
+	// newlines to spaces
+	this.pgn = this.pgn.replace(/\n/g, " ");
+	//trim
+	this.pgn = this.pgn.replace(/^\s+|\s+$/g, '')
+
 	var gameOverre = new Array(
 		/1\/2-1\/2/,
 		/0-1/,
@@ -70,40 +78,64 @@ function Pgn(pgn) {
 
 	// the moves;
 	var re;
-	for(var i = 1;1!=2;i++) {
-		re = i+"\\.(\\n| )?([^.]*)";
-		
-		var result = this.pgn.match(re);
-		if (result == null)
-			break;
-		// newlines to spaces
-		result[2] = result[2].replace(/\n/g, " ");
-		// leave only one space in the middle
-		while(result[2].indexOf("  ")!=-1)
-			 result[2] = result[2].replace("  ", " ");
-		// possible first space gets removed
-		if (" "==result[2].charAt(0))
-			result[2] = result[2].substring(1);
-		var tmp = result[2].split(" ");
-		for (var j = 0;j<gameOverre.length;j++) {
-			if (gameOverre[j].test(tmp[1]))
-				tmp[1] = null;
+	var themoves = this.pgn.split(" ");
+	var tmp = new Array();
+	tmp[1] = null;
+	var tmpidx = 0;	//make this 1 if FEN and black to move
+	if (this.props["FEN"]) {
+		var fen = this.props['FEN'].split(/\/| /g);
+		if (fen[8] == 'b') {
+			tmpidx = 1;
+			this.skip = 1;
 		}
-		if (tmp[1] && 0 == tmp[1].length)
-			 tmp[1] = null;
+	}
+	for (var i=0;i<themoves.length-1;i++) {	//don't handle game end bit
+		if (themoves[i]) {
+			themoves[i] = themoves[i].replace(/^\s+|\s+$/g, '');
+		}
+		if (!themoves[i]) {
+			continue;
+		}
+		var c = themoves[i].charAt(0);
+		if (c >= '1' && c <= '9') {	//move number
+			c = themoves[i].charAt(themoves[i].length-1);
+			if (c == '.') {	//ends with . so nothing but a move
+				continue;
+			}
+			var found = false;
+			for (var j=0;j<themoves[i].length;j++) {
+				c = themoves[i].charAt(j);
+				if ((c >= '0' && c <= '9') || c == '.') {
+					continue;
+				}
+				else {
+					found = true;
+					themoves[i] = themoves[i].substring(j);	//strip move number
+					break;
+				}
+			}
+			if (!found) {
+				continue;
+			}
+		}
+		tmp[tmpidx] = themoves[i];
+		if (tmpidx == 1) {	//black's move or last move
+			var move = new Move(tmp[0], tmp[1]);
+			this.moves[this.moves.length] = move;
+			tmpidx = 0;
+			tmp = new Array();
+			tmp[1] = null;
+		}
+		else {
+			tmpidx = 1;
+		}
+	}
+	if (tmp[0] || tmp[1]) {
 		var move = new Move(tmp[0], tmp[1]);
 		this.moves[this.moves.length] = move;
 	}
 
-	// no moves
-	if (this.moves.length>0) {
-		 for(var i = 0; i < gameOverre.length; i++) {
-			 if (gameOverre[i].test(this.moves[this.moves.length-1][1])) {
-				 this.moves[this.moves.length-1][1] = null;
-			 }
-		 }
-	}
-
+/*
 	if (/1\/2-1\/2/.test(this.pgn)) {
 		this.props['result'] = '1/2-1/2';
 	}
@@ -116,6 +148,7 @@ function Pgn(pgn) {
 	else {
 		this.props['result'] = '';
 	}
+*/
 
 	this.nextMove = function() {
 		var rtrn = null;
@@ -181,31 +214,41 @@ function Move(white, black) {
 	};
 };
 
-function stripIt(val) {
+function stripIt(val, strip) {
 	var count = 0;
 	var out = new Array();
 	for (var i=0;i<val.length;i++) {
 		var c = val.charAt(i);
 		switch (c) {
 			case '(':
-				out[out.length] = '_';
+				if (!strip) {
+					out[out.length] = '_';
+				}
 				count++;
 				break;
 			case '{':
-				out[out.length] = '_';
+				if (!strip) {
+					out[out.length] = '_';
+				}
 				count++;
 				break;
 			case '}':
 				count--;
-				out[out.length] = '_';
+				if (!strip) {
+					out[out.length] = '_';
+				}
 				break;
 			case ')':
 				count--;
-				out[out.length] = '_';
+				if (!strip) {
+					out[out.length] = '_';
+				}
 				break;
 			default:
 				if (count > 0) {
-					out[out.length] = '_';
+					if (!strip) {
+						out[out.length] = '_';
+					}
 				}
 				else {
 					out[out.length] = c;
@@ -213,5 +256,4 @@ function stripIt(val) {
 		}
 	}
 	return out.join("");
-}
-
+};

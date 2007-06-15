@@ -1,5 +1,6 @@
+/** Version: 0.5 **/
 /**
- * Copyright 2006 Toomas Römer
+ * Copyright 2006 Toomas Rï¿½mer
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,77 +38,178 @@ function Converter(pgn) {
 	this.initialBoard = new Array(8);
 	this.moves = new Array();
 	this.iteIndex = 0;
+	this.whiteToMove = true;
+	this.startMoveNum = 1;
 	this.flippedI = false;
 	this.flippedV = false;
 
-	this.wKingX, this.wKingY, this.bKingX, this.bKingY;
-	this.bishops = {'wwx':7, 'wwy':5,
-						'wbx':7, 'wby':2,
-						'bwx':0, 'bwy':2,
-						'bbx':0, 'bby':5};
-	this.bishopProm = false;
+	this.wKing = new Array();
+	this.bKing = new Array();
+	this.wQueens = new Array();
+	this.bQueens = new Array();
+	this.wBishops = new Array();
+	this.bBishops = new Array();
+	this.wRooks = new Array();
+	this.bRooks = new Array();
 
-	this.wQueens = 1;
-	this.bQueens = 1;
-	this.wQueenX, this.wQueenY, this.bQueenX, this.bQueenY;
-	this.queenProm = false;
-	
-	/* Virtual board initialization */
 	for(var i = 0; i < 8; i++) {
 		this.vBoard[i] = new Array(8);
 		for (var j = 0; j < 8; j++) {
 			this.vBoard[i][j] = new vSquare();
 		}
 	}
-	
-	// pawns
-	for (var i = 0;i < 8; i++) {
-		this.vBoard[6][i].piece = 'pawn';
-		this.vBoard[6][i].color = 'white';
-            
-		this.vBoard[1][i].piece = 'pawn';
-		this.vBoard[1][i].color = 'black';
+
+	if (pgn.props['FEN']) {
+		var val = pgn.props['FEN'].split(/\/| /g);
+		for (var i=0;i<8;i++) {
+			var file = 0;
+			for (var j=0;j<val[i].length;j++) {
+				var c = val[i].charAt(j);
+				switch (c) {
+					case 'p':
+						this.vBoard[i][file].piece = 'pawn';
+						this.vBoard[i][file].color = 'black';
+						file++;
+						break;
+					case 'n':
+						this.vBoard[i][file].piece = 'knight';
+						this.vBoard[i][file].color = 'black';
+						file++;
+						break;
+					case 'k':
+						this.vBoard[i][file].piece = 'king';
+						this.vBoard[i][file].color = 'black';
+						bKingX = i;
+						bKingY = file;
+						file++;
+						break;
+					case 'q':
+						this.vBoard[i][file].piece = 'queen';
+						this.vBoard[i][file].color = 'black';
+						this.bQueens[this.bQueens.length] = [i,file];
+						file++;
+						break;
+					case 'r':
+						this.vBoard[i][file].piece = 'rook';
+						this.vBoard[i][file].color = 'black';
+						this.bRooks[this.bRooks.length] = [i,file];
+						file++;
+						break;
+					case 'b':
+						this.vBoard[i][file].piece = 'bishop';
+						this.vBoard[i][file].color = 'black';
+						this.bBishops[this.bBishops.length] = [i,file];
+						file++;
+						break;
+					case 'P':
+						this.vBoard[i][file].piece = 'pawn';
+						this.vBoard[i][file].color = 'white';
+						file++;
+						break;
+					case 'N':
+						this.vBoard[i][file].piece = 'knight';
+						this.vBoard[i][file].color = 'white';
+						file++;
+						break;
+					case 'K':
+						this.vBoard[i][file].piece = 'king';
+						this.vBoard[i][file].color = 'white';
+						wKingX = i;
+						wKingY = file;
+						file++;
+						break;
+					case 'Q':
+						this.vBoard[i][file].piece = 'queen';
+						this.vBoard[i][file].color = 'white';
+						this.wQueens[this.wQueens.length] = [i,file];
+						file++;
+						break;
+					case 'R':
+						this.vBoard[i][file].piece = 'rook';
+						this.vBoard[i][file].color = 'white';
+						this.wRooks[this.wRooks.length] = [i,file];
+						file++;
+						break;
+					case 'B':
+						this.vBoard[i][file].piece = 'bishop';
+						this.vBoard[i][file].color = 'white';
+						this.wBishops[this.wBishops.length] = [i,file];
+						file++;
+						break;
+					case '1':
+					case '2':
+					case '3':
+					case '4':
+					case '5':
+					case '6':
+					case '7':
+					case '8':
+						file += parseInt(c);
+						break;
+				}
+			}
+		}
+		if (val[8] == "b") {
+			this.whiteToMove = false;
+		}
+		this.startMoveNum = parseInt(val[12]);
 	}
-
-	// rooks, bishops, knights
-	for(var i = 0; i < 2; i++) {
-		this.vBoard[7][i*7].piece = 'rook';
-		this.vBoard[7][i*7].color = 'white';
-          
-		this.vBoard[0][i*7].piece = 'rook';
-		this.vBoard[0][i*7].color = 'black';
-  
-		this.vBoard[7][i*5+1].piece = 'knight';
-		this.vBoard[7][i*5+1].color = 'white';
-          
-		this.vBoard[0][i*5+1].piece = 'knight';
-		this.vBoard[0][i*5+1].color = 'black';
-  
-		this.vBoard[7][i*3+2].piece = 'bishop';
-		this.vBoard[7][i*3+2].color = 'white';
-		this.vBoard[7][i*3+2].type = (i==0)?'black':'white';
-
-		this.vBoard[0][i*3+2].piece = 'bishop';
-		this.vBoard[0][i*3+2].color = 'black';
-		this.vBoard[0][i*3+2].type = (i==0)?'white':'black';
-	}
-         
-	this.vBoard[7][3].piece = 'queen';
-	this.vBoard[7][3].color = 'white';
-	this.wQueenX = 7, this.wQueenY = 3;
+	else {
+		/* Virtual board initialization */
+		
+		// pawns
+		for (var i = 0;i < 8; i++) {
+			this.vBoard[6][i].piece = 'pawn';
+			this.vBoard[6][i].color = 'white';
+	            
+			this.vBoard[1][i].piece = 'pawn';
+			this.vBoard[1][i].color = 'black';
+		}
 	
-	this.vBoard[7][4].piece = 'king';
-	this.vBoard[7][4].color = 'white';
-	this.wKingX = 7, this.wKingY = 4;
+		// rooks, bishops, knights
+		for(var i = 0; i < 2; i++) {
+			this.vBoard[7][i*7].piece = 'rook';
+			this.vBoard[7][i*7].color = 'white';
+			this.wRooks[this.wRooks.length] = [7,i*7];
+	          
+			this.vBoard[0][i*7].piece = 'rook';
+			this.vBoard[0][i*7].color = 'black';
+			this.bRooks[this.bRooks.length] = [0,i*7];
+	  
+			this.vBoard[7][i*5+1].piece = 'knight';
+			this.vBoard[7][i*5+1].color = 'white';
+	          
+			this.vBoard[0][i*5+1].piece = 'knight';
+			this.vBoard[0][i*5+1].color = 'black';
+	  
+			this.vBoard[7][i*3+2].piece = 'bishop';
+			this.vBoard[7][i*3+2].color = 'white';
+			this.wBishops[this.wBishops.length] = [7,i*3+2];
 
-	this.vBoard[0][3].piece = 'queen';
-	this.vBoard[0][3].color = 'black';
-	this.bQueenX = 0, this.bQueenY = 3;
-
-	this.vBoard[0][4].piece = 'king';
-	this.vBoard[0][4].color = 'black';
-	this.bKingX = 0, this.bKingY = 4;
-
+			this.vBoard[0][i*3+2].piece = 'bishop';
+			this.vBoard[0][i*3+2].color = 'black';
+			this.bBishops[this.bBishops.length] = [0,i*3+2];
+		}
+	         
+		this.vBoard[7][3].piece = 'queen';
+		this.vBoard[7][3].color = 'white';
+		this.wQueens[this.wQueens.length] = [7,3];
+		
+		this.vBoard[7][4].piece = 'king';
+		this.vBoard[7][4].color = 'white';
+		this.wKingX = 7, this.wKingY = 4;
+	
+		this.vBoard[0][3].piece = 'queen';
+		this.vBoard[0][3].color = 'black';
+		this.bQueens[this.bQueens.length] = [0,3];
+	
+		this.vBoard[0][4].piece = 'king';
+		this.vBoard[0][4].color = 'black';
+		this.bKingX = 0, this.bKingY = 4;
+	
+		/* EO Virtual board initialization */
+	}
+		
 	// let's clone the initial pos
 	for (var i = 0;i < 8;i++){
 		this.initialBoard[i] = new Array(8);
@@ -115,8 +217,7 @@ function Converter(pgn) {
 			this.initialBoard[i][j] = this.vBoard[i][j].clone();
 		}	 
 	}
-	/* EO Virtual board initialization */
-	
+
 	this.convert = function() {
 		var move = null;
 		do {
@@ -210,8 +311,8 @@ function Converter(pgn) {
 		var pawnre = /^[a-z]+[1-8]/;
 		var knightre = /^N[0-9]?[a-z]+[1-8]/;
 		var bishre = /^B[a-z]+[1-8]/;
-		var queenre = /^Q[0-9]?[a-z]+[1-8]/;
-		var rookre = /^R[0-9]?[a-z]+[1-8]/;
+		var queenre = /^Q([a-z]|[0-9])?[a-z]+[1-8]/;
+		var rookre = /^R([a-z]|[0-9])?[a-z]+[1-8]/;
 		var lCastlere = /^(0|O)-(0|O)-(0|O)/i;
 		var sCastlere = /^(0|O)-(0|O)/i;
 		var kingre = /^K[a-z]+[1-8]/;
@@ -236,7 +337,7 @@ function Converter(pgn) {
 			fromCoords = findFromQueen(this, this.vBoard, to, toCoords, color);
 		}
 		else if (rookre.test(to)) {
-			fromCoords = findFromRook(this, to, toCoords, color);
+			fromCoords = findFromRook(this, this.vBoard, to, toCoords, color);
 		}
 		else if (kingre.test(to)) {
 			fromCoords = findFromKing(this, this.vBoard, color);
@@ -286,35 +387,77 @@ function Converter(pgn) {
 		to = this.vBoard[toCoords[0]][toCoords[1]];
 			
 		// update king location
-		if ('king' == from.piece && 'white' == from.color)
+		if ('king' == from.piece && 'white' == from.color) {
 			this.wKingX = toCoords[0], this.wKingY = toCoords[1];
-		else if ('king' == from.piece && 'black' == from.color)
+		} else if ('king' == from.piece && 'black' == from.color) {
 			this.bKingX = toCoords[0], this.bKingY = toCoords[1];
 		// update bishops location
-		else if ('bishop' == from.piece) {
-			var x = from.color.charAt(0)+from.type.charAt(0)+'x';
-			var y = from.color.charAt(0)+from.type.charAt(0)+'y';
-			this.bishops[x] = toCoords[0];
-			this.bishops[y] = toCoords[1];
-		}
-		else if ('queen' == from.piece) {
+		} else if ('bishop' == from.piece) {
+			var idx;
 			if ('white' == from.color) {
-				this.wQueenX = toCoords[0];
-				this.wQueenY = toCoords[1];
+				idx = findPieceIdx(this.wBishops,fromCoords);
+				this.wBishops[idx][0] = toCoords[0];
+				this.wBishops[idx][1] = toCoords[1];
 			}
 			else {
-				this.bQueenX = toCoords[0];
-				this.bQueenY = toCoords[1];
+				idx = findPieceIdx(this.bBishops,fromCoords);
+				this.bBishops[idx][0] = toCoords[0];
+				this.bBishops[idx][1] = toCoords[1];
+			}
+		} else if ('queen' == from.piece) {
+			var idx;
+			if ('white' == from.color) {
+				idx = findPieceIdx(this.wQueens,fromCoords);
+				this.wQueens[idx][0] = toCoords[0];
+				this.wQueens[idx][1] = toCoords[1];
+			}
+			else {
+				idx = findPieceIdx(this.bQueens,fromCoords);
+				this.bQueens[idx][0] = toCoords[0];
+				this.bQueens[idx][1] = toCoords[1];
+			}
+		} else if ('rook' == from.piece) {
+			var idx;
+			if ('white' == from.color) {
+				idx = findPieceIdx(this.wRooks,fromCoords);
+				this.wRooks[idx][0] = toCoords[0];
+				this.wRooks[idx][1] = toCoords[1];
+			}
+			else {
+				idx = findPieceIdx(this.bRooks,fromCoords);
+				this.bRooks[idx][0] = toCoords[0];
+				this.bRooks[idx][1] = toCoords[1];
 			}
 		}
 		
-		// we take one queen away
 		if ('queen' == to.piece) {
 			if ('white' == to.color) {
-				this.wQueens--;
+				idx = findPieceIdx(this.wQueens,toCoords);
+				this.wQueens.splice(idx,1);
 			}
 			else {
-				this.bQueens--;
+				idx = findPieceIdx(this.bQueens,toCoords);
+				this.bQueens.splice(idx,1);
+			}
+		}
+		else if ('bishop' == to.piece) {
+			if ('white' == to.color) {
+				idx = findPieceIdx(this.wBishops,toCoords);
+				this.wBishops.splice(idx,1);
+			}
+			else {
+				idx = findPieceIdx(this.bBishops,toCoords);
+				this.bBishops.splice(idx,1);
+			}
+		}
+		else if ('rook' == to.piece) {
+			if ('white' == to.color) {
+				idx = findPieceIdx(this.wRooks,toCoords);
+				this.wRooks.splice(idx,1);
+			}
+			else {
+				idx = findPieceIdx(this.bRooks,toCoords);
+				this.bRooks.splice(idx,1);
 			}
 		}
 			
@@ -345,14 +488,30 @@ function Converter(pgn) {
 		myMove.pPiece = result[3];
 		myMove.moveStr = oldTo[0];
 		
-		if (prom && "queen" == result[1].piece) {
-			if ('white' == result[1].color) {
-				this.wQueenX = toCoords[0];
-				this.wQueenY = toCoords[1];
+		if (prom) {
+			if ("queen" == result[1].piece) {
+				if ('white' == result[1].color) {
+					this.wQueens[this.wQueens.length] = [toCoords[0],toCoords[1]];
+				}
+				else {
+					this.bQueens[this.bQueens.length] = [toCoords[0],toCoords[1]];
+				}
 			}
-			else {
-				this.bQueenX = toCoords[0];
-				this.bQueenY = toCoords[1];
+			else if ("bishop" == result[1].piece) {
+				if ('white' == result[1].color) {
+					this.wBishops[this.wBishops.length] = [toCoords[0],toCoords[1]];
+				}
+				else {
+					this.bBishops[this.bBishops.length] = [toCoords[0],toCoords[1]];
+				}
+			}
+			else if ("rook" == result[1].piece) {
+				if ('white' == result[1].color) {
+					this.wRooks[this.wRooks.length] = [toCoords[0],toCoords[1]];
+				}
+				else {
+					this.bRooks[this.bRooks.length] = [toCoords[0],toCoords[1]];
+				}
 			}
 		}
 
@@ -374,6 +533,14 @@ function Converter(pgn) {
 		and on where the pawn was located. All pieces have different
 		logic on finding which piece exactly has to move to the location.
 	*/
+
+	findPieceIdx = function(arr, coords) {
+		for (var i=0;i<arr.length;i++) {
+			if (arr[i][0] == coords[0] && arr[i][1] == coords[1]) {
+				return i;
+			}
+		}
+	}
         
 	/*
 		Find the pawn from location.
@@ -446,48 +613,20 @@ function Converter(pgn) {
 		var to = toCoords;
 		var rtrn;
 		var coord;
-		// if no promotion to bishop has happened we can
-		// use the cached version of their locations
-		if (!board.bishopProm) {
-			var sgC = getSquareColor(to[0], to[1]).charAt(0);
-			var x = color.charAt(0)+sgC+"x";
-			var y = color.charAt(0)+sgC+"y";
-			return new Array(board.bishops[x], board.bishops[y]);
+		
+		var arr;
+		if (color == 'white') {
+			arr = board.wBishops;
 		}
-		for(var i = 0;i < 8; i++) {
-			// diagonal down right
-			try {
-				coord = pos[to[0]+i][to[1]+i];
-				if (coord.piece == 'bishop' && coord.color == color) {
-					return new Array(to[0]+i, to[1]+i);
-				}
-			}
-			catch (e) {}
-
-			try {
-				coord = pos[to[0]-i][to[1]-i];
-				if (coord.piece == 'bishop' && coord.color == color) {
-					return new Array(to[0]-i, to[1]-i);
-				}
-			}
-			catch (e) {}
-               
-			try {
-				coord = pos[to[0]+i][to[1]-i];
-				if (coord.piece == 'bishop' && coord.color == color) {
-					return new Array(to[0]+i, to[1]-i);
-				}
-			}
-			catch (e) {}
-
-			try {
-				coord = pos[to[0]-i][to[1]+i];
-				if (coord.piece == 'bishop' && coord.color == color) {
-					return new Array(to[0]-i, to[1]+i);
-				} 
-			}
-			catch (e) {}
+		else {
+			arr = board.bBishops;
 		}
+		for (var i=0;i<arr.length;i++) {
+			if (Math.abs(arr[i][0]-toCoords[0]) == Math.abs(arr[i][1]-toCoords[1])) {
+				return new Array(arr[i][0],arr[i][1]);
+			}
+		}
+		
 		throw('No move found for the bishop '+toSAN);
 	};
 
@@ -509,252 +648,63 @@ function Converter(pgn) {
 		var extra = to[2];
 		var rtrns = new Array();
 		
-		if (!board.queenProm) {
-			var x = board.wQueenX, y = board.wQueenY;
-			if ("black" == color)
-				x = board.bQueenX, y = board.bQueenY;
-			return new Array(x,y);
+		var arr;
+		if (color == 'white') {
+			arr = board.wQueens;
 		}
-
-		var controlNo = board.wQueens;
-		if ( "black" == color)
-			controlNo = board.bQueens;
-					
-		var tmp;
-		try {
-			for (var i = 1;i<8;i++) {
-				 tmp = pos[to[0]+i][to[1]];
-				 if (tmp && "queen" == tmp.piece && tmp.color == color) {
-						rtrns[rtrns.length] = new Array(to[0]+i, to[1]);
-						break;
-				 }
-				 else if (tmp.piece)
-						break;
+		else if (color == 'black') {
+			arr = board.bQueens;
+		}
+		for (var i=0;i<arr.length;i++) {
+			var rdx = to[0]-arr[i][0];
+			var rdy = to[1]-arr[i][1];
+			var dx = Math.abs(rdx);
+			var dy = Math.abs(rdy);
+			if (rdx > 0) {
+				rdx = 1;
 			}
-		}
-		catch (e) {}
-		
-		if (controlNo > rtrns.length) {
-			try {
-				for (var i = 1;i<8;i++) {
-					 tmp = pos[to[0]][to[1]+i];
-					 if (tmp && "queen" == tmp.piece && tmp.color == color) {
-							rtrns[rtrns.length] = new Array(to[0], to[1]+i);
-							break;
-					 }
-					 else if (tmp.piece)
-							break;
+			else if (rdx < 0) {
+				rdx = -1;
+			}
+			if (rdy > 0) {
+				rdy = 1;
+			}
+			else if (rdy < 0) {
+				rdy = -1;
+			}
+			if (dx == dy || dx == 0 || dy == 0) {	//bishop-like move or rook-like move
+				var x = arr[i][0];
+				var y = arr[i][1];
+				while (true) {
+					x += rdx;
+					y += rdy;
+					if (x == to[0] && y == to[1]) {
+						if (extra[0] != -1 || extra[1] != -1) {
+							if (extra[0] != arr[i][1] && extra[1] != arr[i][0]) {
+								break;
+							}
+							return new Array(arr[i][0],arr[i][1]);
+						}
+						rtrns[rtrns.length] = new Array(arr[i][0],arr[i][1]);
+						break;
+					}
+					tmp = pos[x][y];
+					if (tmp && tmp.piece) {	//ran into another piece
+						break;
+					}
 				}
 			}
-			catch (e) {}
-		}
-
-		
-		if (controlNo > rtrns.length) {
-			try {
-				for (var i = 1;i<8;i++) {
-					 tmp = pos[to[0]-i][to[1]];
-					 if (tmp && "queen" == tmp.piece && tmp.color == color) {
-							rtrns[rtrns.length] = new Array(to[0]-i, to[1]);
-							break;
-					 }
-					 else if (tmp.piece)
-							break;
-				}
-			}
-			catch (e) {}
 		}
 		
-		if (controlNo > rtrns.length) {
-			try {
-				for (var i = 1;i<8;i++) {
-					tmp = pos[to[0]][to[1]-i];
-					if (tmp && "queen" == tmp.piece && tmp.color == color) {
-							rtrns[rtrns.length] = new Array(to[0], to[1]-i);
-							break;
-					}
-					else if (tmp.piece)
-						break;
-				}
-			}
-			catch (e) {}
-		}
-					
-		if (controlNo > rtrns.length) {
-			try {
-				for (var i = 1;i<8;i++) {
-					tmp = pos[to[0]-i][to[1]-i];
-					if (tmp && "queen" == tmp.piece && tmp.color == color) {
-						rtrns[rtrns.length] = new Array(to[0]-i, to[1]-i);
-						break;
-					}
-					else if (tmp.piece)
-						break;
-				}
-			}
-			catch (e) {}
-		}
-			 
-		if (controlNo > rtrns.length) {
-			try {
-				for (var i = 1;i<8;i++) {
-					tmp = pos[to[0]+i][to[1]+i];
-					if (tmp && "queen" == tmp.piece && tmp.color == color) {
-						rtrns[rtrns.length] = new Array(to[0]+i, to[1]+i);
-						break;
-					}
-					else if (tmp.piece)
-						break;
-				}
-			}
-			catch (e) {}
-		}
-					
-		if (controlNo > rtrns.length) {
-			try {
-				for (var i = 1;i<8;i++) {
-					tmp = pos[to[0]-i][to[1]+i];
-					if (tmp && "queen" == tmp.piece && tmp.color == color) {
-						rtrns[rtrns.length] = new Array(to[0]-i, to[1]+i);
-						break;
-					}
-					else if (tmp.piece)
-						break;
-				}
-			}
-			catch (e) {}
-		}
-					
-		if (controlNo > rtrns.length) {
-			try {
-				for (var i = 1;i<8;i++) {
-					tmp = pos[to[0]+i][to[1]-i];
-					if (tmp && "queen" == tmp.piece && tmp.color == color) {
-						rtrns[rtrns.length] = new Array(to[0]+i, to[1]-i);
-						break;
-					}
-					else if (tmp.piece)
-						break;
-				}
-			}
-			catch (e) {}
-		}
-		// only one option
-		if (rtrns.length == 1)
-			return rtrns[0];
-		if (extra[0] != -1 || extra[1] != -1) {
-			// more than one queen can move there
-			// use the extra informatin (eg b from Qbd7
-			for (var i = 0;i < rtrns.length;i++) {
-				if (extra[0] != -1 && extra[0] == rtrns[i][1])
-					return rtrns[i];
-				else if (extra[1] != -1 && extra[1] == rtrns[i][0])
-					return rtrns[i];
-			}
-		}
-		throw("No queen move found '"+toSAN+"'");
-	};
-
-	/* 
-		Find the rook's from location.
-	*/
-	findFromRook = function(brd, toSAN, toCoords, color) {
-		var op = getOppColor(color);
-		var to = toCoords;
-		var pos = brd.vBoard;
-		var extra = to[2];
-
-		// it ain't that simple, what if 2 rooks
-		// can move to the same piece but one of
-		// them is blocked by another piece
-		// then we actually have to go from the dest
-		// coord to 4 directions until we find the
-		// bloody rook or die trying
-		var rtrns = new Array();
-		try {
-			var tmp;
-			for (var i = 1;i<8;i++) {
-				tmp = pos[to[0]+i][to[1]];
-				if (tmp && tmp.piece == 'rook' && tmp.color == color) {
-					rtrns[rtrns.length] = new Array(to[0]+i, to[1]);
-					break;
-				}
-				else if (tmp.piece) {
-					break;
-				}
-			}
-		}
-		catch(e){}
-					
-		try {
-			var tmp;
-			for (var i = 1;i<8;i++) {
-				tmp = pos[to[0]-i][to[1]];
-				if (tmp && tmp.piece == 'rook' && tmp.color == color) {
-					rtrns[rtrns.length] = new Array(to[0]-i, to[1]);
-					break;
-				}
-				else if (tmp.piece) {
-					break;
-				}
-			}
-		}
-		catch(e){}
-
-		try {
-			var tmp;
-			for (var i = 1;i<8;i++) {
-				tmp = pos[to[0]][to[1]+i];
-				if (tmp && tmp.piece == 'rook' && tmp.color == color) {
-					rtrns[rtrns.length] = new Array(to[0], to[1]+i);
-					break;
-				}
-				else if (tmp.piece) {
-					break;
-				}
-			}
-		}
-		catch(e){}
-					
-		try {
-			var tmp;
-			for (var i = 1;i<8;i++) {
-				tmp = pos[to[0]][to[1]-i];
-				if (tmp && tmp.piece == 'rook' && tmp.color == color) {
-					rtrns[rtrns.length] = new Array(to[0], to[1]-i);
-					break;
-				}
-				else if (tmp.piece) {
-					break;
-				}
-			}
-		}
-		catch(e){}
-		
-		// only one option
-		if (rtrns.length == 1)
-			return rtrns[0];
-
-		if (extra[0] != -1 || extra[1] != -1) {
-			// more than one rook can move there
-			// use the extra informatin (eg b from Rbd7
-			for (var i = 0;i < rtrns.length;i++) {
-				if (extra[0] != -1 && extra[0] == rtrns[i][1])
-					return rtrns[i];
-				else if (extra[1] != -1 && extra[1] == rtrns[i][0])
-					return rtrns[i];
-			}
-		}
-		else if (2 == rtrns.length) {
-			// let's try the check rule, if it fails
-			for (var i = 0;i < rtrns.length; i++) {
+		if (rtrns.length>1) {
+			for (var i = 0; i< rtrns.length;i++) {
 				var from = pos[rtrns[i][0]][rtrns[i][1]];
 				var oldTo = pos[to[0]][to[1]];
 				
 				pos[rtrns[i][0]][rtrns[i][1]] = new vSquare();
 				pos[to[0]][to[1]] = from;
 
-				var checked = isKingChecked(brd,from.color, pos);
+				var checked = isKingChecked(board,from.color, pos);
 				pos[rtrns[i][0]][rtrns[i][1]] = from;
 				pos[to[0]][to[1]] = oldTo;
 				if (checked)
@@ -762,6 +712,91 @@ function Converter(pgn) {
 				else
 					return rtrns[i];
 			}
+		}
+		else if (rtrns.length == 1)
+			return rtrns[0];
+
+		throw("No queen move found '"+toSAN+"'");
+	};
+
+	/* 
+		Find the rook's from location.
+	*/
+	function findFromRook(board, pos, toSAN, to, color) {
+		var op = getOppColor(color);
+		var extra = to[2];
+		var rtrns = new Array();
+		
+		var arr;
+		if (color == 'white') {
+			arr = board.wRooks;
+		}
+		else {
+			arr = board.bRooks;
+		}
+		for (var i=0;i<arr.length;i++) {
+			var rdx = to[0]-arr[i][0];
+			var rdy = to[1]-arr[i][1];
+			var dx = Math.abs(rdx);
+			var dy = Math.abs(rdy);
+			if (rdx > 0) {
+				rdx = 1;
+			}
+			else if (rdx < 0) {
+				rdx = -1;
+			}
+			if (rdy > 0) {
+				rdy = 1;
+			}
+			else if (rdy < 0) {
+				rdy = -1;
+			}
+			if (dx == 0 || dy == 0) {
+				var x = arr[i][0];
+				var y = arr[i][1];
+				while (true) {
+					x += rdx;
+					y += rdy;
+					if (x == to[0] && y == to[1]) {
+						if (extra[0] != -1 || extra[1] != -1) {
+							if (extra[0] != arr[i][1] && extra[1] != arr[i][0]) {
+								break;
+							}
+							return new Array(arr[i][0],arr[i][1]);
+						}
+						rtrns[rtrns.length] = new Array(arr[i][0],arr[i][1]);
+						break;
+					}
+					tmp = pos[x][y];
+					if (tmp && tmp.piece) {	//ran into another piece
+						break;
+					}
+				}
+			}
+		}
+
+		if (rtrns.length>1) {
+			for (var i = 0; i< rtrns.length;i++) {
+				var from = pos[rtrns[i][0]][rtrns[i][1]];
+				var oldTo = pos[to[0]][to[1]];
+				
+				pos[rtrns[i][0]][rtrns[i][1]] = new vSquare();
+				pos[to[0]][to[1]] = from;
+
+				var checked = isKingChecked(board,from.color, pos);
+				pos[rtrns[i][0]][rtrns[i][1]] = from;
+				pos[to[0]][to[1]] = oldTo;
+				if (checked)
+					continue;
+				else
+					return rtrns[i];
+			}
+		}
+		else if (rtrns.length == 1)
+			return rtrns[0];
+
+		for (var i=0;i<arr.length;i++) {
+			alert(" "+arr[i][0]+" "+arr[i][1]+" "+to[0]+" "+to[1]+" "+extra[0]+extra[1]);
 		}
 		throw("No rook move found '"+toSAN+"'");
 	};
@@ -951,22 +986,12 @@ function Converter(pgn) {
 					break;
 				case 'B':
 					to.piece = 'bishop';
-					board.bishopProm = true;
 					break;
 				case 'N':
 					to.piece = 'knight';
 					break;
 				case 'Q':
 					to.piece = 'queen';
-					if ('white' == to.color) {
-						board.wQueens++;
-					}
-					else {
-						board.bQueens++;
-					}
-					if (board.wQueens>1 || board.bQueens>1) {
-						board.queenProm = true;
-					}
 					break;
 				default:
 					throw('Unknown promotion');
@@ -989,9 +1014,12 @@ function Converter(pgn) {
 				tmp = brd.vBoard[x-i][y-i];
 				if (tmp.color == col)
 					break;
-				if (tmp.color == op &&
-							("bishop" == tmp.piece || "queen" == tmp.piece))
-					return true;
+				if (tmp.color == op) {
+					if("bishop" == tmp.piece || "queen" == tmp.piece) {
+						return true;
+					}
+					break;
+				}
 			}
 		}
 		catch (e) {}
@@ -1001,9 +1029,12 @@ function Converter(pgn) {
 				tmp = brd.vBoard[x+i][y+i];
 				if (tmp.color == col)
 					break;
-					if (tmp.color == op &&
-								("bishop" == tmp.piece || "queen" == tmp.piece))
-					return true;
+				if (tmp.color == op) {
+					if("bishop" == tmp.piece || "queen" == tmp.piece) {
+						return true;
+					}
+					break;
+				}
 			}
 		}
 		catch (e) {}
@@ -1011,11 +1042,14 @@ function Converter(pgn) {
 		try {
 			for (var i = 1;i < 7; i++) {
 				tmp = brd.vBoard[x+i][y-i];
-					if (tmp.color == col)
-						break;
-					if (tmp.color == op &&
-								("bishop" == tmp.piece || "queen" == tmp.piece))
-					return true;
+				if (tmp.color == col)
+					break;
+				if (tmp.color == op) {
+					if("bishop" == tmp.piece || "queen" == tmp.piece) {
+						return true;
+					}
+					break;
+				}
 			}
 		}
 		catch (e) {}
@@ -1025,9 +1059,12 @@ function Converter(pgn) {
 				tmp = brd.vBoard[x-i][y+i];
 				if (tmp.color == col)
 					break;
-				if (tmp.color == op &&
-							("bishop" == tmp.piece || "queen" == tmp.piece))
-					return true;
+				if (tmp.color == op) {
+					if("bishop" == tmp.piece || "queen" == tmp.piece) {
+						return true;
+					}
+					break;
+				}
 			}
 		}
 		catch (e) {}
@@ -1038,9 +1075,12 @@ function Converter(pgn) {
 				tmp = brd.vBoard[x][y+i];
 				if (tmp.color == col)
 					break;
-				if (tmp.color == op &&
-							("rook" == tmp.piece || "queen" == tmp.piece))
-					return true;
+				if (tmp.color == op) {
+					if("rook" == tmp.piece || "queen" == tmp.piece) {
+						return true;
+					}
+					break;
+				}
 			}
 		}
 		catch (e) {}
@@ -1049,20 +1089,26 @@ function Converter(pgn) {
 				tmp = brd.vBoard[x][y-i];
 				if (tmp.color == col)
 					break;
-				if (tmp.color == op &&
-							("rook" == tmp.piece || "queen" == tmp.piece))
-					return true;
+				if (tmp.color == op) {
+					if("rook" == tmp.piece || "queen" == tmp.piece) {
+						return true;
+					}
+					break;
+				}
 			}
 		}
 		catch (e) {}
 		try {
 			for (var i = 1;i < 7; i++) {
-				tmp = brd.vBoard[x+1][y];
+				tmp = brd.vBoard[x+i][y];
 				if (tmp.color == col)
 					break;
-				if (tmp.color == op &&
-							("rook" == tmp.piece || "queen" == tmp.piece))
-					return true;
+				if (tmp.color == op) {
+					if("rook" == tmp.piece || "queen" == tmp.piece) {
+						return true;
+					}
+					break;
+				}
 			}
 		}
 		catch (e) {}
@@ -1071,9 +1117,12 @@ function Converter(pgn) {
 				tmp = brd.vBoard[x-i][y];
 				if (tmp.color == col)
 					break;
-				if (tmp.color == op &&
-							("rook" == tmp.piece || "queen" == tmp.piece))
-					return true;
+				if (tmp.color == op) {
+					if("rook" == tmp.piece || "queen" == tmp.piece) {
+						return true;
+					}
+					break;
+				}
 			}
 		}
 		catch (e) {}

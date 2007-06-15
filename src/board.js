@@ -33,6 +33,7 @@
 
 		this.opts = [];
 		this.opts['imagePrefix'] = "img/default/";
+		this.opts['imageSuffix'] = 'gif';
 		this.opts['moveFontSize'] = "8pt";
 		this.opts['moveFontColor'] = "#537c3a";
 		this.opts['moveFont'] = 'Tahoma, Arial, sans-serif';
@@ -55,7 +56,7 @@
 										'boardSize', 'squareSize',
 										'blackSqColor', 'whiteSqColor',
 										'imagePrefix', 'showMovesPane',
-										'movesPaneWidth'];
+										'movesPaneWidth','imageSuffix'];
 
 		// if keys in options define new values then
 		// set the this.opts for that key with the 
@@ -66,7 +67,7 @@
 			}
 		}
 		
-		var brdI = new BoardImages();
+		var brdI = new BoardImages(this.opts);
 		var imageNames = brdI.imageNames['default'];
 		brdI = null;
 		// end of static
@@ -466,8 +467,8 @@
 
 					updateMoveInfo = function(board) {
 						var idx = board.conv.getCurMoveNo()-1;
-						//if (board.conv.getCurMoveNo() == board.conv.moves.length-1)
-						//	idx = board.conv.getCurMoveNo();
+//						if (board.conv.getCurMoveNo() == board.conv.moves.length-1)
+//							idx = board.conv.getCurMoveNo();
 						var move = board.conv.moves[idx];
 						if (move && move.moveStr) {
 							 var str = Math.floor((idx==0?1:idx)/2+1)+". "+move.moveStr;
@@ -501,8 +502,8 @@
 						// highlight the move in the move's pane
 						var idx = board.conv.getCurMoveNo();
 						board.movesOnPane[this.lastBoldIdx] = deMakeBold(this.lastBold);
-						if (bw)
-							 idx+=1;
+//						if (bw)
+//							 idx+=1;
 						this.lastBold = null;
 						this.lastBoldIdx = null;
 						if (board.movesOnPane[idx-1]) {
@@ -595,6 +596,18 @@
 					 * position
 					*/
 					this.populatePieces = function() {
+					for (var r=0;r<8;r++) {
+						for (var f=0;f<8;f++) {
+							var p = this.conv.initialBoard[r][f];
+							if (p.piece) {
+								img = this.getImg(p.piece,p.color);
+								this.pos[r][f].appendChild(img);
+								this.pos[r][f].piece = p.piece;
+								this.pos[r][f].color = p.color;
+							}
+						}
+					}
+/*
 					// pawns
 					for (var i = 0;i < 8; i++) {
 						img = this.getImg('pawn','white');
@@ -660,6 +673,7 @@
 					this.pos[0][4].appendChild(img);
 					this.pos[0][4].piece = 'king';
 					this.pos[0][4].color = 'black';
+*/
 				};
 
 				this.populateMoves = function(cont) {
@@ -685,37 +699,39 @@
 					var comment;
 
 					for (var i = 0;i < tmp2.length;i++) {
-						link = document.createElement("a");
-						tmp = document.createTextNode(tmp2[i].white);
-						tmp3 = document.createElement("b");
-
-						tmp3.style.fontFamily = "Tahoma, Arial, sans-serif";
-						tmp3.style.fontSize = "8pt";
-						tmp3.style.color = "black";
-						tmp3.appendChild(document.createTextNode(" "+(i+1)+". "));
-						cont.appendChild(tmp3);
-						
-						link.href = 'javascript:void(window['+this.id+']'
-												+'.skipToMove('+i+','+0+'))';
-						link.appendChild(tmp);
-						link.style.fontFamily = this.opts['moveFont'];
-						link.style.fontSize = this.opts['moveFontSize'];
-						link.style.color = this.opts['moveFontColor'];
-						link.style.textDecoration = "none";
-						cont.appendChild(link);
-
-						comment = this.conv.pgn.getComment(tmp2[i].white,lastMoveIdx);
-						if (comment[0]) {
-							var tmp4 = document.createElement("span");
-							tmp4.style.fontFamily = this.opts['commentFont'];
-							tmp4.style.fontSize = this.opts['commentFontSize'];
-							tmp4.style.color = this.opts['commentFontColor'];
-							tmp4.appendChild(document.createTextNode(comment[0]));
-							cont.appendChild(tmp4);
-							lastMoveIdx = comment[1];
+						if (tmp2[i].white != null) {
+							link = document.createElement("a");
+							tmp = document.createTextNode(tmp2[i].white);
+							tmp3 = document.createElement("b");
+	
+							tmp3.style.fontFamily = "Tahoma, Arial, sans-serif";
+							tmp3.style.fontSize = "8pt";
+							tmp3.style.color = "black";
+							tmp3.appendChild(document.createTextNode(" "+(i+this.conv.startMoveNum)+". "));
+							cont.appendChild(tmp3);
+							
+							link.href = 'javascript:void(window['+this.id+']'
+													+'.skipToMove('+i+','+0+'))';
+							link.appendChild(tmp);
+							link.style.fontFamily = this.opts['moveFont'];
+							link.style.fontSize = this.opts['moveFontSize'];
+							link.style.color = this.opts['moveFontColor'];
+							link.style.textDecoration = "none";
+							cont.appendChild(link);
+	
+							comment = this.conv.pgn.getComment(tmp2[i].white,lastMoveIdx);
+							if (comment[0]) {
+								var tmp4 = document.createElement("span");
+								tmp4.style.fontFamily = this.opts['commentFont'];
+								tmp4.style.fontSize = this.opts['commentFontSize'];
+								tmp4.style.color = this.opts['commentFontColor'];
+								tmp4.appendChild(document.createTextNode(comment[0]));
+								cont.appendChild(tmp4);
+								lastMoveIdx = comment[1];
+							}
+	
+							this.movesOnPane[this.movesOnPane.length] = link;
 						}
-
-						this.movesOnPane[this.movesOnPane.length] = link;
 
 						if (tmp2[i].black != null) {
 							cont.appendChild(document.createTextNode(" "));
@@ -742,7 +758,7 @@
 							this.movesOnPane[this.movesOnPane.length] = link;
 						}
 					}
-					txt = document.createTextNode("  "+this.conv.pgn.props['result']);
+					txt = document.createTextNode("  "+this.conv.pgn.props['Result']);
 					tmp2 = document.createElement("b");
 					tmp2.appendChild(txt);
 					tmp2.style.fontSize = "9pt";
@@ -849,32 +865,39 @@
 
 	/*
 		Provides support for different chess & button sets. Takes
-		two optional arguments. The first argument specifies the SET
-		identifier (defults to 'default') and the second is the
-		image prefix (defaults to "").
+		three optional arguments. The first argument specifies the SET
+		identifier (defults to 'default'), the second is the
+		image prefix (defaults to ""), and the third is the
+		image suffix (defaults to 'gif').
 	*/
-	function BoardImages() {
+	function BoardImages(options) {
 		this.set = "default";
 		this.pref = "";
-		if (arguments.length>0)
-			this.set = arguments[0];
-		if (arguments.length>1)
-			this.pref = arguments[1];
+		this.suf = 'gif';
+		if (options['set']) {
+			this.set = options['set'];
+		}
+		if (options['imagePrefix']) {
+			this.pref = options['imagePrefix'];
+		}
+		if (options['imageSuffix']) {
+			this.suf = options['imageSuffix'];
+		}
 		this.imageNames = {
 			"default": {
-				"white" : {"rook":"wRook.gif"
-									 ,"bishop":"wBishop.gif"
-									 ,"knight":"wKnight.gif"
-									 ,"queen":"wQueen.gif"
-									 ,"king":"wKing.gif"
-									 ,"pawn":"wPawn.gif"}
+				"white" : {"rook":"wRook."+this.suf
+									 ,"bishop":"wBishop."+this.suf
+									 ,"knight":"wKnight."+this.suf
+									 ,"queen":"wQueen."+this.suf
+									 ,"king":"wKing."+this.suf
+									 ,"pawn":"wPawn."+this.suf}
 					
-				,"black" : {"rook":"bRook.gif"
-									 ,"bishop":"bBishop.gif"
-									 ,"knight":"bKnight.gif"
-									 ,"queen":"bQueen.gif"
-									 ,"king":"bKing.gif"
-									 ,"pawn":"bPawn.gif"}
+				,"black" : {"rook":"bRook."+this.suf
+									 ,"bishop":"bBishop."+this.suf
+									 ,"knight":"bKnight."+this.suf
+									 ,"queen":"bQueen."+this.suf
+									 ,"king":"bKing."+this.suf
+									 ,"pawn":"bPawn."+this.suf}
 
 				,"btns" : {"ffward":"buttons/ffward.gif"
 										,"rwind":"buttons/rwind.gif"
