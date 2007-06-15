@@ -59,6 +59,8 @@ function Pgn(pgn) {
 			this.pgn = this.pgn.replace(matches[i], "");
 		 }
 	}
+	if(typeof(this.props['Result']) == 'undefined')
+		 this.props['Result'] = '';
 
 	// remove the properties
 	this.pgn = this.pgn.replace(/\[[^\]]*\]/g,'');
