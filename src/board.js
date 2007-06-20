@@ -497,7 +497,7 @@
 								}
 							}
 						}
-					}
+					};
 
 					/*
 						Non-member toggle function. The onClick that I'm
