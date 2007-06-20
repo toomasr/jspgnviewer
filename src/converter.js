@@ -1,4 +1,3 @@
-/** Version: 0.5 **/
 /**
  * Copyright 2006 Toomas R�mer
  *

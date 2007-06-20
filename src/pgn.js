@@ -22,7 +22,8 @@ function Pgn(pgn) {
 	// properties of the game eg players, ELOs etc
 	this.props = new Object();
 	this.validProps = ['Event','Site','Date','Round',
-								'White','Black','Result','FEN'];
+								'White','Black','Result','FEN',
+								'WhiteElo','BlackElo','TimeControl'];
 	// the moves, one move contains the black and white move
 	this.moves = new Array();
 	// the current move in the game
@@ -44,23 +45,21 @@ function Pgn(pgn) {
 	var matches = this.pgn.match(reprop);
 	if (matches) {
 		// extract information from each matched property
-		for(var i = 0;i < matches.length; i++) {
-			// lose the brackets
-			tmpMatches = matches[i].substring(1, matches[i].length-1);
-			// split by the first space
-			var key = tmpMatches.substring(0, tmpMatches.indexOf(" "));
-			var value = tmpMatches.substring(tmpMatches.indexOf(" ")+1);
-			if (value.charAt(0) == '"')
-				value = value.substr(1);
-			if (value.charAt(value.length-1) == '"')
-				value = value.substr(0, value.length-1);
+		 for(var i = 0;i < matches.length; i++) {
+			 // lose the brackets
+			 tmpMatches = matches[i].substring(1, matches[i].length-1);
+			 // split by the first space
+			 var key = tmpMatches.substring(0, tmpMatches.indexOf(" "));
+			 var value = tmpMatches.substring(tmpMatches.indexOf(" ")+1);
+			 if (value.charAt(0) == '"')
+				 value = value.substr(1);
+			 if (value.charAt(value.length-1) == '"')
+				 value = value.substr(0, value.length-1);
 			 
-			this.props[key] = value;
-			this.pgn = this.pgn.replace(matches[i], "");
+			 this.props[key] = value;
+			 this.pgn = this.pgn.replace(matches[i], "");
 		 }
 	}
-	if(typeof(this.props['Result']) == 'undefined')
-		 this.props['Result'] = '';
 
 	// remove the properties
 	this.pgn = this.pgn.replace(/\[[^\]]*\]/g,'');
@@ -82,7 +81,6 @@ function Pgn(pgn) {
 	var tmp = new Array();
 	tmp[1] = null;
 	var tmpidx = 0;	//make this 1 if FEN and black to move
-	
 	if (this.props["FEN"]) {
 		var fen = this.props['FEN'].split(/\/| /g);
 		if (fen[8] == 'b') {
@@ -90,7 +88,6 @@ function Pgn(pgn) {
 			this.skip = 1;
 		}
 	}
-	
 	for (var i=0;i<themoves.length-1;i++) {	//don't handle game end bit
 		if (themoves[i]) {
 			themoves[i] = themoves[i].replace(/^\s+|\s+$/g, '');
@@ -230,6 +227,9 @@ function stripIt(val, strip) {
 				if (!strip) {
 					out[out.length] = '_';
 				}
+				break;
+			case '\t':
+				out[out.length] = ' ';
 				break;
 			default:
 				if (count > 0) {

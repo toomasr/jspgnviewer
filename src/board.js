@@ -49,6 +49,7 @@
 		this.opts['whiteSqColor'] = "#ffffff";
 		this.opts['flipped'] = false;
 		this.opts['showMovesPane'] = true;
+		this.opts['showComments'] = true;
 
 		var optionNames = ['flipped', 'moveFontSize', 'moveFontColor',
 										'moveFont', 'commentFontSize',
@@ -56,7 +57,8 @@
 										'boardSize', 'squareSize',
 										'blackSqColor', 'whiteSqColor',
 										'imagePrefix', 'showMovesPane',
-										'movesPaneWidth','imageSuffix'];
+										'movesPaneWidth','imageSuffix',
+										'comments'];
 
 		// if keys in options define new values then
 		// set the this.opts for that key with the 
@@ -97,6 +99,8 @@
 
 			// toplevel table;
 			var topTable = document.createElement("table");
+			topTable.style.width = (parseInt(this.opts['boardSize'])+15)+"px";
+			topTable.style.height = (parseInt(this.opts['boardSize'])+15)+"px";
 			topLeftTd.appendChild(topTable);
 			topTable.border = 0;
 			var topTableTb = document.createElement("tbody");
@@ -121,8 +125,11 @@
 			this.movesTd = movesTd;
 			if (this.opts['movesPaneWidth'])
 				movesTd.style.width = this.opts['movesPaneWidth'];
-			else
-				movesTd.style.overflow = "hidden";
+//			else
+//				movesTd.style.overflow = "hidden";
+			movesTd.style.height = boardTd.style.height;
+			movesTd.style.overflow = "auto";
+			movesTd.style.border = "1px solid #cccccc";
 			movesTd.vAlign = "top";
 			topRightTd.appendChild(movesTd);
 			
@@ -253,6 +260,19 @@
 
 			btnTd.appendChild(href);
 
+			// comments
+			input = this.getImg("comments","btns");
+			input.alt = 'Show comments';
+			input.title = 'Show comments';
+			href = hrefS.cloneNode(false);
+			href.appendChild(input);
+
+			input.onclick = function() {
+				toggleComments(tmp, "flip");
+			};
+
+			btnTd.appendChild(href);
+
 			// next btn
 			input = this.getImg("forward","btns");
 			input.alt = 'Play one move';
@@ -278,6 +298,7 @@
 			};
 			btnTd.appendChild(href);
 			updateMoveInfo(this);
+			this.toggleMoves(this.opts['showMovesPane']);	//force the moves pane overflow to get picked up
 	 };
 
 		flipBoard = function(board) {
@@ -408,8 +429,8 @@
 							// i guess xtra information. Anyways setting the
 							// background to a color containing the "initial"
 							// parts fails. Go figure
-							piece.lastBg = piece.style.background.replace(/initial/g, "");
-							piece.style.background = "#e89292";
+							piece.lastBg = piece.style.backgroundColor.replace(/initial/g, "");
+							piece.style.backgroundColor = "#e89292";
 							this.lastSquare = piece;
 						}
 						catch (e) {}
@@ -434,7 +455,7 @@
 								piece.style.background = piece.lastBg;
 						}
 						if (this.lastSquare && this.lastSquare.lastBg) {
-							this.lastSquare.style.background = this.lastSquare.lastBg;
+							this.lastSquare.style.backgroundColor = this.lastSquare.lastBg;
 							this.lastSquare = null;
 						}
 					};
@@ -456,6 +477,28 @@
 						}
 					};
 
+					this.toggleComments = function(flag) {
+						if (flag == "flip")
+							flag = !this.opts['showComments'];
+						if (flag) {
+							this.opts['showComments'] = true;
+						}
+						else {
+							this.opts['showComments'] = false;
+						}
+						var list = this.movesTd.getElementsByTagName("span");
+						if (list) {
+							for (var i=0;i<list.length;i++) {
+								if (flag) {
+									list[i].style.display = "inline";
+								}
+								else {
+									list[i].style.display = "none";
+								}
+							}
+						}
+					}
+
 					/*
 						Non-member toggle function. The onClick that I'm
 						setting must not be a member function. I'm just
@@ -463,6 +506,10 @@
 					*/
 					toggleMoves = function(board, flag) {
 						board.toggleMoves(flag);
+					};
+
+					toggleComments = function(board, flag) {
+						board.toggleComments(flag);
 					};
 
 					updateMoveInfo = function(board) {
@@ -564,18 +611,38 @@
 					};
 
 					this.updatePGNInfo = function() {
-						if (this.conv.pgn.props['White'])
-							this.visuals['pgn']['players'].nodeValue = 
-									this.conv.pgn.props['White']+" - "+
-									this.conv.pgn.props['Black'];
-						if (this.visuals['pgn']['WhiteElo'])
+						this.visuals['pgn']['players'].nodeValue = ' ';
+						this.visuals['pgn']['elos'].nodeValue = ' ';
+						this.visuals['pgn']['event'].nodeValue = ' ';
+						this.visuals['pgn']['timecontrol'].nodeValue = ' ';
+						if (this.conv.pgn.props['White']) {
+							this.visuals['pgn']['players'].nodeValue = this.conv.pgn.props['White'];
+						}
+						this.visuals['pgn']['players'].nodeValue += " - ";
+						if (this.conv.pgn.props['Black']) {
+							this.visuals['pgn']['players'].nodeValue += this.conv.pgn.props['Black'];
+						}
+						if (this.conv.pgn.props['WhiteElo']) {
 							this.visuals['pgn']['elos'].nodeValue = 
-									this.conv.pgn.props['WhiteElo']+" - "+
+									this.conv.pgn.props['WhiteElo'];
+						}
+						this.visuals['pgn']['elos'].nodeValue += " - ";
+						if (this.conv.pgn.props['BlackElo']) {
+							this.visuals['pgn']['elos'].nodeValue += 
 									this.conv.pgn.props['BlackElo'];
-						if (this.visuals['pgn']['Event'])
+						}
+						if (this.conv.pgn.props['Event']) {
 							this.visuals['pgn']['event'].nodeValue =
-									this.conv.pgn.props['Event']+", "
-									+this.conv.pgn.props['Date'];
+									this.conv.pgn.props['Event'];
+						}
+						if (this.conv.pgn.props['Date']) {
+							this.visuals['pgn']['event'].nodeValue +=
+									", "+this.conv.pgn.props['Date'];
+						}
+						if (this.conv.pgn.props['TimeControl']) {
+							this.visuals['pgn']['timecontrol'].nodeValue =
+									this.conv.pgn.props['TimeControl'];
+						}
 					};
 
 					this.updateSettings = function() {
@@ -607,73 +674,6 @@
 							}
 						}
 					}
-/*
-					// pawns
-					for (var i = 0;i < 8; i++) {
-						img = this.getImg('pawn','white');
-						this.pos[6][i].appendChild(img);
-						this.pos[6][i].piece = 'pawn';
-						this.pos[6][i].color = 'white';
-            
-						img = this.getImg('pawn','black');
-						this.pos[1][i].appendChild(img);
-						this.pos[1][i].piece = 'pawn';
-						this.pos[1][i].color = 'black';
-					}
-
-					// rooks, bishops, knights
-					for(var i = 0; i < 2; i++) {
-						img = this.getImg('rook','white');
-						this.pos[7][i*7].appendChild(img);
-						this.pos[7][i*7].piece = 'rook';
-						this.pos[7][i*7].color = 'white';
-
-						img = this.getImg('rook','black');
-						this.pos[0][i*7].appendChild(img);
-						this.pos[0][i*7].piece = 'rook';
-						this.pos[0][i*7].color = 'black';
-
-						img = this.getImg('knight','white');
-						this.pos[7][i*5+1].appendChild(img);
-						this.pos[7][i*5+1].piece = 'knight';
-						this.pos[7][i*5+1].color = 'white';
-
-						img = this.getImg('knight','black');
-						this.pos[0][i*5+1].appendChild(img);
-						this.pos[0][i*5+1].piece = 'knight';
-						this.pos[0][i*5+1].color = 'black';
-
-						img = this.getImg('bishop','white');
-						this.pos[7][i*3+2].appendChild(img);
-						this.pos[7][i*3+2].piece = 'bishop';
-						this.pos[7][i*3+2].color = 'white';
-
-						img = this.getImg('bishop','black');
-						this.pos[0][i*3+2].appendChild(img);
-						this.pos[0][i*3+2].piece = 'bishop';
-						this.pos[0][i*3+2].color = 'black';
-					}
-
-					img = this.getImg('queen','white');
-					this.pos[7][3].appendChild(img);
-					this.pos[7][3].piece = 'queen';
-					this.pos[7][3].color = 'white';
-
-					img = this.getImg('king','white');
-					this.pos[7][4].appendChild(img);
-					this.pos[7][4].piece = 'king';
-					this.pos[7][4].color = 'white';
-
-					img = this.getImg('queen','black');
-					this.pos[0][3].appendChild(img);
-					this.pos[0][3].piece = 'queen';
-					this.pos[0][3].color = 'black';
-
-					img = this.getImg('king','black');
-					this.pos[0][4].appendChild(img);
-					this.pos[0][4].piece = 'king';
-					this.pos[0][4].color = 'black';
-*/
 				};
 
 				this.populateMoves = function(cont) {
@@ -722,6 +722,9 @@
 							comment = this.conv.pgn.getComment(tmp2[i].white,lastMoveIdx);
 							if (comment[0]) {
 								var tmp4 = document.createElement("span");
+								if (!this.opts['showComments']) {
+									tmp4.style.display = "none";
+								}
 								tmp4.style.fontFamily = this.opts['commentFont'];
 								tmp4.style.fontSize = this.opts['commentFontSize'];
 								tmp4.style.color = this.opts['commentFontColor'];
@@ -748,6 +751,9 @@
 							comment = this.conv.pgn.getComment(tmp2[i].black,lastMoveIdx);
 							if (comment[0]) {
 								var tmp4 = document.createElement("span");
+								if (!this.opts['showComments']) {
+									tmp4.style.display = "none";
+								}
 								tmp4.style.fontFamily = this.opts['commentFont'];
 								tmp4.style.fontSize = this.opts['commentFontSize'];
 								tmp4.style.color = this.opts['commentFontColor'];
@@ -791,7 +797,7 @@
 					td.style.fontWeight = "bold";
 					tr.appendChild(td);
 
-					var txt = document.createTextNode('');
+					var txt = document.createTextNode('&nbsp;');
 					this.visuals['pgn']['players'] = txt;
 					td.appendChild(txt);
 					//
@@ -803,7 +809,7 @@
 					td = tdS.cloneNode(false);
 					tr.appendChild(td);
 
-					txt = document.createTextNode('');
+					txt = document.createTextNode('&nbsp;');
 					this.visuals['pgn']['elos'] = txt;
 					td.appendChild(txt);
 					//
@@ -815,8 +821,19 @@
 					td = tdS.cloneNode(false);
 					tr.appendChild(td);
 
-					txt = document.createTextNode('');
+					txt = document.createTextNode('&nbsp;');
 					this.visuals['pgn']['event'] = txt;
+					td.appendChild(txt);
+
+					// Time control
+					tr = document.createElement('tr');
+					tblTb.appendChild(tr);
+
+					td = tdS.cloneNode(false);
+					tr.appendChild(td);
+
+					txt = document.createTextNode('&nbsp;');
+					this.visuals['pgn']['timecontrol'] = txt;
 					td.appendChild(txt);
 					//;
 					this.updatePGNInfo();
@@ -904,6 +921,7 @@
 										,"forward":"buttons/forward.gif"
 										,"back":"buttons/back.gif"
 										,"toggle":"buttons/toggle.gif"
+										,"comments":"buttons/comments.gif"
 										,"flip":"buttons/flip.gif"}
 			}
 		};
