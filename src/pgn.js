@@ -30,7 +30,8 @@ function Pgn(pgn) {
 	this.currentMove = 0;
 	// for outputting white and black moves separately
 	this.skip = 0;
-
+	
+	pgn = pgn.replace(/\n/g," ");
 	this.pgn = pgn;
 	this.pgnRaw = pgn;
 	this.pgnStripped = stripIt(pgn);
@@ -39,7 +40,7 @@ function Pgn(pgn) {
 
 	// strip comments
 	this.pgn = stripIt(pgn,true);
-
+	
 	// Match all properties
 	var reprop = /\[([^\]]*)\]/gi;
 	var matches = this.pgn.match(reprop);
@@ -63,8 +64,6 @@ function Pgn(pgn) {
 
 	// remove the properties
 	this.pgn = this.pgn.replace(/\[[^\]]*\]/g,'');
-	// newlines to spaces
-	this.pgn = this.pgn.replace(/\n/g, " ");
 	//trim
 	this.pgn = this.pgn.replace(/^\s+|\s+$/g, '');
 
@@ -161,10 +160,10 @@ function Pgn(pgn) {
 	this.getComment = function(move, idx) {
 		var i = this.pgnStripped.indexOf(move,idx);
 		if (i == -1) {
-			alert("getComment error, could not find move");
+			throw("getComment error, could not find move '"+move+"'"+",'"+idx+"'");
 			return [null,idx];
 		}
-		
+
 		for (var j=i+move.length;j<this.pgnStripped.length;j++) {
 			var c = this.pgnStripped.charAt(j);
 			switch (c) {
@@ -198,6 +197,11 @@ function Move(white, black) {
 	};
 };
 
+/*
+	Strip game comments from a PGN string. If second
+	parameter set to true then comments will be replaced
+	by an underscore.
+*/
 function stripIt(val, strip) {
 	var count = 0;
 	var out = new Array();

@@ -794,9 +794,6 @@ function Converter(pgn) {
 		else if (rtrns.length == 1)
 			return rtrns[0];
 
-		for (var i=0;i<arr.length;i++) {
-			alert(" "+arr[i][0]+" "+arr[i][1]+" "+to[0]+" "+to[1]+" "+extra[0]+extra[1]);
-		}
 		throw("No rook move found '"+toSAN+"'");
 	};
 
