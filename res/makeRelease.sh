@@ -84,6 +84,17 @@ cp -r $IMG_DIR/* $WP_IMG_DIR
 cp $JS_DEST_DIR/jsPgnViewer.js $WP_DEST_DIR
 chmod -R 775 $DEST_DIR
 
+# generate packed versions to be uploaded
+if [ $# -eq 2 ];then
+	if [ $2 == 'packed' ];then
+		genPackedFormat
+	fi
+elif [ $# -ge 1 ];then
+	if [ $1 == 'packed' ];then
+		genPackedFormat
+	fi
+fi
+
 # WPR release
 cd $DEST_DIR
 NAME="pgnviewer-"`cat ../wpVersion`".tar.gz"
@@ -96,12 +107,6 @@ NAME="jspgnviewer-"`cat ../jsVersion`".tar.gz"
 tar --exclude=.svn -cvzf $NAME jspgnviewer
 cd $OLD_DIR
 
-# generate packed versions to be uploaded
-if [ $# -eq 2 ];then
-	if [ $2 == 'packed' ];then
-		genPackedFormat
-	fi
-fi
 
 if [ $# -ge 1 ];then
 	if [ $1 == 'wp' ]; then
@@ -135,8 +140,6 @@ if [ $# -ge 1 ];then
 	elif [ $1 == 'change' ];then
 		echo "Uploading Changelog.txt"
 		scp Changelog.txt toomas@jabber.ee:/home/toomas/public_html/jspgnviewer/downloads/Changelog.txt
-	elif [ $1 == 'packed' ];then
-		genPackedFormat
 	fi
 fi
 

@@ -618,15 +618,19 @@
 						if (this.conv.pgn.props['White']) {
 							this.visuals['pgn']['players'].nodeValue = this.conv.pgn.props['White'];
 						}
-						this.visuals['pgn']['players'].nodeValue += " - ";
+						if (this.conv.pgn.props['White'] || this.conv.pgn.props['Black'])
+							this.visuals['pgn']['players'].nodeValue += " - ";
+						
 						if (this.conv.pgn.props['Black']) {
 							this.visuals['pgn']['players'].nodeValue += this.conv.pgn.props['Black'];
 						}
+						
 						if (this.conv.pgn.props['WhiteElo']) {
 							this.visuals['pgn']['elos'].nodeValue = 
 									this.conv.pgn.props['WhiteElo'];
 						}
-						this.visuals['pgn']['elos'].nodeValue += " - ";
+						if (this.conv.pgn.props['WhiteElo'] || this.conv.pgn.props['BlackElo'])
+							this.visuals['pgn']['elos'].nodeValue += " - ";
 						if (this.conv.pgn.props['BlackElo']) {
 							this.visuals['pgn']['elos'].nodeValue += 
 									this.conv.pgn.props['BlackElo'];
@@ -764,12 +768,14 @@
 							this.movesOnPane[this.movesOnPane.length] = link;
 						}
 					}
-					txt = document.createTextNode("  "+this.conv.pgn.props['Result']);
-					tmp2 = document.createElement("b");
-					tmp2.appendChild(txt);
-					tmp2.style.fontSize = "9pt";
-					cont.appendChild(tmp2);
-					this.movesOnPane[this.movesOnPane.length] = tmp2;
+					if(!(typeof(this.conv.pgn.props['Result']) == 'undefined')) {
+						txt = document.createTextNode("  "+this.conv.pgn.props['Result']);
+						tmp2 = document.createElement("b");
+						tmp2.appendChild(txt);
+						tmp2.style.fontSize = "9pt";
+						cont.appendChild(tmp2);
+						this.movesOnPane[this.movesOnPane.length] = tmp2;
+					}
 				};
 
 				this.populateProps = function(container) {
