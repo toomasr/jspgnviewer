@@ -30,8 +30,20 @@ function Pgn(pgn) {
 	this.currentMove = 0;
 	// for outputting white and black moves separately
 	this.skip = 0;
-	
+
+	// strip newlines
 	pgn = pgn.replace(/\n/g," ");
+	
+	// replace dollar signs
+	//"!", "?", "!!", "!?", "?!", and "??"
+	pgn = pgn.replace(/\ \$1/g, "!");
+	pgn = pgn.replace(/\ \$2/g, "?");
+	pgn = pgn.replace(/\ \$3/g, "!!");
+	pgn = pgn.replace(/\ \$4/g, "!?");
+	pgn = pgn.replace(/\ \$5/g, "?!");
+	pgn = pgn.replace(/\ \$6/g, "??");
+	
+	this.pgn
 	this.pgn = pgn;
 	this.pgnRaw = pgn;
 	this.pgnStripped = stripIt(pgn);
