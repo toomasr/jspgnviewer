@@ -36,13 +36,13 @@ function Pgn(pgn) {
 	
 	// replace dollar signs
 	//"!", "?", "!!", "!?", "?!", and "??"
-	pgn = pgn.replace(/\ \$1/g, "!");
-	pgn = pgn.replace(/\ \$2/g, "?");
-	pgn = pgn.replace(/\ \$3/g, "!!");
-	pgn = pgn.replace(/\ \$4/g, "!?");
-	pgn = pgn.replace(/\ \$5/g, "?!");
-	pgn = pgn.replace(/\ \$6/g, "??");
-	
+	pgn = pgn.replace(/\ \$1[0-9]*/g, "!");
+	pgn = pgn.replace(/\ \$2[0-9]*/g, "?");
+	pgn = pgn.replace(/\ \$3[0-9]*/g, "!!");
+	pgn = pgn.replace(/\ \$4[0-9]*/g, "!?");
+	pgn = pgn.replace(/\ \$5[0-9]*/g, "?!");
+	pgn = pgn.replace(/\ \$6[0-9]*/g, "??");
+
 	this.pgn
 	this.pgn = pgn;
 	this.pgnRaw = pgn;
