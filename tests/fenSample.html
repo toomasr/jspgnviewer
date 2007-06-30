@@ -1,0 +1,63 @@
+<html>
+	<head>
+		<style type="text/css" media="screen">
+			<!-- @import url(test.css); -->
+		</style>
+
+  	<!--script type="text/javascript"
+		language="javascript"
+		src="../bin/jspgnviewer/jsPgnViewer.js">
+		</script-->
+    <script
+    	type="text/javascript"
+    	language="javascript"
+			src="../src/converter.js">
+			</script>
+    <script
+    	type="text/javascript"
+    	language="javascript"
+			src="../src/pgn.js">
+			</script>
+    <script
+    	type="text/javascript"
+    	language="javascript"
+			src="../src/board.js">
+			</script>
+		<!-- script language="javascript">
+			//var brdi = new BoardImages("default", "../img/default/")
+			//brdi.preload()
+		</script-->
+  </head>
+
+  <body>
+    <table border=0> 
+      <tr>
+        <td with="600px">
+						<div id='area_board'> 
+						</div>
+<div id='area' style="visibility: hidden;display:none">
+[Event "UNO Quads"]
+[Site "University of Nebraska at Omaha"]
+[Date "2007.5.12"]
+[Round "1"]
+[White "Moore, Martin"]
+[Black "Solheim, Jeffery A"]
+[TimeControl "G55/5"]
+[ECO "D02"] { Grunfeld Reversed / Symmetrical Variation }
+[FEN "bnqrnbkr/pppppppp/8/8/8/8/PPPPPPPP/BNQRNBKR w KQkq -"]
+
+1. e4 e5
+
+</div>
+<script language="JavaScript">
+	var brd = new Board('area', {'imagePrefix':'../img/default/',
+		 														'movesPaneWidth':'300px',
+																'showMovesPane':true,
+																'flipped':false});
+	brd.init();
+</script>
+          </td>
+      </tr>
+    </table>
+  </body>
+</html>

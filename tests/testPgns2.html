@@ -1,0 +1,531 @@
+
+<html>
+  <head>
+    <script
+    	type="text/javascript"
+    	language="javascript"
+			src="../src/converter.js">
+			</script>
+    <script
+    	type="text/javascript"
+    	language="javascript"
+			src="../src/pgn.js">
+			</script>
+
+		<script>
+			function startTest() {
+				if (confirm("Are you sure? It takes ages and u might want to use your browser for something more interesting")) {
+					 f()
+				}
+			}
+			function f() {
+				for (var i = 1;i<26;i++) {
+					var pgn = new Pgn(document.getElementById("testGame"+i).firstChild.nodeValue);	 
+					var conv = new Converter(pgn)
+					try {
+						console.log("Converting game "+i)
+						console.time("conversion")
+						conv.convert()
+						console.timeEnd("conversion")
+						console.log("Success. Time was ")
+					}
+					catch (e) {
+						console.warn("Conversion failed for testGame"+i+". "+e)
+					}
+				 }
+			}
+		</script>
+  </head>
+
+  <body>
+<input type="button" value="Start testing" onClick="startTest()"/>
+<div id='testGame1' style='visibility:hidden;display:none'>
+
+
+[Event "?"]
+[Site "C.S. Graves' bedroom"]
+[Date "2002.12.14"]
+[White "Laurie Moyer"]
+[Black "C.S. Graves"]
+[Result "1/2-1/2"]
+
+1.e4 e5 2.Bc4 Nf6 3.d3 Nc6 4.Nf3 Bd6 5.O-O O-O 6.Nc3 b6 7.Nh4 Bb7 8.Nf5 Bb4 9.Qf3
+Re8 10.Qg3 Nh5 11.Qg4 Nf4 12.Nxg7 Ne2+ 13.Nxe2 Re7 14.Bg5 Bc5 15.Qh5 Nb4 16.Bxf7+
+Kf8 17.Qxh7 Nxc2 18.Qh8+ Kxf7 19.Qh6 Re6 20.Qh5+ Rg6 21.Bxd8 Nxa1 22.Rxa1 Rxd8 23.Qxe5
+Re8 24.Qf5+ Kxg7 25.Qxd7+ Kf8 26.Qxc7 Rf6 27.Qxb7 Bxf2+ 28.Kh1 Re7 29.Qb8+ Kg7 30.Qd8
+Rff7 31.Rf1 Rd7 32.Qe8 Rfe7 33.Qh5 Rxd3 34.Rxf2 Rd1+ 35.Rf1 Rxf1+   1/2-1/2
+</div><div id='testGame1' style='visibility:hidden;display:none'>
+[Event "?"]
+[Site "17 Orange Street Upstairs Kitchen"]
+[Date "2002.12.14"]
+[White "RoB Patey"]
+[Black "C.S. Graves"]
+[Result "0-1"]
+
+1.Nc3 e5 2.b4 Nc6 3.e4 Nf6 4.Bc4 d6 5.Nf3 d5 6.Bd3 Bd6 7.O-O O-O 8.a4 Be6 9.b5 Nb4
+10.Ba3 c5 11.Nxe5 Bxe5 12.exd5 Bg4 13.Qe1 Nh5 14.Qxe5 Re8 15.Qxg7+ Nxg7 16.Rab1 Qh4
+17.d6 a5 18.g3 Qf6 19.Nd5 Qf3 20.Bb2 Bh3 21.Be4 Qxe4 $2 22.f3 Qxd5 23.d7 Re2 24.c4 $2
+Qxd2 25.Bc3 Qc2 26.Bxg7 Rg2+ 27.Kh1 Rg1+ 28.Kxg1 Qg2+   0-1
+</div><div id='testGame2' style='visibility:hidden;display:none'>
+[Event "?"]
+[Site "17 Orange Street Upstairs Kitchen"]
+[Date "2002.12.14"]
+[White "RoB Patey"]
+[Black "C.S. Graves"]
+[Result "0-1"]
+
+1.e4 Nc6 2.Bb5 e5 3.Nf3 Bc5 4.O-O Nf6 5.d3 O-O 6.Bg5 d6 7.a4 a6 8.Bc4 Ng4 9.Qd2 Qd7
+10.Nc3 Nxf2 11.Rxf2 Bxf2+ 12.Qxf2 Qg4 13.h3 Qh5 14.Nd5 Bxh3 15.Ne3 d5 16.Bxd5 Rae8
+17.Nf5 Nb4 18.c4 Nc2 19.Qxc2 c6 20.Bxf7+ Rxf7 21.Qf2 b5 22.Qb6 Qg4 23.N5h4 Rxf3 24.Qxc6
+Bxg2 25.Qxe8+ Rf8 26.Nxg2 Rxe8 27.c5 Qxg5 28.axb5 Re6 29.bxa6 Rg6 30.a7 Qxg2+   0-1
+</div><div id='testGame3' style='visibility:hidden;display:none'>
+[Event "?"]
+[Site "?"]
+[Date "2002.12.15"]
+[White "Laurie Moyer"]
+[Black "C.S. Graves"]
+[Result "0-1"]
+
+1.Nf3 d5 2.d3 Nc6 3.e4 Nf6 4.Nc3 e5 5.Be2 Be6 6.O-O Bc5 7.Be3 b6 8.d4 Bb4 9.dxe5 Nxe4
+10.Nb5 O-O 11.Qd3 a6 12.Nxc7 Qxc7 13.Qb3 Nc5 14.Bxc5 bxc5 15.a3 c4 16.Qa4 a5 17.Nd4
+Nxd4 18.axb4 Nxe2+ 19.Kh1 axb4 20.Qxb4 Rab8 21.Qa3 d4 22.Rad1 d3 23.cxd3 c3 24.bxc3
+Qc6 25.Rfe1 Nf4 26.Qc1 Qxg2+   0-1
+</div><div id='testGame4' style='visibility:hidden;display:none'>
+[Event "?"]
+[Site "?"]
+[Date "2002.12.31"]
+[White "RoB Patey"]
+[Black "C.S. Graves"]
+[Result "0-1"]
+
+1.e4 e5 2.Be2 Nc6 3.Nf3 Nf6 4.O-O Bc5 5.b3 Ng4 6.Bb2 Nxf2 7.Qc1 Nxe4+ 8.Kh1 Nf2+ 9.Kg1
+Nd3+ 10.Nd4 Nxc1 11.Kh1 Nxd4 12.c3 Nc2 13.c4 Nxe2 14.Bxe5 Nxa1 15.a4 d6 16.b4 b6
+17.Re1 Bg4 18.bxc5 Nc2 19.cxd6 Nxe1 20.d7+ Qxd7 21.d4 Nf3 22.Nd2 Nxd2 23.h3 Ng3+
+24.Kg1 Bf3 25.gxf3 Nxf3+ 26.Kg2 Ng5 27.Kxg3 Qxh3+ 28.Kf2 Ne4+ 29.Ke1 Qe3+ 30.Kf1
+Qf2+   0-1
+</div><div id='testGame5' style='visibility:hidden;display:none'>
+[Event "?"]
+[Site "CFMH Lounge"]
+[Date "2003.02.04"]
+[White "C.S. Graves"]
+[Black "Elijah Kamminga"]
+[Result "1-0"]
+
+1.d4 e6 2.e4 Nc6 3.Nf3 b5 4.Bg5 f6 5.Bf4 Rb8 6.Nc3 Nb4 7.Bd3 Rb6 8.O-O Bb7 9.Re1 g6
+10.b3 a6 11.a4 bxa4 12.Rxa4 g5 13.Bg3 Rc6 14.Qd2 Nh6 15.d5 f5 16.Nxg5 exd5 17.exd5+
+Be7 18.dxc6 Nxc6 19.Bc4 Ne5 20.Nf7 $2 Nhxf7 21.Bh4 Bxh4 22.Ra5 c5 23.b4 cxb4 24.Raxe5+
+Nxe5 25.Rxe5+ Kf8 26.Qh6+   1-0
+</div><div id='testGame6' style='visibility:hidden;display:none'>
+[Event "?"]
+[Site "CFMH Lounge"]
+[Date "2003.02.19"]
+[White "Alex Pearson"]
+[Black "C.S. Graves"]
+[Result "0-1"]
+
+1.b4 d5 2.d4 Nc6 3.c3 Nf6 4.Bd2 Bf5 5.Na3 e6 6.g3 Bd6 7.Nb5 O-O 8.Nxd6 cxd6 9.Bg2
+e5 10.f3 a5 11.h3 Re8 12.Kf1 axb4 13.cxb4 Nxd4 14.a4 Bc2 15.Qe1 Nh5 16.e3 Nf5 17.Kf2
+b5 18.Ra2 Qc8 19.Bc1 Nhxg3 20.Qd2 Nxh1+ 21.Bxh1 Bb3 22.Rb2 bxa4 23.f4 d4 24.Nf3 $2
+dxe3+ 25.Kg1 exd2 26.Bxd2 Ng3 27.Bg2 a3 28.Ra2 e4 29.Nd4 Bxa2 30.f5 Bc4 31.Bg5 a2
+32.Kh2 Ra3 33.h4 a1=Q 34.Kh3 Nf1+ 35.Kg4 Nh2+ 36.Kh5 g6+ 37.Kh6 Ng4+   0-1
+</div><div id='testGame7' style='visibility:hidden;display:none'>
+[Event "?"]
+[Site "Alex Pearson's house"]
+[Date "2003.02.21"]
+[White "C.S. Graves"]
+[Black "Alex Pearson"]
+[Result "*"]
+
+1.d4 d5 2.Bf4 Bf5 3.e3 e6 4.Bd3 Bg4 5.Nf3 Bb4+ 6.Nc3 Nf6 7.O-O O-O 8.Re1 Re8 9.Qd2
+Nc6 10.Rad1 Na5 11.a3 Nh5 12.axb4 Nxf4 13.bxa5 Nh5 14.e4 c6 15.h3 Qxa5 16.Ra1 Qd8
+17.e5 a5 18.Ng5 h6 19.Bh7+ Kh8 20.Nxf7+ $1 Kxh7 21.Nxd8 Rexd8 22.hxg4 Nf4 23.Qxf4 Ra6
+24.Re3 Rb6 25.Na4 Rb4 26.b3 c5 27.Rh3 Rxd4 28.Qe3 Rxg4 29.f3 Rg6 30.Nxc5 Rc8 31.Rxa5
+b6 32.Ra7 b5 $2 33.Rxg7+ Rxg7 34.Rxh6+ Kg8 35.Nxe6 b4 $2 36.Nxg7 Kf8 37.e6 Kg8 38.e7
+Kxg7 39.Qg5+ Kf7 40.Qg6+   1-0
+</div><div id='testGame8' style='visibility:hidden;display:none'>
+[Event "?"]
+[Site "CFMH Lounge"]
+[Date "2003.03.04"]
+[White "C.S. Graves"]
+[Black "Alex Pearson"]
+[Result "1-0"]
+
+1.d4 d5 2.Nc3 Bd7 3.f3 c6 4.e4 Na6 5.Bd3 Nc7 6.Nge2 Rc8 7.O-O Ne6 8.Bf4 Nxf4 9.Nxf4
+b6 10.Qe2 c5 11.Rfd1 Bb5 $2 12.Bxb5+ Rc6 13.exd5 a6 14.Bxc6+ Qd7 15.Bxd7+ Kxd7 16.Na4
+Ke8 17.dxc5 bxc5 18.Qb5+ $2 axb5 19.d6 exd6 20.Re1+ Kd8 21.Re2 Nf6 22.Rae1 d5 23.Nxd5
+Bd6 24.Rd1 h5 25.Ne7 bxa4 26.Nc6+ Kd7 27.Na7 h4 28.h3 Nh5 29.Nb5 Kc8 30.Rxd6 Ng3
+31.Na7+ Kb8 32.Re7 Ne2+ 33.Kf2 Nf4 34.Nc6+ Ka8 35.Ra7+   1-0
+</div><div id='testGame9' style='visibility:hidden;display:none'>
+[Event "?"]
+[Site "17 Orange Street"]
+[Date "2003.03.11"]
+[White "Alex Pearson"]
+[Black "C.S. Graves"]
+[Result "0-1"]
+
+1.h4 d5 2.Nh3 e5 3.Ng5 Nf6 4.f3 Nc6 5.h5 h6 6.Rh4 hxg5 7.f4 gxh4 8.g4 Nxg4 9.Bh3 Bf5
+10.e3 Qd7 11.fxe5 Ncxe5 12.Nc3 O-O-O 13.Nb5 a6 14.Na7+ Kb8 15.Nc8 Kxc8 16.a4 Bc5
+17.b3 Rxh5 18.c3 Nd3+ 19.Ke2 Re8 20.Ra2 d4 (20...Rxe3+ 21.Kf1) 21.Rc2 dxe3 22.dxe3
+g6 23.Kd2 Nxe3 24.Qg1 Nxc2 25.Qd1 Nf2+   0-1
+</div><div id='testGame10' style='visibility:hidden;display:none'>
+[Event "?"]
+[Site "17 Orange St."]
+[Date "2003.03.11"]
+[White "Alex Pearson"]
+[Black "C.S. Graves"]
+[Result "0-1"]
+
+1.b4 d5 2.Bb2 e5 3.g3 Nf6 4.Bg2 Nc6 5.Ba3 Bd6 6.b5 Na5 7.Bxd6 cxd6 8.Na3 O-O 9.d3
+d4 10.e4 Be6 11.Nf3 a6 12.bxa6 Rxa6 13.Nb5 Nc6 14.Ng5 Qa5+ 15.Nc3 Qxc3+ 16.Kf1 Na5
+17.a3 Bg4 18.Qc1 d5 19.Rb1 dxe4 20.Qd1 $2 exd3 21.Qe1 Be2+ 22.Kg1 e4 23.Nh3 e3 24.Rc1 $2
+d2 25.Qf1 Bxf1 26.Kxf1 e2+ 27.Kxe2 dxc1=Q 28.Rxc1 Re8+ 29.Kf1 Rae6 30.Nf4 Re1+ 31.Rxe1
+Rxe1+   0-1
+</div><div id='testGame11' style='visibility:hidden;display:none'>
+[Event "?"]
+[Site "Charlotte Street Apt. 4"]
+[Date "2003.03.15"]
+[White "C.S. Graves"]
+[Black "RoB Patey"]
+[Result "1-0"]
+
+1.d4 e5 2.c3 Nf6 3.e4 Nc6 4.Nf3 Nxe4 5.Bd3 exd4 6.cxd4 Bb4+ 7.Bd2 Nxd2 8.Nbxd2 O-O
+9.O-O Qf6 10.Ne4 Qe6 11.Nfg5 Qg6 12.Ng3 Qxg5 13.Qh5 Qd2 14.Qxh7+   1-0
+</div><div id='testGame12' style='visibility:hidden;display:none'>
+[Event "?"]
+[Site "Charlotte Street Apt. 4"]
+[Date "2003.03.15"]
+[White "RoB Patey"]
+[Black "C.S. Graves"]
+[Result "0-1"]
+
+1.d4 d5 2.Nf3 Nc6 3.Bf4 Nf6 4.e4 e5 5.Bb5 Bb4+ 6.c3 Ba5 7.Ng5 exd4 8.O-O O-O 9.Nd2
+Bg4 10.Qb3 dxe4 11.Rae1 Re8 12.Qxf7+ Kh8 13.Bxc6 e3 14.Nc4 Re7 15.Be8 Nxe8 16.Bxc7
+Rxf7 17.Bxd8 Rxd8 18.cxd4 exf2+ 19.Rxf2 Nf6 20.Nxf7+ Kg8 21.Rxf6 gxf6 22.Nxd8 Bxe1
+23.h3 Bf5 24.Kf1 Bg3 25.Ne3 Bd3+ 26.Kg1 h5 27.Nd5 f5 28.Nf6+ Kg7 29.Nxh5+ Kg6 30.Nxg3
+f4 31.Nh1 b5 32.Ne6 Kf5 33.Nf2 Bb1 34.Ng4 Bxa2 35.Nxf4 Kxf4 36.g3+ Ke4 37.Kf2 Kxd4
+38.h4 b4 39.h5 Bg8 40.Ne3 a5 41.b3 Kc3 42.Nc4 Kxb3 43.Nxa5+ Ka4 44.Nc6 b3 45.Ke2
+b2 46.Nd4 b1=Q 47.Kd2 Qb4+ 48.Ke3 Qe7+ 49.Kd3 Bh7+ 50.Kc4 Qb4+ 51.Kd5 Bg8+ 52.Kc6
+Qxd4 53.h6 Qe4+ 54.Kb6 Kb4 55.Ka6 Qe6+ 56.Kb7 Kb5 57.g4 Qe7+ 58.Kc8 Kc6 59.g5 Qe8+
+  0-1
+</div><div id='testGame13' style='visibility:hidden;display:none'>
+[Event "?"]
+[Site "Brunswick Square"]
+[Date "2003.03.16"]
+[White "Christina Cole"]
+[Black "C.S. Graves"]
+[Result "0-1"]
+
+1.e4 e5 2.Bc4 Nf6 3.Nf3 c6 4.Nc3 d5 5.exd5 cxd5 6.Bxd5 Nxd5 7.Ne4 Nc6 8.d3 Bd6 9.Be3
+O-O 10.Qd2 Bf5 11.Nxd6 Qxd6 12.b4 Rfe8 13.Rb1 e4 14.Ng5 exd3 15.Ne4 Rad8 $2 16.Nxd6
+Nf6 17.Nxf5 dxc2 18.Qc3 cxb1=Q+ 19.Ke2 Nd5 20.Qc4 Qxf5 21.Rc1 Ne5 22.Qd4 Ng4 23.Rc7
+Ndxe3 24.Qxa7 Qxf2+   0-1
+</div><div id='testGame14' style='visibility:hidden;display:none'>
+[Event "?"]
+[Site "Brunswick Square"]
+[Date "2003.03.16"]
+[White "Christina Cole"]
+[Black "C.S. Graves"]
+[Result "0-1"]
+
+1.Nf3 d5 2.c3 e5 3.d3 Nf6 4.h3 Nc6 5.Bg5 h6 6.Bh4 Bd6 7.Qc1 Bf5 8.e3 Qe7 9.Be2 O-O
+10.Bd1 Rfd8 11.Bb3 Na5 12.Ba4 c6 13.Qd1 Rac8 14.Qe2 b5 15.Bc2 c5 16.g4 Bg6 17.g5
+hxg5 18.Bxg5 e4 19.Nh4 Bh5 20.Rg1 Bxe2 21.Kxe2 c4 22.Nf5 exd3+ 23.Kd2 Ne4+ 24.Kc1
+d2+ 25.Nxd2 Qe5 26.Bxe4 dxe4 27.f4 Qd5 28.Rg4 Bc5 29.Ne7+ Bxe7 30.Bxe7 Qxd2+ 31.Kb1
+Qd1+   0-1
+</div><div id='testGame15' style='visibility:hidden;display:none'>
+[Event "?"]
+[Site "103 Charlotte St. Apt 4"]
+[Date "2003.04.02"]
+[White "Laurie Moyer"]
+[Black "C.S. Graves"]
+[Result "0-1"]
+
+1.d4 d5 2.Nc3 Nc6 3.Nf3 Nf6 4.e4 e5 5.dxe5 Bb4 6.Bb5 Nxe4 7.O-O O-O 8.Nxd5 Bg4 9.Qd3
+Nc5 10.Qd1 Re8 11.Bxc6 bxc6 12.Nxb4 Ne4 13.g3 Bh3 14.Re1 f5 15.Nxc6 Qc8 16.Ncd4 Qb7
+17.Ng5 Nxg5 18.Qh5 Qg2+   0-1
+</div><div id='testGame16' style='visibility:hidden;display:none'>
+[Event "?"]
+[Site "17 Orange St. Upstairs Kitchen"]
+[Date "2003.04.12"]
+[White "RoB Patey"]
+[Black "C.S. Graves"]
+[Result "*"]
+
+1.a4 d5 2.Ra3 e5 3.Rc3 Nc6 4.e4 Nf6 5.Bb5 a6 6.Na3 Bb4 7.Nf3 O-O 8.O-O dxe4 9.Ng5
+Bg4 10.Qe1 Qe7 11.Nc4 Rad8 12.Qe3 Nd5 13.Qxe4 Nf6 14.Rh3 Nxe4 15.Rxh7 Qxg5 16.f4
+exf4 17.d3 Bc5+ 18.d4 Bxd4+ 19.Kh1 Kxh7 20.Bxf4 Nf2+ 21.Kg1 {Nf2+ interferes with
+the d4 bishop, allowing the white king to return to g1.} Qxf4 22.Bxc6 Be2 23.g3 Nh3+
+24.Kg2 Bxf1+ 25.Kh1 Nf2+ 26.Kg1 Nh3+ 27.Kh1 Qf3+ 28.Bxf3 Rfe8 29.Bxb7 Re1 30.Bxa6
+Bg2+ {We mistakenly believed this to be checkmate... such knobs are we!}   *
+</div><div id='testGame17' style='visibility:hidden;display:none'>
+[Event "?"]
+[Site "Coastal Inn Room 816"]
+[Date "2003.04.23"]
+[White "Laurie Moyer"]
+[Black "C.S. Graves"]
+[Result "1-0"]
+
+1.e4 Nf6 2.Nc3 e6 3.Nf3 Nc6 4.Bc4 d5 5.exd5 exd5 6.Qe2+ Be7 7.Nxd5 Qd6 8.Qe3 Bf5 9.Nxe7
+Nxe7 10.Bb5+ c6 11.Bd3 O-O 12.O-O Ng4 13.Qg5 Qxh2+ $4 14.Nxh2 {FUCK!} Rad8 15.Bxf5
+g6 16.Qxg4 h5 17.Qe4 Nxf5 18.Qb4 Rd4 19.Qxb7 Nh4 20.b4 Re4 21.Qxc6 Rfe8 22.Rb1 Re1
+23.Bb2 R1e6 24.Qa4 Rd8 25.Qxa7 Nf5 26.Rbe1 Ree8 27.Rxe8+ Rxe8 28.b5 Nd6 29.b6 Nc8
+30.Qd7 Kf8 31.Qc7 Ne7 32.b7 Kg8 33.b8=Q Kf8 34.Qxe8+ Kxe8 35.Qb8+ Kd7 36.Ba3 Nc6
+37.Qb7+ Ke6 38.Qxc6+ Kf5 39.Re1 Kg5 40.Re5+ f5 41.Be7+ Kf4 42.Bf6 g5 43.Qc4+   1-0
+</div><div id='testGame18' style='visibility:hidden;display:none'>
+[Event "?"]
+[Site "RoB's Kitchen, Hazen Street"]
+[Date "2003.04.26"]
+[White "RoB Patey"]
+[Black "C.S. Graves"]
+[Result "0-1"]
+
+1.Nf3 d5 2.Ne5 Nf6 3.e4 e6 4.Nc3 Bd6 5.d4 Bd7 6.Bg5 Nc6 7.Bd3 h6 8.exd5 exd5 9.Nxd5
+hxg5 10.Nxc7+ Bxc7 11.O-O Nxd4 12.Bc4 Bxe5 13.Qe1 Qc7 14.Bxf7+ Kxf7 15.Qb4 Bxh2+
+16.Kh1 Bb5 17.Qxd4 Bxf1 18.Re1 Rh4 19.g4 $2 Qc6+ 20.f3 Qxf3+   0-1
+</div><div id='testGame19' style='visibility:hidden;display:none'>
+[Event "?"]
+[Site "RoB's Kitchen, Hazen Street"]
+[Date "2003.04.26"]
+[White "RoB Patey"]
+[Black "C.S. Graves"]
+[Result "1/2-1/2"]
+
+1.e4 e5 2.Qf3 Nf6 3.b3 c6 4.Bb2 d5 5.Ne2 Bg4 6.Qe3 Nbd7 7.Nbc3 Bc5 8.Qg5 dxe4 9.Nxe4
+Nxe4 10.Qxg7 Bxf2+ 11.Kd1 Qf6 12.Qxf6 Ndxf6 13.Ba3 O-O-O 14.d3 Nc3+ 15.Kc1 Nfd5 16.Ng3
+Be3+ 17.Kb2 a5 18.d4 exd4 19.Bd3 b5 20.Bf5+ Kb8 21.Bxg4 b4 22.Nf5 bxa3+ 23.Kxa3 Bg5
+24.Rhe1 Rhg8 25.Ne7 Nxe7 26.Rxe7 Bxe7+ 27.Kb2 Rxg4 28.Re1 Bg5 29.Re5 h6 30.Rc5 Kc7
+31.h3 Rxg2 32.Rc4 Rg1 $2 33.Rxd4 Bf6 34.Rxd8 Nb1+ 35.c3 Bxc3+ 36.Kc2 Kxd8 37.Kd3 Re1
+38.Kc4 Bd2 39.Kc5 Kc7 40.b4 Re5+ 41.Kc4 Bxb4 42.a3 Nxa3+ 43.Kb3 c5 44.h4 Kb6 45.h5
+Kb5 46.Kb2 Re1 47.Ka2 c4 48.Kb2 Re2+ 49.Kc1 Bd2+ 50.Kd1 Rf2   1/2-1/2
+</div><div id='testGame20' style='visibility:hidden;display:none'>
+[Event "Marco Polo MPES01"]
+[Site "?"]
+[Date "2000.??.??"]
+[Round "?"]
+[White "Ruggeri Laderchi, G."]
+[Black "Marchisotti, M."]
+[Result "1/2-1/2"]
+[ECO "C40"]
+[WhiteElo "2360"]
+[BlackElo "2313"]
+[Annotator "Dr. Marchisotti"]
+[PlyCount "91"]
+
+1. e4 e5 2. Nf3 d5 3. exd5 Qxd5 4. Nc3 Qe6 5. Bb5+ {#} 5... c6 6. Ba4 Qg6 7.
+Qe2 Be7 (7... Qxg2 8. Rg1 Qh3 9. Rg3 Qh5 10. Rg5 Qh3 (10... Qh6 11. d4 Be7 12.
+Nd5 Qd6 13. Qxe5 Qxe5+ 14. Nxe5 $16) 11. Rxe5+ Ne7 12. Nd5 (12. Ne4) 12... Qd7
+13. Ng5 $1 (13. Nxe7 {Buecker}) 13... h5 14. Qc4 Qd6 15. d4 $18) 8. Bb3 (8. d3
+{si veda la partita con Tucci}) 8... Nh6 {Non sembrano esserci alternative} (
+8... Bg4 $2 9. Nxe5 $18) (8... f6 $2 9. d4 $1 Bg4 (9... exd4 10. Ne4 Kf8 (10...
+f5 $4 11. Bf7+ $18) 11. Bf4 $14) 10. dxe5 Bxf3 11. gxf3 fxe5 (11... Qg2 12. Rg1
+Qxh2 13. f4 f5 14. Qf3 $14) 12. Qxe5 Nd7 13. Qg3 $16) (8... Nf6 $2 9. O-O $1 (
+9. Nxe5 Qxg2 10. Bxf7+ Kf8 $13) 9... Bh3 10. Bxf7+ $1 Qxf7 (10... Kxf7 $2 11.
+Nxe5+ $18) 11. Nxe5 Qe6 12. gxh3 $16) (8... Bf5 $2 9. O-O $1 Nd7 (9... Bh3 $2
+10. Bxf7+ Qxf7 11. Nxe5 $16) 10. Nxe5 (10. Re1 $2 Bh3 11. g3 f6 12. d4 Bg4 13.
+dxe5 Qh5 14. Bxg8 Bxf3 15. e6 Bxe2 16. Bf7+ Qxf7 17. exf7+ Kxf7 18. Rxe2 $11) (
+10. Qe3 $2 Bh3 $11) 10... Nxe5 11. Qxe5 $16) 9. d3 (9. O-O $2 Bh3) 9... Nf5 {
+anche qui le alternative non convincono} (9... Bg4 $2) (9... Qxg2 $2) (9... Nd7
+$2) (9... f6 $2) 10. O-O (10. Nxe5 Qxg2 11. Bxf7+ Kf8 12. Qe4 (12. Rf1 $6 Nd4 (
+12... Nd6 13. Bb3 Bh3 $15) 13. Qh5 Bh3 14. Be3 $5 $13) 12... Qxe4+ 13. dxe4 (
+13. Nxe4 $2 Bf6 14. Nxf6 gxf6 15. Bf4 Nd4 16. Kd1 Ke7 17. Bh5 fxe5 18. Bxe5 Rd8
+$17) 13... Bf6 $1 14. exf5 Bxf5 $11) 10... Nd4 (10... f6 $2) (10... Nd7 $2) 11.
+Nxd4 exd4 (11... Bh3 $2 12. Qf3 $1 exd4 13. Qxh3 dxc3 14. Qc8+ Bd8 15. Re1+ $18
+) 12. Re1 Be6 (12... Qf6 $2 13. Ne4 Qe5 14. Bxf7+ $18) 13. Bxe6 (13. Nb1 Kd7
+14. Bf4 Qf5 15. Bxe6+ fxe6 16. Nd2 c5 $13) 13... fxe6 (13... Qxe6 $2 14. Bg5 $3
+Bxg5 15. Qg4 Be3 16. Qxg7 $18) 14. Nb1 (14. Ne4 Na6 (14... Nd7 $5 15. Nd2 Nf8)
+15. Ng3 Nc7 (15... Nc5 $2 16. b4)) 14... Kd7 (14... Kf7) (14... Nd7 15. Qxe6
+Qxe6 16. Rxe6 Kf7 17. Re2 Bb4 $16) 15. Bf4 Qf5 $6 (15... c5 $5 16. Bxb8 (16.
+Nd2) 16... Rhxb8 17. Nd2 Qf5 18. a4 Rf8 19. c3 Rac8 $13) (15... Rc8) 16. Nd2 c5
+17. Qf3 $1 $14 {#  Lo sviluppo del Bianco e piu armonioso; il Re nero ha perso
+l'arrocco (ma nella Cozio succede....) le prospettive sembrano favorevoli al
+Bianco, specie quando il bianco e un forte giocatore come Giorgio, ma bastera
+per vincere?     } (17. Nc4 Nc6 18. Bg3 b5 19. Nd2 Rhe8 {
+per Buecker e circa pari}) 17... Qd5 (17... Nc6 $6 18. Re5 Qf8 (18... Qf7 $2
+19. Rae1 Bd6 20. Nc4 Be7 21. Rd5+ Kc8 22. Nd6+ Bxd6 23. Rxd6 Nd8 24. Re5 $1 $18
+) 19. Rae1 Bd6 20. R5e4 Re8 21. c3 Bc7 22. Qg3 Bxf4 23. Rxf4 Qe7 24. Nf3 $16) (
+17... Kc8 18. Re5 $16) 18. Qxd5+ (18. Re4 $5 Nc6 19. Rae1 g5 20. Bg3 h5 21.
+Rxe6 Qxf3 22. Nxf3 h4 23. Ne5+ {Ruggeri Laderchi}) 18... exd5 19. Re5 Nc6 20.
+Rxd5+ Ke6 21. Rh5 g6 22. Re1+ Kf7 23. Rd5 Rhd8 24. Rxd8 Rxd8 25. a3 Rd5 26. f3
+b5 27. Kf2 a5 28. a4 bxa4 29. Nc4 Nb4 30. Re2 Rd8 31. Nxa5 Nd5 32. Bg3 Ne3 $1 {
+#} (32... Ra8 33. Nc4 Ra6 34. Ke1 Re6 35. Re4 Nf6 36. Re5 $16) 33. Nc6 Re8 34.
+Nxe7 (34. Ne5+ $5 $13) 34... Kxe7 $1 35. Bf4 Kf6 36. Bxe3 dxe3+ 37. Rxe3 Rb8
+38. b3 axb3 39. cxb3 g5 40. Re4 (40. h4 gxh4 $1 41. Re4 Rxb3 42. Ke3 Rb4 43.
+Re8 (43. Rxb4 cxb4 44. d4 Kf5 $11) 43... Rb2 44. Rg8 Rb1 $13) 40... Rxb3 41.
+Ke3 Rb2 42. g4 Rxh2 43. Rc4 h5 44. gxh5 Rxh5 45. Rxc5 Rh3 46. Rc4 {#  Ed e un
+inale di 'patta teorica', come riconosce lo stesso Ruggeri Laderchi offrendomi
+la divisione del punto.Ancora una volta la Cozio si e dimostrata all'altezza
+anche in un finale conun pedone in meno.    } 1/2-1/2
+</div><div id='testGame21' style='visibility:hidden;display:none'>
+[Event "54ma semifinale B Asigc"]
+[Site "?"]
+[Date "2001.??.??"]
+[Round "?"]
+[White "Tucci, A."]
+[Black "Marchisotti, M."]
+[Result "1/2-1/2"]
+[ECO "C40"]
+[WhiteElo "2300"]
+[BlackElo "2330"]
+[Annotator "Dr. Marchisotti"]
+[PlyCount "46"]
+
+1. e4 e5 2. Nf3 d5 3. exd5 Qxd5 4. Nc3 Qe6 5. Bb5+ c6 6. Ba4 Qg6 7. Qe2 Be7 8.
+d3 (8. Bb3 {si veda la partita con Ruggeri Laderchi}) 8... Be6 9. Bb3 Nd7 10.
+Bxe6 Qxe6 11. O-O Bd6 12. Re1 O-O-O {#} (12... Ne7 $2 {proposta da Buecker, e
+demolita ancora una volta da una spinta in d4.  Le analisi che seguono sono
+del Maestro Codazza e del sottoscritto} 13. d4 $1 Ng6 (13... exd4 $146 14. Ne4
+Bc7 (14... Nc5 15. Nxd6+ Qxd6) 15. Bg5 O-O-O 16. Nxd4 Qe5 $16) (13... f6 14.
+Ne4 Bc7 (14... Bb8 15. dxe5) 15. dxe5 fxe5 16. Be3 a6 $14) 14. dxe5 {Codazza} (
+14. Nxe5 Ndxe5 15. f4 Nf3+ $1 16. gxf3 Qxe2 17. Rxe2+ Kd7 $11) (14. Ng5 Qe7 15.
+dxe5 Bxe5 16. f4 Bd4+) (14. Ne4 Bc7 15. dxe5 Ndxe5 16. Nxe5 Bxe5 17. Nc5 Qe7
+18. Nd3 O-O-O 19. Nxe5 Qxe5 20. Qxe5 Nxe5 $11) (14. d5 {Codazza}) 14... Ngxe5 (
+14... Ndxe5 15. Ng5 $1 (15. Nxe5 Bxe5 16. f4 Bd4+ {Buecker}) 15... Qf5 (15...
+Qe7 16. f4 Bc5+ 17. Kh1 $18) (15... Qd7 16. f4) 16. f4 Nxf4 17. Qf2 Nh3+ 18.
+Nxh3 Qxf2+ 19. Nxf2 $18) 15. Ng5 Qg6 16. f4 $18) 13. d4 f6 (13... exd4 14. Qxe6
+fxe6 15. Nxd4 Nf8 16. Nxe6 Nxe6 17. Rxe6 $14) 14. Bf4 Nh6 15. dxe5 ({
+forse si poteva continuare con} 15. Rad1 $5) 15... fxe5 (15... Nxe5 $2 16. Nxe5
+Bxe5 17. Bxe5 Qxe5 18. Qxe5 fxe5 19. Rxe5 $16) 16. Bg5 Rde8 17. Ne4 Nf5 18.
+Nxd6+ (18. g4 Nh6 19. Nd4 Qg6 20. Nf5 Nf7 $13) 18... Nxd6 19. Be3 e4 $5 (19...
+a6 20. Rad1 h6 21. Bf4 Nf7 $14) 20. Ng5 $1 {  il bianco sta forse leggermente
+meglioma il Nero e in grado comunque di pareggiare la partita  } (20. Bxa7 $6
+Qg4 21. Nd4 Qxe2 22. Nxe2 b6 $11) 20... Qf5 21. Rad1 Nb5 22. Nh3 a6 23. c4 Nc7
+(23... Nc7 24. Bd4 Rhg8 25. Qc2 Rgf8 $11) 1/2-1/2
+
+</div><div id='testGame22' style='visibility:hidden;display:none'>
+[Event "?"]
+[Site "?"]
+[Date "????.??.??"]
+[Round "1"]
+[White "Broderick Dillon"]
+[Black "John S. Sarracino"]
+[Result "1-0"]
+[ECO "B20"]
+[WhiteElo "1275"]
+[BlackElo "1063"]
+[Annotator "Ryan/Fritz 9"]
+[PlyCount "97"]
+
+{White's outside passed pawn decides matters.} 1. e4 c5 2. b4 Nf6 3. e5 Nd5 4.
+bxc5 Nc6 5. c4 Ndb4 6. a3 Na6 7. d4 e6 $2 {
+Creating a big hole on d6. Black must resort to further clumsiness to fix it.}
+8. Nf3 b6 9. cxb6 axb6 {
+r1bqkb1r/3p1ppp/npn1p3/4P3/2PP4/P4N2/5PPP/RNBQKB1R w KQkq - 0 10} 10. d5 exd5
+11. cxd5 Ne7 12. Bxa6 $2 {
+White should look to heighten the tension, not relieve it.} (12. d6 $142 {
+and Black has difficulty preventing even slow, simple ideas like Nc3-d5, Bxa6,
+and Nc7+.}) 12... Bxa6 13. Nc3 Nf5 14. Ne2 g6 $2 15. O-O (15. Bg5 {takes
+advantage of Black's last move; if he trades Bishops, his dark squares are
+permanently weak.}) 15... Bg7 16. Re1 O-O 17. Bf4 Bb7 18. Ng3 Ne7 19. d6 Nd5
+20. Qd2 {It's curious how White keeps allowing trades and Black keeps
+eschewing them. It should be the exact opposite, given Black's cramped
+position.} Nxf4 21. Qxf4 f6 22. Qc4+ Kh8 23. e6 dxe6 24. Qxe6 Re8 $6 (24...
+Bxf3 {is better, weakening the White pawns.}) 25. Qxe8+ Qxe8 26. Rxe8+ Rxe8 27.
+Rb1 $1 {It's more important to get passed pawns than worry about ...BxN.} Bxf3
+28. gxf3 Bf8 29. Rxb6 Rd8 30. a4 Bxd6 31. Ne4 Be7 32. Nxf6 (32. a5 $1 f5 33. a6
+$1 Rd1+ 34. Kg2 fxe4 35. Rb8+ Kg7 36. a7 {
+wins easily. Instead, White takes the scenic route.}) 32... Bxf6 33. Rxf6 Ra8
+34. Rf4 Kg7 35. Kf1 h5 36. Ke2 Kh6 37. Kd3 Rc8 38. a5 Rc1 39. Ra4 Rc8 40. a6
+Ra8 {He might as well have left it here on move 33!} 41. a7 Kg5 42. h4+ Kf5 43.
+Ke3 g5 44. Ra5+ Kg6 45. Rxg5+ Kh6 46. Ra5 Kg6 47. f4 Kf6 48. f5 Kf7 49. Kf4 1-0
+</div><div id='testGame23' style='visibility:hidden;display:none'>
+[Event "?"]
+[Site "?"]
+[Date "????.??.??"]
+[Round "4"]
+[White "Eugene Hill"]
+[Black "Robert Frazer"]
+[Result "1-0"]
+[ECO "B08"]
+[BlackElo "1006"]
+[Annotator "Ryan/Fritz 9"]
+[PlyCount "67"]
+
+{White takes over once his Rook reaches d6.} 1. e4 d6 2. Bc4 Nf6 3. Nc3 g6 4.
+Nf3 Bg7 5. d4 O-O 6. O-O e5 $2 {Mistaking a Pirc for King's Indian; in the KID,
+Black can get away with (temporarily) losing a pawn on e5. In the Pirc, he
+should hit the 'fork trick'} (6... Nxe4 7. Nxe4 d5 {.}) 7. Bg5 (7. dxe5 dxe5 8.
+Qxd8 Rxd8 9. Nxe5 {picks off a pawn. The threat to f7 prevents Black from
+countering with stuff like ...Nxe4.}) 7... c6 $2 8. dxe5 dxe5 9. Qe2 $2 Qd6 10.
+a3 b5 11. Bb3 Nbd7 12. Rad1 Qc7 13. Qe3 Ng4 14. Qe2 Nc5 15. Ba2 h6 16. Be3 Nxe3
+17. Qxe3 ({Less advisable is} 17. fxe3 a5 $17) 17... Qb6 $2 {
+r1b2rk1/p4pb1/1qp3pp/1pn1p3/4P3/P1N1QN2/BPP2PPP/3R1RK1 w - - 0 18} 18. Rd6 {
+Black should not have allowed this incursion.} Na4 19. Qxb6 axb6 20. Nxa4 bxa4
+21. Rxg6 Be6 (21... Kh7 $142 22. Rxc6 Bb7 {limits the damage.}) 22. Bxe6 Kh7
+23. Rxg7+ Kxg7 24. Bf5 f6 25. Ne1 Rad8 26. Nd3 c5 27. g3 Rd4 28. Kg2 Rfd8 29.
+Kf3 c4 30. Nb4 Rd1 31. Kg2 {
+White's position is so good it can withstand this small bit of clumsiness.}
+Rxf1 32. Kxf1 c3 33. bxc3 Rc8 {
+Even without this mistake, Black is still quite lost.} 34. Bxc8 1-0
+</div><div id='testGame24' style='visibility:hidden;display:none'>
+[Event "?"]
+[Site "?"]
+[Date "????.??.??"]
+[Round "5"]
+[White "Kevin Grimes"]
+[Black "Christopher Donahue"]
+[Result "0-1"]
+[ECO "D04"]
+[WhiteElo "1100"]
+[BlackElo "1270"]
+[Annotator "Ryan/Fritz 9"]
+[PlyCount "76"]
+
+{Black swindles his way out of a hopeless position.} 1. d4 d5 2. Nf3 Nf6 3. e3
+Bf5 4. c4 e6 5. Qb3 b6 (5... Nc6 $1 {and now} 6. Qxb7 $2 Nb4 7. Na3 Rb8 8. Qxa7
+Ra8 9. Qb7 Rxa3 10. bxa3 Nc2+ {works out in Black's favor.}) 6. Ne5 c5 $5 7.
+Qa4+ (7. cxd5 exd5 8. Bb5+ Bd7 9. Nxd7 Nbxd7 10. Nc3 {wins a pawn, even after}
+c4 (10... Bd6 {is probably the best bet, playing it like a gambit.}) 11. Qa4
+Bd6 12. Bc6 {.}) 7... Nbd7 8. cxd5 exd5 9. Bb5 Be7 10. Nc6 Qc7 11. Nxe7 Kxe7
+12. O-O Rhc8 13. Re1 Kf8 14. Nc3 Re8 15. Bc6 Rad8 16. Nxd5 Nxd5 17. Bxd5 Nf6
+18. Bf3 cxd4 19. Qb4+ Kg8 20. exd4 Rxe1+ 21. Qxe1 Rxd4 22. Be3 Rd7 23. Rc1 Qe5
+$2 (23... Qd8 $142 {keeps Black in the game.}) 24. g4 $1 {
+The best move in the position - as we'll see.} Be4 $2 {Bad, but Black is still
+lost after  6k1/p2r1ppp/1p3n2/4q3/4b1P1/4BB2/PP3P1P/2R1Q1K1 w - - 0 25} (24...
+Bg6 25. Rc8+ Ne8 26. Bc6 Re7 27. Bxe8 Rxe8 28. f4 $1 {
+now carries the threat of f5, trapping the Bishop, thanks to White's 24th move.
+}) 25. Bxe4 $2 (25. Rc8+ $142 Ne8 26. Bf4 $1 {wins a piece.}) 25... Qxe4 26.
+Qe2 Qe6 27. f4 $6 h6 (27... Re7 $1 {taunts White to exploit the back rank.} 28.
+g5 Nd5 29. f5 Qe5 30. Rc8+ Re8 31. Rxe8+ Qxe8 32. Kf2 Qe5 $17) 28. g5 hxg5 29.
+fxg5 Ne8 30. Kf2 Qe5 31. Kf3 $2 Re7 32. Rc3 Qd5+ 33. Kf2 Qxa2 34. b4 {
+White shouldn't be trading Queens when down a pawn.} Qxe2+ 35. Kxe2 Kh7 36. h4
+f6 37. Kf3 fxg5 38. Bxg5 Re5 {and Black eventually won.} 0-1
+</div><div id='testGame25' style='visibility:hidden;display:none'>
+[Event "?"]
+[Site "?"]
+[Date "????.??.??"]
+[Round "5"]
+[White "Ed Steinfeld"]
+[Black "Anna Smoak"]
+[Result "0-1"]
+[ECO "D04"]
+[WhiteElo "1269"]
+[BlackElo "1356"]
+[Annotator "Ryan/Fritz 9"]
+[PlyCount "56"]
+
+{Black's extra pawn leads to a decisive Kingside attack.} 1. d4 d5 2. Nc3 e6 3.
+Bf4 (3. e4 {transposes to a French.}) 3... c5 4. e3 Nc6 (4... cxd4 {answers} 5.
+Nb5 $2 {with} Bb4+ 6. c3 dxc3 7. Nc7+ $2 Qxc7 $1 8. Bxc7 c2+ {
+and wins the Q back with interest.}) 5. Bd3 (5. Nb5 $142 {forces} e5 {
+to stop the fork on c7.}) 5... cxd4 6. exd4 Nxd4 7. Nf3 Nxf3+ 8. Qxf3 Bb4 9.
+O-O Nf6 (9... Bxc3 $1 {kills the annoying N once and for all.}) 10. Ne2 {
+Only now does White begin to play like he's a pawn down.} (10. Nb5 $142 $1 Ba5
+11. b4 Bb6 12. a4 $1 a6 13. Nd6+ Kf8 14. Be5 {
+gives White more than adequate compensation.}) 10... O-O 11. a3 Bd6 $17 12. Bg5
+Be7 (12... h6 {ensures that Black gets her ...e5 push in, one way or the other.
+Fortunately for her, White does not realize the importance of stopping it, and
+so misses several chances, starting with 13.Nc3.}) 13. Rfe1 h6 14. Bd2 e5 15.
+Bb5 a6 (15... Qb6 $142 {develops while attacking.}) 16. Ba4 b5 17. Bb3 Bb7 18.
+Qd3 (18. Ng3 {is a better way to try for counterplay.}) 18... Re8 19. c3 Rc8
+20. f4 $4 {A suicidal weakening of the Kingside.} Bc5+ 21. Kh1 {
+2rqr1k1/1b3pp1/p4n1p/1pbpp3/5P2/PBPQ4/1P1BN1PP/R3R2K b - - 0 21} e4 (21... Ng4
+$142 {swiftly ends the game:} 22. Rf1 Qh4 23. Qg3 Nf2+ 24. Rxf2 Qxg3 25. Nxg3
+Bxf2 {.}) 22. Qc2 (22. Qh3 {is a last-ditch attempt to defend the King.}) 22...
+Ng4 23. h3 Nf2+ 24. Kh2 Ng4+ 25. Kh1 Qh4 (25... e3 $142 {seems even better} 26.
+Rf1 exd2 27. Qxd2 d4 $19) 26. Nd4 {
+The only humane thing to do, given that the 'alternative' is...} (26. Rf1 Nf2+
+27. Kh2 d4 {...a steamroller.}) 26... Bxd4 27. Re2 Qg3 28. hxg4 Qh4# 0-1
+</div>
+
+</body>
+</html>
