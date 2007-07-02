@@ -43,7 +43,6 @@ function Pgn(pgn) {
 	pgn = pgn.replace(/\ \$5[0-9]*/g, "?!");
 	pgn = pgn.replace(/\ \$6[0-9]*/g, "??");
 
-	this.pgn
 	this.pgn = pgn;
 	this.pgnRaw = pgn;
 	this.pgnStripped = stripIt(pgn);
