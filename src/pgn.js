@@ -42,11 +42,15 @@ function Pgn(pgn) {
 	pgn = pgn.replace(/\ \$4[0-9]*/g, "!?");
 	pgn = pgn.replace(/\ \$5[0-9]*/g, "?!");
 	pgn = pgn.replace(/\ \$6[0-9]*/g, "??");
+	
 
+	// make double spaces to single spaces
+	pgn = pgn.replace(/\s+/g,' ');
+	
 	this.pgn = pgn;
 	this.pgnRaw = pgn;
 	this.pgnStripped = stripIt(pgn);
-
+	
 	/* constructor */
 
 	// strip comments
@@ -200,6 +204,13 @@ function Pgn(pgn) {
 							case '_':	//found comment
 								break;
 							default:	//no comment
+								// we might have many comments separated with spaces
+								// as we strip all double spaces to single ones we
+								// can just check for the next char being '_'
+								if (this.pgnStripped.length>k+1 
+									 	&& this.pgnStripped.charAt(k+1) == '_') {
+									continue;
+								}
 								return [this.pgnRaw.substring(j,k),k];
 						}
 					}
@@ -223,7 +234,7 @@ function Move(white, black) {
 
 /*
 	Strip game comments from a PGN string. If second
-	parameter set to true then comments will be replaced
+	parameter set false true then comments will be replaced
 	by an underscore.
 */
 function stripIt(val, strip) {
