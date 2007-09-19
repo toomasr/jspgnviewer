@@ -98,13 +98,25 @@ function Pgn(pgn) {
 			this.skip = 1;
 		}
 	}
-	for (var i=0;i<themoves.length-1;i++) {	//don't handle game end bit
+
+	var sizeOfTheMoves = themoves.length
+	if (themoves.length>0) {
+		for (var i=0;i<gameOverre.length;i++) {
+			if (themoves[themoves.length-1].match(gameOverre[i])) {
+				sizeOfTheMoves = themoves.length-1
+				continue
+			}
+		}
+	}
+	for (var i=0;i<sizeOfTheMoves;i++) {	//don't handle game end bit
 		if (themoves[i]) {
 			themoves[i] = themoves[i].replace(/^\s+|\s+$/g, '');
 		}
+		
 		if (!themoves[i]) {
 			continue;
 		}
+
 		var c = themoves[i].charAt(0);
 		if (c >= '1' && c <= '9') {	//move number
 			c = themoves[i].charAt(themoves[i].length-1);
@@ -139,6 +151,7 @@ function Pgn(pgn) {
 			tmpidx = 1;
 		}
 	}
+	
 	if (tmp[0] || tmp[1]) {
 		var move = new Move(tmp[0], tmp[1]);
 		this.moves[this.moves.length] = move;
