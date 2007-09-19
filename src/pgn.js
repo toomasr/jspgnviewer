@@ -112,6 +112,7 @@ function Pgn(pgn) {
 			}
 		}
 	}
+
 	for (var i=0;i<sizeOfTheMoves;i++) {	//don't handle game end bit
 		if (themoves[i]) {
 			themoves[i] = themoves[i].replace(/^\s+|\s+$/g, '');
@@ -119,6 +120,26 @@ function Pgn(pgn) {
 		
 		if (!themoves[i]) {
 			continue;
+		}
+
+		if (themoves[i].indexOf("-")!=-1) {
+			var tmp2 = themoves[i].split("-");
+			var matches = tmp2[0].match(/[0-9]*?\.?([A-Z])/);
+			var newMove
+			if (matches != null) {
+				 // we can just replace the - with nothing
+				 newMove  = themoves[i].replace("-","");
+			}
+			else {
+				matches = tmp2[0].match(/[0-9]+\./);
+				if (matches) {
+					newMove = matches[0]+tmp2[1]
+				}
+				else {
+					newMove = tmp2[1]
+				}				
+			}
+			themoves[i] = newMove
 		}
 
 		var c = themoves[i].charAt(0);
@@ -188,7 +209,8 @@ function Pgn(pgn) {
 	this.getComment = function(move, idx) {
 		var i = this.pgnStripped.indexOf(move,idx);
 		if (i == -1) {
-			throw("getComment error, could not find move '"+move+"'"+",'"+idx+"'");
+			//throw("getComment error, could not find move '"
+			//				+move+"'"+", with index '"+idx+"'");
 			return [null,idx];
 		}
 

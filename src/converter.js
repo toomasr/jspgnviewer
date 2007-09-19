@@ -382,6 +382,7 @@ function Converter(pgn) {
 		else {
 			throw("Can't figure out which piece to move '"+oldTo+"'");
 		}
+
 		from = this.vBoard[fromCoords[0]][fromCoords[1]];
 		to = this.vBoard[toCoords[0]][toCoords[1]];
 			
@@ -546,7 +547,11 @@ function Converter(pgn) {
 	*/
 	findFromPawn = function(pos, to, tmp, color) {
 		var x = tmp[1], y = tmp[0];
-       
+    
+		if (tmp[2][0] != -1 && tmp[2][1] != -1) {
+			return new Array(tmp[2][1], tmp[2][0]);
+		}
+
 		// taking move or with xtra information
 		if (tmp[2][0] != -1 || tmp[3] != -1) {
 			var froms = new Array(
@@ -613,6 +618,10 @@ function Converter(pgn) {
 		var rtrn;
 		var coord;
 		
+		if (toCoords[2][0] != -1 && toCoords[2][1] != -1) {
+			return new Array(toCoords[2][1], toCoords[2][0]);
+		}
+		
 		var arr;
 		if (color == 'white') {
 			arr = board.wBishops;
@@ -621,7 +630,8 @@ function Converter(pgn) {
 			arr = board.bBishops;
 		}
 		for (var i=0;i<arr.length;i++) {
-			if (Math.abs(arr[i][0]-toCoords[0]) == Math.abs(arr[i][1]-toCoords[1])) {
+			if (Math.abs(arr[i][0]-toCoords[0]) 
+				 == Math.abs(arr[i][1]-toCoords[1])) {
 				return new Array(arr[i][0],arr[i][1]);
 			}
 		}
@@ -646,6 +656,10 @@ function Converter(pgn) {
 		var op = getOppColor(color);
 		var extra = to[2];
 		var rtrns = new Array();
+		
+		if (to[2][0] != -1 && to[2][1] != -1) {
+			return new Array(to[2][1], to[2][0]);
+		}
 		
 		var arr;
 		if (color == 'white') {
@@ -803,6 +817,11 @@ function Converter(pgn) {
 	findFromKnight = function(brd, toSAN, toCoords, color) {
 		var to = toCoords;
 		var extra = to[2];
+		
+		if (toCoords[2][0] != -1 && toCoords[2][1] != -1) {
+			return new Array(toCoords[2][1], toCoords[2][0]);
+		}
+
 		var pos = brd.vBoard;
 		var rtrns = new Array();
 		var froms = new Array(
@@ -907,7 +926,11 @@ function Converter(pgn) {
 		if (/x/.test(coord)) {
 			var tmp = coord.split("x");
 			if (tmp[0].length) {
-				if (/[a-z]/.test(tmp[0]))
+				if (/[a-z][0-9]/.test(tmp[0])) {
+					extra[0] = 7-map[tmp[0].charAt(0)];
+					extra[1] = 8-tmp[0].charAt(1);
+				}
+				else if (/[a-z]/.test(tmp[0]))
 					extra[0] = 7-map[tmp[0]];
 				else if (/[0-9]/.test(tmp[0]))
 					extra[1] = 8-tmp[0];
@@ -923,10 +946,19 @@ function Converter(pgn) {
 			coord = coord.substring(1);
 		}
 
-		// we have the row no also
+		// we have the row no
+		// eg R8d5
 		if (/^[0-9][a-z][0-9]/.test(coord)) {
 			extra[1] = 8-coord.substring(0,1);
 			coord = coord.substring(1);
+		}
+		
+		// we have both Ng8e7
+		if (/^([a-z][0-9])[a-z][0-9]/.test(coord)) {
+			var tmp = coord.match(/^([a-z][0-9])[a-z][0-9]/)
+			extra[0] = 7-map[tmp[1].charAt(0)];
+			extra[1] = 8-tmp[1].charAt(1);
+			coord = coord.replace(/[a-z][0-9]/,"")
 		}
 
 		var rtrn = new Array(8-coord.charAt(1),
