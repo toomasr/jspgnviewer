@@ -955,10 +955,10 @@ function Converter(pgn) {
 		
 		// we have both Ng8e7
 		if (/^([a-z][0-9])[a-z][0-9]/.test(coord)) {
-			var tmp = coord.match(/^([a-z][0-9])[a-z][0-9]/)
+			var tmp = coord.match(/^([a-z][0-9])[a-z][0-9]/);
 			extra[0] = 7-map[tmp[1].charAt(0)];
 			extra[1] = 8-tmp[1].charAt(1);
-			coord = coord.replace(/[a-z][0-9]/,"")
+			coord = coord.replace(/[a-z][0-9]/,"");
 		}
 
 		var rtrn = new Array(8-coord.charAt(1),

@@ -103,12 +103,12 @@ function Pgn(pgn) {
 		}
 	}
 
-	var sizeOfTheMoves = themoves.length
+	var sizeOfTheMoves = themoves.length;
 	if (themoves.length>0) {
 		for (var i=0;i<gameOverre.length;i++) {
 			if (themoves[themoves.length-1].match(gameOverre[i])) {
-				sizeOfTheMoves = themoves.length-1
-				continue
+				sizeOfTheMoves = themoves.length-1;
+				continue;
 			}
 		}
 	}
@@ -122,10 +122,13 @@ function Pgn(pgn) {
 			continue;
 		}
 
-		if (themoves[i].indexOf("-")!=-1) {
+		if (themoves[i].indexOf("-") != -1
+			 && !/[0|o]-[0|o]/i.test(themoves[i])
+			 && !/[0|o]-[0|o]-[0|o]/i.test(themoves[i])
+			) {
 			var tmp2 = themoves[i].split("-");
 			var matches = tmp2[0].match(/[0-9]*?\.?([A-Z])/);
-			var newMove
+			var newMove;
 			if (matches != null) {
 				 // we can just replace the - with nothing
 				 newMove  = themoves[i].replace("-","");
@@ -133,15 +136,14 @@ function Pgn(pgn) {
 			else {
 				matches = tmp2[0].match(/[0-9]+\./);
 				if (matches) {
-					newMove = matches[0]+tmp2[1]
+					newMove = matches[0]+tmp2[1];
 				}
 				else {
-					newMove = tmp2[1]
+					newMove = tmp2[1];
 				}				
 			}
-			themoves[i] = newMove
+			themoves[i] = newMove;
 		}
-
 		var c = themoves[i].charAt(0);
 		if (c >= '1' && c <= '9') {	//move number
 			c = themoves[i].charAt(themoves[i].length-1);
