@@ -1,5 +1,5 @@
 #!/bin/bash
-# Author Toomas Römer toomasr@gmail.com
+# Author Toomas RÃ¶mer toomasr[at]gmail
 
 # Intended to be used from the project root directory
 # or ./res directory
