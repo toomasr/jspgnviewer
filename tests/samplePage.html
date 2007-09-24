@@ -117,5 +117,93 @@ Qxf3 Qxd4) 33. Rg4 Qg1+ 34. Kf3 Rc3+ 35. Ke2 Rc2+ 36. Kd3 Qd1+ 37. Ke3 Rc3# 0-1
 
 <hr size=1>
 
+<br>
+
+<h4>Internationalized and customized board with custom chess set and background images</h4>
+<div style="border:2px solid #000000;padding: 5px">
+	<i>
+	 &lt;script&gt;<br>
+	var brd = new Board('areaBigger', {'imagePrefix':'img/zurichByjcjimenez/',<br>
+		 								'showMovesPane':true,<br>
+										'commentFontSize':'10pt',<br>
+										'moveFontColor':'#af0000',<br>
+										'commentFontColor':"#006699",<br>
+										'squareSize':'32px',<br>
+										'markLastMove':false,<br>
+										<br>
+										'blackSqColor':'url("img/zurichByjcjimenez/board/darksquare.gif")',<br>
+										'lightSqColor':'url("img/zurichByjcjimenez/board/lightquare.gif")',<br>
+										<br>
+										'squareBorder':"0px solid #000000",<br>
+										'altRewind':'Ir al principio',<br>
+										'altBack':'Una jugada atrás',<br>
+										'altFlip':'Girar el tablero',<br>
+										'altShowMoves':'Mostrar el panel de jugadas',<br>
+										'altComments':'Mostrar comentarios',<br>
+										'altPlayMove':'Una jugada adelante',<br>
+										'altFastForward':'Ir al final',<br>
+										'moveBorder':"1px solid #cccccc"<br>
+										});<br>
+	 brd.init()<br>
+	 &lt;/script&gt;
+	</i>
+</div>
+<br>
+<div id="areaBigger_board" width="100%"></div>
+
+<div id='areaBigger' style="visibility: hidden;display:none">
+[Event "WCh"]
+[Site "Mexico City MEX"]
+[Date "2007.09.21"]
+[Round "8"]
+[White "Leko, P."]
+[Black "Grischuk, A."]
+[Result "1-0"]
+[ECO "C88"]
+[WhiteElo "2751"]
+[BlackElo "2726"]
+[PlyCount "119"]
+[EventDate "2007.09.13"]
+
+1. e4 e5 2. Nf3 Nc6 3. Bb5 a6 4. Ba4 Nf6 5. O-O Be7 6. Re1 b5 7. Bb3 O-O 8. a4
+b4 9. d3 d6 10. Nbd2 Be6 11. Bxe6 fxe6 12. Nf1 Qd7 13. Ng3 Na5 14. d4 exd4 15.
+Qxd4 c5 16. Qd3 Nc6 17. c3 bxc3 18. bxc3 Kh8 19. h3 Qc7 20. Ng5 Ne5 21. Qe2 Qc8
+22. f4 Nf7 23. Nf3 Rb8 24. c4 Qb7 25. Bd2 Qb2 26. Qd3 Qb7 27. Bc3 Qc6 28. a5
+Kg8 29. Rad1 Rbd8 30. f5 e5 31. Nf1 Rb8 32. g4 h6 33. N1d2 Qc7 34. Kh1 Qd8 35.
+Rg1 Nh7 36. Nf1 Bg5 37. Ne3 Bxe3 38. Qxe3 Rb3 39. Rd3 Nhg5 40. Nd2 Ra3 41. h4
+Nh7 42. Nf3 Nf6 43. g5 hxg5 44. hxg5 Nh5 45. Bd2 Ra4 46. Qe2 Ra2 47. Qe1 Nf4
+48. Bxf4 exf4 49. Qh4 Qe8 50. g6 Nh6 51. Qxf4 Re2 52. Ng5 Qa4 53. Qxd6 Qxc4 54.
+Qd5+ Qxd5 55. Rxd5 c4 56. Rd7 c3 57. Ne6 Rc8 58. Rgd1 Rd2 59. R1xd2 cxd2 60.
+Rxd2 1-0
+
+</div>
+<script>
+	var brd = new Board('areaBigger', {'imagePrefix':'img/zurichByjcjimenez/',
+		 								'showMovesPane':true,
+										'commentFontSize':'10pt',
+										'moveFontColor':'#af0000',
+										'commentFontColor':"#006699",
+										'squareSize':'32px',
+										'markLastMove':false,
+										
+										'blackSqColor':'url("img/zurichByjcjimenez/board/darksquare.gif")',
+										'lightSqColor':'url("img/zurichByjcjimenez/board/lightquare.gif")',
+										
+										'squareBorder':"0px solid #000000",
+										'altRewind':'Ir al principio',
+										'altBack':'Una jugada atrás',
+										'altFlip':'Girar el tablero',
+										'altShowMoves':'Mostrar el panel de jugadas',
+										'altComments':'Mostrar comentarios',
+										'altPlayMove':'Una jugada adelante',
+										'altFastForward':'Ir al final',
+										'moveBorder':"1px solid #cccccc"
+										});
+	brd.init()
+</script>
+
+<hr size=1>
+
+
   </body>
 </html>

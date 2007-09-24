@@ -47,9 +47,21 @@
 			
 		this.opts['blackSqColor'] = "#4b4b4b";
 		this.opts['whiteSqColor'] = "#ffffff";
+		this.opts['squareBorder'] = "1px solid #000000";
 		this.opts['flipped'] = false;
 		this.opts['showMovesPane'] = true;
+		
 		this.opts['showComments'] = true;
+		this.opts['markLastMove'] = true;
+		
+		this.opts['altRewind'] = "Rewind to the beginning";
+		this.opts['altBack'] = "One move back";
+		this.opts['altFlip'] = "Flip the board";
+		this.opts['altShowMoves'] = "Show moves pane";
+		this.opts['altComments'] = "Show comments";
+		this.opts['altPlayMove'] = "Play one move";
+		this.opts['altFastForward'] = "Fast-forward to the end";
+		this.opts['moveBorder'] = "0px solid #000000";
 
 		var optionNames = ['flipped', 'moveFontSize', 'moveFontColor',
 										'moveFont', 'commentFontSize',
@@ -58,7 +70,11 @@
 										'blackSqColor', 'whiteSqColor',
 										'imagePrefix', 'showMovesPane',
 										'movesPaneWidth','imageSuffix',
-										'comments'];
+										'comments','squareBorder',
+										'markLastMove','altRewind',
+										'altBack','altFlip','altShowMoves',
+										'altComments','altPlayMove',
+										'altFastForward','moveBorder'];
 
 		// if keys in options define new values then
 		// set the this.opts for that key with the 
@@ -128,6 +144,7 @@
 //			else
 //				movesTd.style.overflow = "hidden";
 			movesTd.style.height = boardTd.style.height;
+			movesTd.id = divId+"_board_moves";
 			movesTd.style.overflow = "auto";
 			movesTd.style.border = "1px solid #cccccc";
 			movesTd.vAlign = "top";
@@ -171,7 +188,7 @@
 
 					td.style.height = this.opts['squareSize'];
 					td.style.width = this.opts['squareSize'];
-					td.style.border = "1px solid #000000";
+					td.style.border = this.opts['squareBorder'];
 					td.style.padding = "0px";
 					td.vAlign = "middle";
 					td.align = "center";
@@ -201,8 +218,8 @@
 			hrefS.href = "javascript:void(0)";
 			var href = hrefS.cloneNode(false);
 			var input = this.getImg("rwind","btns");
-			input.alt = 'Rewind to the beginning';
-			input.title = 'Rewind to the beginning';
+			input.alt = this.opts['altRewind'];
+			input.title = this.opts['altRewind'];;
 			href.appendChild(input);
 			
 			input.onclick = function() {
@@ -212,8 +229,8 @@
 
 			// back
 			input = this.getImg("back","btns");
-			input.alt = 'One move back';
-			input.title = 'One move back';
+			input.alt = this.opts['altBack'];
+			input.title = this.opts['altBack'];
 			href = hrefS.cloneNode(false);
 			href.appendChild(input);
 			
@@ -225,8 +242,8 @@
 			
 			// flip the board
 			input = this.getImg("flip","btns");
-			input.alt = 'Flip the board';
-			input.title = 'Flip the board';
+			input.alt = this.opts['altFlip'];
+			input.title = this.opts['altFlip'];
 			href = hrefS.cloneNode(false);
 			href.appendChild(input);
 			
@@ -241,7 +258,7 @@
 			var input = document.createElement("input");
 			input.style.fontSize = "7pt";
 			input.size = "9";
-			input.style.border = "0px solid #000000";
+			input.style.border = this.opts['moveBorder'];
 			input.style.textAlign = 'center';
 			this.moveInput = input;
 			btnTdNext.appendChild(input);
@@ -249,8 +266,8 @@
 
 			// hide
 			input = this.getImg("toggle","btns");
-			input.alt = 'Show moves pane';
-			input.title = 'Show moves pane';
+			input.alt = this.opts['altShowMoves'];
+			input.title = this.opts['altShowMoves'];
 			href = hrefS.cloneNode(false);
 			href.appendChild(input);
 
@@ -262,8 +279,8 @@
 
 			// comments
 			input = this.getImg("comments","btns");
-			input.alt = 'Show comments';
-			input.title = 'Show comments';
+			input.alt = this.opts['altComments'];
+			input.title = this.opts['altComments'];
 			href = hrefS.cloneNode(false);
 			href.appendChild(input);
 
@@ -275,8 +292,8 @@
 
 			// next btn
 			input = this.getImg("forward","btns");
-			input.alt = 'Play one move';
-			input.title = 'Play one move';
+			input.alt = this.opts['altPlayMove'];
+			input.title = this.opts['altPlayMove'];
 			href = hrefS.cloneNode(false);
 			href.appendChild(input);
 
@@ -288,8 +305,8 @@
 
 			// ffwd
 			input = this.getImg("ffward","btns");
-			input.alt = 'Fast-forward to the end';
-			input.title = 'Fast-forward to the end';
+			input.alt = this.opts['altFastForward'];
+			input.title = this.opts['altFastForward'];
 			href = hrefS.cloneNode(false);
 			href.appendChild(input);
 
@@ -419,6 +436,8 @@
 					};
 
 					this.markLastMove = function() {
+						if (!this.opts['markLastMove'])
+							return;
 						try {
 							var move = this.conv.moves[this.conv.iteIndex-1].actions[1];;
 							var piece = this.pos[move.x][move.y];
@@ -889,7 +908,7 @@
 	/*
 		Provides support for different chess & button sets. Takes
 		three optional arguments. The first argument specifies the SET
-		identifier (defults to 'default'), the second is the
+		identifier (defaults to 'default'), the second is the
 		image prefix (defaults to ""), and the third is the
 		image suffix (defaults to 'gif').
 	*/
