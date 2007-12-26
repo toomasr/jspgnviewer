@@ -2,6 +2,11 @@
 * JS PGN VIEWER CHANGELOG *
 ***************************
 
+26.12.2007 - jsPgnViewer/WP plugin 0.5.6
+Bugfixe(s)/Change(s)
+	+ Zurich theme added
+	+ Other undocumented features/fixes
+
 20.09.2007 - jsPgnViewer/WP plugin 0.5.6
 Bugfixe(s)/Change(s)
 	+ Variations after comments don't show

@@ -3,7 +3,7 @@
 Plugin Name: pgnviewer
 Plugin URI: http://tom.jabber.ee/chess
 Description: Allows to add PGN files to your blog posts that are converted to interactive boards. Easy to share your chess games with your friends.
-Version: 0.5.6
+Version: 0.6
 Author: Toomas Römer
 Author URI: http://tom.jabber.ee 
 */
@@ -38,9 +38,36 @@ function tr_pgnview_callback($str) {
 	$rtrn = '<div id="'.$now.'" style="visibility:hidden;display:none">'.$str."</div>\n";
 	// the div that will contain the graphical board
 	$rtrn .= '<div id="'.$now.'_board"></div>';
+
+	$opts = array();
+	// jspgnviewer options
+	$opts['imagePrefix'] = $siteurl."/wp-content/pgnviewer/img/zurich/";
+	$opts['showMovesPane'] = true;
+	$opts['commentFontSize'] = '10pt';
+	$opts['moveFontColor'] = '#af0000';
+	$opts['commentFontColor'] = '#006699';
+	$opts['squareSize'] = '32px';
+	$opts['markLastMove'] = false;
+	$opts['blackSqColor'] = "url(\"$siteurl/wp-content/pgnviewer/img/zurich/board/darksquare.gif\")";
+	$opts['lightSqColor'] = "url(\"$siteurl/wp-content/pgnviewer/img/zurich/board/lightquare.gif\")";
+	$opts['squareBorder'] = '0px solid #000000';
+	$opts['moveBorder'] = '1px solid #cccccc';
+	// end of jspgnviewer options
+
 	// initialize the board
-	$rtrn .= '<script>var brd = new Board('.$now.',{"imagePrefix":"'.
-				$siteurl.'/wp-content/pgnviewer/img/default/"});brd.init()</script>';
+	$optsStr = "";
+	foreach ($opts as $key=>$value) {
+		if (is_bool($value) || strtolower($value)==="true" || 
+				strtolower($value) === "false") {
+			$value = $value?"true":"false";
+			$optsStr .= "'$key':$value,\n";
+		}
+		else {
+			$optsStr .= "'$key':'$value',\n";
+		}
+	}
+	$optsStr[strlen($optsStr)-2]="\n";
+	$rtrn .= '<script>var brd = new Board('.$now.',{'.$optsStr.'});brd.init()</script>';
 	$rtrn .= '<noscript>You have JavaScript disabled and you are not seeing a graphical interactive chessboard!</noscript>';
 
 	return $rtrn;
