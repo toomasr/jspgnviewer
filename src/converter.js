@@ -339,10 +339,7 @@ function Converter(pgn) {
 			fromCoords = findFromRook(this, this.vBoard, to, toCoords, color);
 		}
 		else if (kingre.test(to)) {
-			console.log("king move")
 			fromCoords = findFromKing(this, this.vBoard, color);
-			console.log("and it goes awfully")
-			console.log(fromCoords);
 		}
 		else if (sCastlere.test(to)) {
 			var bCoords = new Array('e8','g8','h8','f8');
@@ -386,7 +383,6 @@ function Converter(pgn) {
 			throw("Can't figure out which piece to move '"+oldTo+"'");
 		}
 
-		console.log(fromCoords, to);
 		from = this.vBoard[fromCoords[0]][fromCoords[1]];
 		to = this.vBoard[toCoords[0]][toCoords[1]];
 			
