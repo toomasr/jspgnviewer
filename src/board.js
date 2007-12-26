@@ -865,12 +865,22 @@
 				};
 
 				this.getImg = function(piece, color) {
+					var src = this.opts['imagePrefix'] + imageNames[color][piece];
 					var img = document.createElement("img");
-					img.src = this.opts['imagePrefix'] + imageNames[color][piece];
 					img.border = 0;
 					img.style.padding = "0px";
 					img.style.margin = "0px";
 					img.style.border = "0px solid #cccccc";
+					
+					if ( /\.png$/.test( img.src.toLowerCase()) &&
+							navigator.userAgent.toLowerCase().indexOf("msie") != -1) {
+      					// set filter
+      					img.runtimeStyle.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(enabled=true,src='" + 
+									src + "',sizingMethod='scale')";	
+					}
+					else {
+						img.src = src;
+					}
 
 					return img;
 				};
@@ -941,13 +951,14 @@
 									 ,"king":"bKing."+this.suf
 									 ,"pawn":"bPawn."+this.suf}
 
-				,"btns" : {"ffward":"buttons/ffward.gif"
-										,"rwind":"buttons/rwind.gif"
-										,"forward":"buttons/forward.gif"
-										,"back":"buttons/back.gif"
-										,"toggle":"buttons/toggle.gif"
-										,"comments":"buttons/comments.gif"
-										,"flip":"buttons/flip.gif"}
+				,"btns" : {"ffward":"buttons/ffward."+this.suf
+										,"rwind":"buttons/rwind."+this.suf
+										,"forward":"buttons/forward."+this.suf
+										,"back":"buttons/back."+this.suf
+										,"toggle":"buttons/toggle."+this.suf
+										,"comments":"buttons/comments."+this.suf
+										,"flip":"buttons/flip."+this.suf
+										}
 			}
 		};
 
