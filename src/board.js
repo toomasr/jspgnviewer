@@ -876,7 +876,7 @@
 							navigator.userAgent.toLowerCase().indexOf("msie") != -1) {
       					// set filter
       					img.runtimeStyle.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(enabled=true,src='" + 
-									src + "',sizingMethod='scale')";	
+									src + "',sizingMethod='image')";	
 					}
 					else {
 						img.src = src;
