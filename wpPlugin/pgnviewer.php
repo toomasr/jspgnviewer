@@ -34,10 +34,16 @@ function tr_pgnview_callback($str) {
 	$str = strip_tags($str[0]);
 	// strip entities
 	$str = str_replace(array('&#8220;', '&#8221;', '&#8243;'), '"', $str);
+	// strip the ###pgn### and %%%pgn%%% placeholders
+	$str = str_replace(array('###pgn###', '%%%pgn%%%'), '', $str);
+	// tinyMCE or WP thinks that replacing ... with an entity behind the scenes
+	// will not break anything and serves a purpose! DEAD WRONG!
+	$str = str_replace(array('&#8230;'), '...', $str);
 	// hidden div with the game information
 	$rtrn = '<div id="'.$now.'" style="visibility:hidden;display:none">'.$str."</div>\n";
 	// the div that will contain the graphical board
 	$rtrn .= '<div id="'.$now.'_board"></div>';
+	
 
 	$opts = array();
 	// jspgnviewer options
@@ -79,7 +85,10 @@ function tr_add_script_tags($_) {
 }
 
 function tr_pgnview($content) {
-	return preg_replace_callback('/<pgn>((.|\n|\r)*?)<\/pgn>/', "tr_pgnview_callback", $content);
+	if (stristr($content, "<pgn>") === FALSE)
+		return preg_replace_callback('/###pgn###((.|\n|\r)*?)%%%pgn%%%/', "tr_pgnview_callback", $content);
+	else
+		return preg_replace_callback('/<pgn>((.|\n|\r)*?)<\/pgn>/', "tr_pgnview_callback", $content);
 }
 
 
