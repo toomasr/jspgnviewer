@@ -1,7 +1,16 @@
-***************************
-* JS PGN VIEWER CHANGELOG *
-***************************
+*******************************************************
+*              JSPGNVIEWER CHANGELOG                  *
+*                                                     *
+* Project page: http://code.google.com/p/jspgnviewer/ *
+* Website: http://www.pgnview.com                     *
+* Blog: http://tom.jabber.ee/                         *
+*******************************************************
 
+13.01.2008 - jsPgnViewer/WP plugin 0.6.2
+Bugfixe(s)/Change(s)
+	+ Some NAGs showed wrong annotations
+		http://code.google.com/p/jspgnviewer/issues/detail?id=18
+	
 28.12.2007 - WP plugin 0.6.1
 Bugfixe(s)/Change(s)
 	+ Defining games in WP with ###pgn### and %%%pgn%%% start/end tags

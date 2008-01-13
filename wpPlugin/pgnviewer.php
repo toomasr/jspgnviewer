@@ -3,7 +3,7 @@
 Plugin Name: pgnviewer
 Plugin URI: http://tom.jabber.ee/chess
 Description: Allows to add PGN files to your blog posts that are converted to interactive boards. Easy to share your chess games with your friends.
-Version: 0.6.1
+Version: 0.6.2
 Author: Toomas Römer
 Author URI: http://tom.jabber.ee 
 */

@@ -12,7 +12,7 @@
 * The plugin lets you share your chess games in your blog. Just    *
 * paste your PGN to the your post between <pgn> tags and voila!    *
 *                                                                  *
-* Toomas Römer (toomasr[at]gmail.com)                               *
+* Toomas RÃ¶mer (toomasr[at]gmail.com)                               *
 *                                                                  *
 * Consult the pgnviewer.php for the license of the plugin.         *
 *                                                                  *
@@ -34,9 +34,9 @@ Installation
 
 Using the plugin
     * Start writing a post using your WordPress
-    * Write a start tag <pgn>
+    * Write a start tag ###pgn### 
     * Copy paste your game after this tag
-    * Write an ending that </pgn>
+    * Write an ending that %%%pgn%%%
     * Save and voila. The result should look something like this sample page (http://tom.jabber.ee/chessblog/?p=6)
 
 Have fun!
