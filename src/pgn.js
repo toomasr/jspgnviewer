@@ -103,6 +103,10 @@ function Pgn(pgn) {
 		}
 	}
 
+	if (themoves.length>0 && themoves[themoves.length-1] == "...") {
+		 themoves = themoves.slice(0, themoves.length-1);
+	}
+
 	var sizeOfTheMoves = themoves.length;
 	if (themoves.length>0) {
 		for (var i=0;i<gameOverre.length;i++) {
