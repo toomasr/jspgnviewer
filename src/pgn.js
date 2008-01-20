@@ -117,6 +117,7 @@ function Pgn(pgn) {
 		}
 	}
 
+
 	for (var i=0;i<sizeOfTheMoves;i++) {	//don't handle game end bit
 		if (themoves[i]) {
 			themoves[i] = themoves[i].replace(/^\s+|\s+$/g, '');
@@ -157,12 +158,17 @@ function Pgn(pgn) {
 			var found = false;
 			for (var j=0;j<themoves[i].length;j++) {
 				c = themoves[i].charAt(j);
-				if ((c >= '0' && c <= '9') || c == '.') {
+				if (c >= '0' && c <= '9') {
 					continue;
 				}
 				else {
 					found = true;
-					themoves[i] = themoves[i].substring(j);	//strip move number
+					var idx = j;
+					// 6.0-0 goes wrong as 0 is used for castling
+					if (!(themoves[i].charAt(j) >= '0' && themoves[i].charAt(j)<='9')) {
+						 idx = j+1;
+				}
+					themoves[i] = themoves[i].substring(idx);	//strip move number
 					break;
 				}
 			}
