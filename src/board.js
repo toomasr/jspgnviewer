@@ -62,6 +62,7 @@
 		this.opts['altPlayMove'] = "Play one move";
 		this.opts['altFastForward'] = "Fast-forward to the end";
 		this.opts['moveBorder'] = "0px solid #000000";
+		this.opts['skipToMove'] = null;
 
 		var optionNames = ['flipped', 'moveFontSize', 'moveFontColor',
 										'moveFont', 'commentFontSize',
@@ -74,7 +75,8 @@
 										'markLastMove','altRewind',
 										'altBack','altFlip','altShowMoves',
 										'altComments','altPlayMove',
-										'altFastForward','moveBorder'];
+										'altFastForward','moveBorder',
+										'skipToMove'];
 
 		// if keys in options define new values then
 		// set the this.opts for that key with the 
@@ -316,6 +318,22 @@
 			btnTd.appendChild(href);
 			updateMoveInfo(this);
 			this.toggleMoves(this.opts['showMovesPane']);	//force the moves pane overflow to get picked up
+			if (this.opts['skipToMove']) { 
+				try {
+					var tmp2 = parseInt(this.opts['skipToMove']);
+					if (tmp2>2) {
+						var color = tmp2%2==0?1:0;
+						tmp2 = Math.round(tmp2/2);
+						this.skipToMove(tmp2-1,color);
+					}
+					else if (tmp2 == 1) {
+						 this.skipToMove(0,0);
+					}
+					else if (tmp2 == 2) {
+						 this.skipToMove(0,1);
+					}
+				}catch(e){}
+			}
 	 };
 
 		flipBoard = function(board) {
@@ -347,7 +365,7 @@
 						var rNo = no*2+color+1;
 						if (this.conv.getCurMoveNo()<rNo) {
 							var i = 0;
-							while(this.conv.getCurMoveNo()<rNo && i < 200) {
+							while(this.conv.getCurMoveNo()<rNo && i < 400) {
 								makeMove(this, true);
 								i++;
 							}
