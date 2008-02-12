@@ -6,6 +6,12 @@
 * Blog: http://tom.jabber.ee/                         *
 *******************************************************
 
+XXX SVN TRUNK - jsPgnViewer/WP plugin 0.6.4
+Bugfixe(s)/Change(s)
+	+ skipToMove option added
+		http://code.google.com/p/jspgnviewer/issues/detail?id=19
+	+ Handling of broken (unmatched parentheses in comments) PGN files
+
 13.01.2008 - jsPgnViewer/WP plugin 0.6.2
 Bugfixe(s)/Change(s)
 	+ Some NAGs showed wrong annotations
