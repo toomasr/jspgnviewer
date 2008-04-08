@@ -90,7 +90,6 @@ function Pgn(pgn) {
 	);
 
 	// the moves;
-	var re;
 	var themoves = this.pgn.split(" ");
 	var tmp = new Array();
 	tmp[1] = null;

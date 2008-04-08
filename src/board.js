@@ -322,9 +322,9 @@
 				try {
 					var tmp2 = parseInt(this.opts['skipToMove']);
 					if (tmp2>2) {
-						var color = tmp2%2==0?1:0;
+						var color2 = tmp2%2==0?1:0;
 						tmp2 = Math.round(tmp2/2);
-						this.skipToMove(tmp2-1,color);
+						this.skipToMove(tmp2-1,color2);
 					}
 					else if (tmp2 == 1) {
 						 this.skipToMove(0,0);
@@ -708,7 +708,7 @@
 						for (var f=0;f<8;f++) {
 							var p = this.conv.initialBoard[r][f];
 							if (p.piece) {
-								img = this.getImg(p.piece,p.color);
+								var img = this.getImg(p.piece,p.color);
 								this.pos[r][f].appendChild(img);
 								this.pos[r][f].piece = p.piece;
 								this.pos[r][f].color = p.color;
@@ -922,15 +922,6 @@
 						to.appendChild(this.getImg(to.piece, to.color));
 					}
 				};
-
-				function setUp(board, divId) {
-					var pgn = new Pgn(document.getElementById(divId).firstChild.nodeValue);
-					var conv = new Converter(pgn);
-					conv.convert();
-
-					var brd = new Board(conv);
-					brd.init();
-				};
 			};
 
 	/*
@@ -988,8 +979,8 @@
 			if (arguments.length>1)
 				pref = arguments[1];
 			var img;
-			for (i in this.imageNames[set]) {
-				for (j in this.imageNames[set][i]) {
+			for (var i in this.imageNames[set]) {
+				for (var j in this.imageNames[set][i]) {
 					img = new Image();
 					img.src = this.imageNames[set][i][j];
 				}

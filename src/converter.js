@@ -285,7 +285,7 @@ function Converter(pgn) {
 		this.flipped = !this.flipped;
 		for (var i = 0;i<8;i++) {
 			for (var j = 0;j<4;j++) {
-				tmp = board[i][j];
+				var tmp = board[i][j];
 				board[i][j] = board[7-i][7-j];
 				board[7-i][7-j] = tmp;
 			}
@@ -318,15 +318,8 @@ function Converter(pgn) {
 		var prom = "";
 		
 		var toCoords = getSquare(to);
-		var fromCoords, from, to, result, tmp, myMove = null, pawnM = false;
-		if (pawnre.test(to)) {
-			// let see if it is a promotional move
-			if (/^[a-z]+[1-8]=[A-Z]/.test(to))
-				prom = to.charAt(to.indexOf('=')+1);
-			fromCoords = findFromPawn(this.vBoard, to, toCoords, color);
-			pawnM = true;
-		}
-		else if (knightre.test(to)) {
+		var fromCoords, from, to, result, myMove = null, pawnM = false;
+		if (knightre.test(to)) {
 			fromCoords = findFromKnight(this, to, toCoords, color);
 		}
 		else if (bishre.test(to)) {
@@ -378,6 +371,13 @@ function Converter(pgn) {
 
 			fromCoords = getSquare(coords[2]);
 			toCoords = getSquare(coords[3]);
+		}
+		else if (pawnre.test(to)) {
+			// let see if it is a promotional move
+			if (/^[a-z]+[1-8]=[A-Z]/.test(to))
+				prom = to.charAt(to.indexOf('=')+1);
+			fromCoords = findFromPawn(this.vBoard, to, toCoords, color);
+			pawnM = true;
 		}
 		else {
 			throw("Can't figure out which piece to move '"+oldTo+"'");
@@ -614,10 +614,6 @@ function Converter(pgn) {
 		Find the bishop from location.
 	*/
 	function findFromBish(board, pos, toSAN, toCoords, color) {
-		var to = toCoords;
-		var rtrn;
-		var coord;
-		
 		if (toCoords[2][0] != -1 && toCoords[2][1] != -1) {
 			return new Array(toCoords[2][1], toCoords[2][0]);
 		}
@@ -653,7 +649,6 @@ function Converter(pgn) {
 		Find the queen's from location.
 	*/
 	function findFromQueen(board, pos, toSAN, to, color) {
-		var op = getOppColor(color);
 		var extra = to[2];
 		var rtrns = new Array();
 		
@@ -701,7 +696,7 @@ function Converter(pgn) {
 						rtrns[rtrns.length] = new Array(arr[i][0],arr[i][1]);
 						break;
 					}
-					tmp = pos[x][y];
+					var tmp = pos[x][y];
 					if (tmp && tmp.piece) {	//ran into another piece
 						break;
 					}
@@ -736,7 +731,6 @@ function Converter(pgn) {
 		Find the rook's from location.
 	*/
 	function findFromRook(board, pos, toSAN, to, color) {
-		var op = getOppColor(color);
 		var extra = to[2];
 		var rtrns = new Array();
 		
@@ -873,26 +867,6 @@ function Converter(pgn) {
 		throw("No knight move found. '"+toSAN+"'");
 	};
 
-	/**
-		Returns "black" if the square specified by x and y
-		is black and returns "white" otherwise.
-	**/
-	function getSquareColor(x, y) {
-		x+=1, y+=1;
-		if (y%2!=0) {
-			if (x%2!=0)
-				return "white";
-			else
-				return "black";
-		}
-		else {
-			if (x%2==0)
-				return "white";
-			else
-				return "black";
-		}
-	};
-
 	/*
 	 * Converts a SAN (Standard Algebraic Notation) into 
 	 * board coordinates. The SAN is in the format of
@@ -917,7 +891,7 @@ function Converter(pgn) {
 		if (coord.indexOf("+") != -1)
 			coord = coord.substring(0, coord.indexOf("+"));
 		// let's trim the piece prefix
-		if (/^[A-Z]/.test(coord)) {
+		if (/^[A-Z]/.test(coord) || /^[a-z]{2,2}/.test(coord)) {
 			coord = coord.substr(1);
 		}
 
@@ -1181,9 +1155,6 @@ function MyMove() {
 };
 
 function MySquare(x, y, piece, color) {
-	var colors = new Array('white','black');
-	var pieces = new Array('rook');
-
 	this.x = x;
 	this.y = y;
 	this.color = color;
