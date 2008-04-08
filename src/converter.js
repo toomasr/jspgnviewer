@@ -308,13 +308,13 @@ function Converter(pgn) {
 			Find the location of the piece.
 		*/
 		var pawnre = /^[a-z]+[1-8]/;
-		var knightre = /^N[0-9]?[a-z]+[1-8]/;
+		var knightre = /^N[0-9]?[a-z]+[1-8]/i;
 		var bishre = /^B[a-z]+[1-8]/;
-		var queenre = /^Q([a-z]|[0-9])?[a-z]+[1-8]/;
-		var rookre = /^R([a-z]|[0-9])?[a-z]+[1-8]/;
+		var queenre = /^Q([a-z]|[0-9])?[a-z]+[1-8]/i;
+		var rookre = /^R([a-z]|[0-9])?[a-z]+[1-8]/i;
 		var lCastlere = /^(0|O)-(0|O)-(0|O)/i;
 		var sCastlere = /^(0|O)-(0|O)/i;
-		var kingre = /^K[a-z]+[1-8]/;
+		var kingre = /^K[a-z]+[1-8]/i;
 		var prom = "";
 		
 		var toCoords = getSquare(to);
