@@ -891,7 +891,7 @@ function Converter(pgn) {
 		if (coord.indexOf("+") != -1)
 			coord = coord.substring(0, coord.indexOf("+"));
 		// let's trim the piece prefix
-		if (/^[A-Z]/.test(coord) || /^[a-z]{2,2}/.test(coord)) {
+		if (/^[A-Z]/.test(coord) || /^[nbrqk]{1,1}[abcdefgh]{1,1}/.test(coord)) {
 			coord = coord.substr(1);
 		}
 

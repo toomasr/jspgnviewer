@@ -32,12 +32,6 @@
 			//var brdi = new BoardImages("default", "../img/default/")
 			//brdi.preload()
 		</script-->
-	<script language="javascript">
-		 window.addEvent('domready', function(){
-			/* Resizable */
-			$('area_board_moves').makeResizable();
-		}); 
-</script>
   </head>
 
   <body>
@@ -47,38 +41,8 @@
 						<div id='area_board' style=""> 
 						</div>
 <div id='area' style="visibility: hidden;display:none">
-[Site "http://www.playtheimmortalgame.com"]
-[Date "2008.01.12"]
-[EndDate "2008.01.25"]
-[Round "3"]
-[White "irfan21"]
-[Black "zebano"]
-[WhiteRating "2018"]
-[BlackRating "1766"]
-[Result "1-0"]
-[GameId "4487444"]
-
-1. e4 e6
-2. d4 d5
-3. e5 c5
-4. c3 Qd8b6 { I've been tinkering with moves orders in the advance. The point here is to avoid the line e4 e6 d4 d5 e5 c5 c3 Nf6 Be3 Qb6 Qd2. It also allows me to play to exchange my light squared bishop on b5 in certain situations.}
-5. Ng1f3 Bc8d7
-6. a3 a5 { Bb5 is technically possible here, but experience has shown me that black needs to not be cramped somewhere, and the queenside is the best bet (a timely f6 can help but I consider allowing b5 to be +- }
-7. b3 Nb8c6 { of course not ... Bb5, Qb3 }
-8. Bc1e3 Ng8h6 { I don't like cxd here as that allows white to play Nc3 when now he must develop via d2. Other options are Be7 (but after dxc, it just moves again and this forces my knight out via h6 eventually and 0-0-0 which I've never tried since the q-side looks so volatile (and it would need to be prepped with h6 to prevent Nf3-g6-f7)}
-9. Bf1d3 Nh6f5 { I think delaying this for Be7 and 0-0 would be prudent -see not from move 11}
-10. Bd3xf5 exf5
-11. O-O Bf8e7 {At this point white has given up the bishop pair, but he has shattered blacks pawns, and black isn't even ready to castle short. instead of the text I think the key idea if for black to immediately play cxd and Be6 using his bishop as a pawn and keeping the center blocked until his king is safe. }
-12. dxc5 Be7xc5 {Blacks ommision of cxd gives white the initiative }
-13. Be3xc5 Qb6xc5
-14. b4 Qc5b5
-15. a4 Qb5c4 {...Qb6 giving up the d-pawn which will fall anyway would allow black to play on and bring his rooks into the fight.}
-16. Nb1a3 Qc4g4
-17. h3 Qg4g6 {game is over black is just dragging his feet about resigning}
-18. Qd1xd5 Bd7e6
-19. Qd5c5 axb4
-20. Na3b5
-1-0
+1. c4 e5
+2. nc3 nc6
 </div>
 <script language="JavaScript">
 	var brd = new Board('area', {'imagePrefix':'../img/default/',
