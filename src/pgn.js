@@ -32,6 +32,7 @@ function Pgn(pgn) {
 	this.skip = 0;
 
 	// strip newlines
+	this.pgnOrig = pgn;
 	pgn = pgn.replace(/\n/g," ");
 	
 	// replace dollar signs

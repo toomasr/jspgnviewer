@@ -62,6 +62,7 @@
 		this.opts['altPlayMove'] = "Play one move";
 		this.opts['altFastForward'] = "Fast-forward to the end";
 		this.opts['moveBorder'] = "0px solid #000000";
+		this.opts['downloadURL'] = "http://www.chesspastebin.com/asPgn.php?PGN=";
 		this.opts['skipToMove'] = null;
 
 		var optionNames = ['flipped', 'moveFontSize', 'moveFontColor',
@@ -76,7 +77,7 @@
 										'altBack','altFlip','altShowMoves',
 										'altComments','altPlayMove',
 										'altFastForward','moveBorder',
-										'skipToMove'];
+										'skipToMove', 'downloadURL'];
 
 		// if keys in options define new values then
 		// set the this.opts for that key with the 
@@ -207,7 +208,7 @@
 			if (this.opts['flipped'])
 				flipBoard(this);
 			this.populateProps(propsTd);
-			this.populateMoves(movesTd);
+			this.populateMoves(movesTd, pgn.pgnOrig);
 
 			// in java i could do Board.this in anon function;
 			var tmp = this;
@@ -717,7 +718,7 @@
 					}
 				};
 
-				this.populateMoves = function(cont) {
+				this.populateMoves = function(cont, pgn) {
 					if (!this.opts['showMovesPane']) {
 						 cont.style.visibility="hidden";
 						 cont.style.display="none";
@@ -728,11 +729,21 @@
 					p.style.fontSize = "9pt";
 					p.style.fontFace = "Tahoma, Arial, sans-serif";
 					p.style.fontWeight = "bold";
+					var tmpA = document.createElement("a");
+
+					tmpA.href = this.opts['downloadURL']+escape(pgn);
+					tmpA.appendChild(document.createTextNode("PGN"));
+				 	tmpA.style.fontFamily = this.opts['moveFont'];
+				 	tmpA.style.fontSize = this.opts['moveFontSize'];
+				 	tmpA.style.color = this.opts['moveFontColor'];
+
 					var txt = document.createTextNode("");
 					if (this.conv.pgn.props['White'])
 						var txt = document.createTextNode(this.conv.pgn.props['White']
-										+" - "+this.conv.pgn.props['Black']);
+										+" - "+this.conv.pgn.props['Black']+' (');
 					p.appendChild(txt);
+					p.appendChild(tmpA);
+					p.appendChild(document.createTextNode(")"));
 					cont.appendChild(p);
 					
 					var link, tmp, tmp3;
