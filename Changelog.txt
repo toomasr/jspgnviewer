@@ -6,7 +6,7 @@
 * Blog: http://tom.jabber.ee/                         *
 *******************************************************
 
-30.01.2008 - jsPgnViewer/WP plugin 0.6.4
+30.07.2008 - jsPgnViewer/WP plugin 0.6.4
 Bugfixe(s)/Change(s)
 	+ Possible to download the game as a file
 	+ skipToMove option added
