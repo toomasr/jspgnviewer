@@ -738,10 +738,16 @@
 				 	tmpA.style.color = this.opts['moveFontColor'];
 
 					var txt = document.createTextNode("");
-					if (this.conv.pgn.props['White'])
+					if (this.conv.pgn.props['White']) {
 						var txt = document.createTextNode(this.conv.pgn.props['White']
-										+" - "+this.conv.pgn.props['Black']+' (');
-					p.appendChild(txt);
+										+" - "+this.conv.pgn.props['Black']);
+						p.appendChild(txt);
+					}
+					else {
+						var txt = document.createTextNode("Unknown - Unknown");
+						p.appendChild(txt);
+					}
+					p.appendChild(document.createTextNode(" ("));
 					p.appendChild(tmpA);
 					p.appendChild(document.createTextNode(")"));
 					cont.appendChild(p);
