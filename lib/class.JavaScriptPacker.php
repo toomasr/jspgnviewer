@@ -1,7 +1,7 @@
 <?php
-/* 7 December 2006. version 1.0
+/* 9 April 2008. version 1.1
  * 
- * This is the php version of the Dean Edwards JavaScript 's Packer,
+ * This is the php version of the Dean Edwards JavaScript's Packer,
  * Based on :
  * 
  * ParseMaster, version 1.0.2 (2005-08-19) Copyright 2005, Dean Edwards
@@ -15,6 +15,9 @@
  * 
  * Ported to PHP by Nicolas Martin.
  * 
+ * ----------------------------------------------------------------------
+ * changelog:
+ * 1.1 : correct a bug, '\0' packed then unpacked becomes '\'.
  * ----------------------------------------------------------------------
  * 
  * examples of usage :
@@ -48,7 +51,7 @@
  * see http://dean.edwards.name/packer/usage/ for more information.
  * 
  * Notes :
- * # need PHP 5 . Tested with PHP 5.1.2
+ * # need PHP 5 . Tested with PHP 5.1.2, 5.1.3, 5.1.4, 5.2.3
  * 
  * # The packed result may be different than with the Dean Edwards
  *   version, but with the same length. The reason is that the PHP
@@ -720,7 +723,9 @@ class ParseMaster {
 		}
 	}
 	private function _unescapeBis() {
-		if (!empty($this->_escaped[$this->buffer['i']])) {
+		if (isset($this->_escaped[$this->buffer['i']])
+			&& $this->_escaped[$this->buffer['i']] != '')
+		{
 			 $temp = $this->_escaped[$this->buffer['i']];
 		} else {
 			$temp = '';
