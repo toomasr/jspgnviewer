@@ -33,6 +33,7 @@
 
 		this.opts = [];
 		this.opts['imagePrefix'] = "img/default/";
+		this.opts['buttonPrefix'] = "img/default/buttons/";
 		this.opts['imageSuffix'] = 'gif';
 		this.opts['moveFontSize'] = "8pt";
 		this.opts['moveFontColor'] = "#537c3a";
@@ -77,7 +78,8 @@
 										'altBack','altFlip','altShowMoves',
 										'altComments','altPlayMove',
 										'altFastForward','moveBorder',
-										'skipToMove', 'downloadURL'];
+										'skipToMove', 'downloadURL',
+										'buttonPrefix'];
 
 		// if keys in options define new values then
 		// set the this.opts for that key with the 
@@ -185,6 +187,7 @@
 			// white pieces
 			for(var i = 0; i < 8; i++) {
 				var tr = document.createElement("tr");
+				tr.style.height = (parseInt(this.opts['squareSize'].replace("px",""))+1)+"px";
 				var flip = (i % 2)?1:0;
 				for(var j = 0; j < 8; j++) {
 					var td = document.createElement("td");
@@ -900,7 +903,16 @@
 				};
 
 				this.getImg = function(piece, color) {
-					var src = this.opts['imagePrefix'] + imageNames[color][piece];
+					var btns = {"ffward":true,"rwind":true,"forward":true,
+					            "back":true,"toggle":true,"comments":true,"flip":true};
+					
+					var prefix = this.opts['imagePrefix'];
+					if (btns[piece]) {
+						prefix = this.opts['buttonPrefix'];
+						imageNames[color][piece] = imageNames[color][piece].replace("buttons\/","");
+					}
+					
+					var src = prefix + imageNames[color][piece];
 					var img = document.createElement("img");
 					img.border = 0;
 					img.style.padding = "0px";
