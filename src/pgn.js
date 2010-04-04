@@ -43,6 +43,7 @@ function Pgn(pgn) {
 	pgn = pgn.replace(/\ \$4[0-9]*/g, "??");
 	pgn = pgn.replace(/\ \$5[0-9]*/g, "!?");
 	pgn = pgn.replace(/\ \$6[0-9]*/g, "?!");
+	pgn = pgn.replace(/\ \$[0-9]+/g, "");
 	
 
 	// make double spaces to single spaces
