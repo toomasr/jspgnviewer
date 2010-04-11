@@ -56,7 +56,9 @@ function Pgn(pgn) {
 	/* constructor */
 
 	// strip comments
+	console.log(pgn)
 	this.pgn = stripIt(pgn,true);
+	console.log(this.pgn)
 	
 	// Match all properties
 	var reprop = /\[([^\]]*)\]/gi;
@@ -275,17 +277,6 @@ function Move(white, black) {
 function stripIt(val, strip) {
 	var count = 0;
 	var out = new Array();
-	/*
-		At one point chesspastebin.com started getting cames
-		with invalid PGNs, mostly in the form
-		{ comment comment ( something between starting brackets}.
-		As you can see, the ( is not closed. 
-		isOpen and isCurlyO are just for that to take normal
-		guesses in that kind of situations.
-	*/
-	var isOpen = false;
-	var isCurlyO = false;
-	var curlyOpenedFst = false;
 	for (var i=0;i<val.length;i++) {
 		var c = val.charAt(i);
 		switch (c) {
@@ -294,40 +285,23 @@ function stripIt(val, strip) {
 					out[out.length] = '_';
 				}
 				count++;
-				if (isOpen) {
-					 	count--;
-				}
-				isOpen = true;
 				break;
 			case '{':
-				isCurlyO = true;
 				if (!strip) {
 					out[out.length] = '_';
 				}
 				count++;
-				if (!isOpen)
-					 curlyOpenedFst=true;
 				break;
 			case '}':
-				if (isOpen && isCurlyO && curlyOpenedFst) {
-					// lets close the open (
-					count--;
-					isOpen = false;
-				}
-				isCurlyO = false;
-				curlyOpenedFst = false;
 				count--;
 				if (!strip) {
 					out[out.length] = '_';
 				}
 				break;
 			case ')':
-				if (isOpen) {
-					 count--;
-					 if (!strip) {
-						 out[out.length] = '_';
-					 }
-					 isOpen = false;
+				count--;
+				if (!strip) {
+					out[out.length] = '_';
 				}
 				break;
 			case '\t':
