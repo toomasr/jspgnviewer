@@ -6,6 +6,12 @@
 * Blog: http://tom.jabber.ee/                         *
 *******************************************************
 
+11.04.2010 - jsPgnViewer/WP plugin 0.6.6
+Bugfixe(s)/Change(s)
+	+ Fixes the handling of multi-nested comment
+	+ Special handling of broken PGN files only applied on
+		broken PGNs
+
 04.04.2010 - jsPgnViewer/WP plugin 0.6.5
 Bugfixe(s)/Change(s)
 	+ Better handling of NAGs, http://www.very-best.de/pgn-spec.htm#7.

@@ -51,14 +51,18 @@ function Pgn(pgn) {
 	
 	this.pgn = pgn;
 	this.pgnRaw = pgn;
-	this.pgnStripped = stripIt(pgn);
+	if (isPGNBroken(pgn))
+		this.pgnStripped = stripItBroken(pgn);
+	else
+		this.pgnStripped = stripIt(pgn);
 	
 	/* constructor */
 
 	// strip comments
-	console.log(pgn)
-	this.pgn = stripIt(pgn,true);
-	console.log(this.pgn)
+	if (isPGNBroken(pgn))
+		this.pgn = stripItBroken(pgn,true);
+	else
+		this.pgn = stripIt(pgn,true);
 	
 	// Match all properties
 	var reprop = /\[([^\]]*)\]/gi;
@@ -302,6 +306,120 @@ function stripIt(val, strip) {
 				count--;
 				if (!strip) {
 					out[out.length] = '_';
+				}
+				break;
+			case '\t':
+				out[out.length] = ' ';
+				break;
+			default:
+				if (count > 0) {
+					if (!strip) {
+						out[out.length] = '_';
+					}
+				}
+				else {
+					out[out.length] = c;
+				}
+		}
+	}
+	return out.join("");
+};
+
+function isPGNBroken(val) {
+	var pCount = 0;
+	var cCount = 0;
+	var lastOne = "";
+	for (var i=0;i<val.length;i++) {
+		var c = val.charAt(i);
+		switch (c) {
+			case '(':
+				pCount++;
+				lastOne = "p";
+				break;
+			case ')':
+				// closing a non-existent curly brace
+				if (pCount == 0)
+					return false;
+				// closing a curly instead of a parenthesis
+				if (lastOne == "c")
+					return false;
+				lastOne = "";
+				pCount--;
+				break;
+			case '{':
+				cCount++;
+				lastOne = "c";
+				break;
+			case '}':
+				// closing a non-existent curly brace
+				if (cCount == 0)
+					return false;
+				// if we're closing a parenthesis instead of a curly
+				if (lastOne == "p")
+					return false;
+				lastOne = "";
+				cCount--;
+				break;
+		}
+	}
+}
+
+function stripItBroken(val, strip) {
+	var count = 0;
+	var out = new Array();
+	/*
+		At one point chesspastebin.com started getting cames
+		with invalid PGNs, mostly in the form
+		{ comment comment ( something between starting brackets}.
+		As you can see, the ( is not closed. 
+		isOpen and isCurlyO are just for that to take normal
+		guesses in that kind of situations.
+	*/
+	var isOpen = false;
+	var isCurlyO = false;
+	var curlyOpenedFst = false;
+	for (var i=0;i<val.length;i++) {
+		var c = val.charAt(i);
+		switch (c) {
+			case '(':
+				if (!strip) {
+					out[out.length] = '_';
+				}
+				count++;
+				if (isOpen) {
+					 	count--;
+				}
+				isOpen = true;
+				break;
+			case '{':
+				isCurlyO = true;
+				if (!strip) {
+					out[out.length] = '_';
+				}
+				count++;
+				if (!isOpen)
+					 curlyOpenedFst=true;
+				break;
+			case '}':
+				if (isOpen && isCurlyO && curlyOpenedFst) {
+					// lets close the open (
+					count--;
+					isOpen = false;
+				}
+				isCurlyO = false;
+				curlyOpenedFst = false;
+				count--;
+				if (!strip) {
+					out[out.length] = '_';
+				}
+				break;
+			case ')':
+				if (isOpen) {
+					 count--;
+					 if (!strip) {
+						 out[out.length] = '_';
+					 }
+					 isOpen = false;
 				}
 				break;
 			case '\t':

@@ -24,10 +24,10 @@
 					var pgn = new Pgn(document.getElementById("testGame"+i).firstChild.nodeValue);	 
 					var conv = new Converter(pgn)
 					try {
-						console.log("Converting game "+i)
-						console.time("conversion")
+						//console.log("Converting game "+i)
+						//console.time("conversion")
 						conv.convert()
-						console.timeEnd("conversion")
+						//console.timeEnd("conversion")
 						console.log("Success. Time was ")
 					}
 					catch (e) {
