@@ -6,6 +6,13 @@
 * Blog: http://tom.jabber.ee/                         *
 *******************************************************
 
+12.04.2010 - jsPgnViewer/WP plugin 0.6.7
+Bugfixe(s)/Change(s)
+	+ Fixes the buttonPrefix defaults not honoring different
+  set styles
+  + Default btns also have png counterparts to gif ones
+  to avoid having a buttonSuffix and imageSuffix options
+
 11.04.2010 - jsPgnViewer/WP plugin 0.6.6
 Bugfixe(s)/Change(s)
 	+ Fixes the handling of multi-nested comment
