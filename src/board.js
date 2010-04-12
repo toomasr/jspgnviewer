@@ -89,6 +89,9 @@
 				this.opts[optionNames[i]] = options[optionNames[i]];
 			}
 		}
+
+    if (options && typeof(options['buttonPrefix']) == 'undefined')
+      this.opts['buttonPrefix'] = this.opts['imagePrefix']+"buttons/";
 		
 		var brdI = new BoardImages(this.opts);
 		var imageNames = brdI.imageNames['default'];
