@@ -85,10 +85,17 @@ function tr_add_script_tags($_) {
 }
 
 function tr_pgnview($content) {
-	if (stristr($content, "<pgn>") === FALSE)
-		return preg_replace_callback('/###pgn###((.|\n|\r)*?)%%%pgn%%%/', "tr_pgnview_callback", $content);
-	else
-		return preg_replace_callback('/<pgn>((.|\n|\r)*?)<\/pgn>/', "tr_pgnview_callback", $content);
+    // stumbled upon http://bugs.php.net/bug.php?id=51238
+    if (stristr($content, "<pgn>") === FALSE) {
+        //return preg_replace_callback('/###pgn###((.|\n|\r)*?)%%%pgn%%%/', "tr_pgnview_callback", $content);
+        $result = preg_replace('/###pgn###(.*)%%%pgn%%%/', "tr_pgnview_callback", $content);
+        return tr_pgnview_callback(array($result));
+    }
+    else {
+        $result = preg_replace('/<pgn>(.*)<\/pgn>/', "tr_pgnview_callback", $content);
+        return tr_pgnview_callback(array($result));
+        //return preg_replace_callback('/<pgn>(.*)<\/pgn>/', "tr_pgnview_callback", $content);
+    }
 }
 
 
