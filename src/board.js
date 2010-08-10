@@ -145,18 +145,18 @@
 			propsTd.style.height = '10px';
 			
 			// movesTable
-			var movesTd = document.createElement("td");
-			this.movesTd = movesTd;
+			var movesDiv = document.createElement("div");
+			this.movesDiv = movesDiv;
 			if (this.opts['movesPaneWidth'])
-				movesTd.style.width = this.opts['movesPaneWidth'];
+				movesDiv.style.width = this.opts['movesPaneWidth'];
 //			else
-//				movesTd.style.overflow = "hidden";
-			movesTd.style.height = boardTd.style.height;
-			movesTd.id = divId+"_board_moves";
-			movesTd.style.overflow = "auto";
-			movesTd.style.border = "1px solid #cccccc";
-			movesTd.vAlign = "top";
-			topRightTd.appendChild(movesTd);
+//				movesDiv.style.overflow = "hidden";
+			movesDiv.style.height = boardTd.style.height;
+			movesDiv.id = divId+"_board_moves";
+			movesDiv.style.overflow = "auto";
+			movesDiv.style.border = "1px solid #cccccc";
+			movesDiv.vAlign = "top";
+			topRightTd.appendChild(movesDiv);
 			
 			var tmp = document.createElement("tr");
 			tmp.style.height = "0%";
@@ -214,7 +214,7 @@
 			if (this.opts['flipped'])
 				flipBoard(this);
 			this.populateProps(propsTd);
-			this.populateMoves(movesTd, pgn.pgnOrig);
+			this.populateMoves(movesDiv, pgn.pgnOrig);
 
 			// in java i could do Board.this in anon function;
 			var tmp = this;
@@ -510,14 +510,14 @@
 					*/
 					this.toggleMoves = function(flag) {
 						if (flag == "flip")
-							flag = this.movesTd.style.visibility=="hidden";
+							flag = this.movesDiv.style.visibility=="hidden";
 						if (flag) {
-							this.movesTd.style.display = "block";
-							this.movesTd.style.visibility = "visible";
+							this.movesDiv.style.display = "block";
+							this.movesDiv.style.visibility = "visible";
 						}
 						else {
-							this.movesTd.style.display = "none";
-							this.movesTd.style.visibility = "hidden";
+							this.movesDiv.style.display = "none";
+							this.movesDiv.style.visibility = "hidden";
 						}
 					};
 
@@ -530,7 +530,7 @@
 						else {
 							this.opts['showComments'] = false;
 						}
-						var list = this.movesTd.getElementsByTagName("span");
+						var list = this.movesDiv.getElementsByTagName("span");
 						if (list) {
 							for (var i=0;i<list.length;i++) {
 								if (flag) {
