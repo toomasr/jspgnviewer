@@ -766,7 +766,7 @@ function Converter(pgn) {
 					y += rdy;
 					if (x == to[0] && y == to[1]) {
 						if (extra[0] != -1 || extra[1] != -1) {
-							if (extra[0] != arr[i][1] && extra[1] != arr[i][0]) {
+							if (extra[0] != arr[i][1] || extra[1] != arr[i][0]) {
 								break;
 							}
 							return new Array(arr[i][0],arr[i][1]);
