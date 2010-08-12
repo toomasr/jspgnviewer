@@ -1,14 +1,14 @@
 <?php
 /*
 Plugin Name: pgnviewer
-Plugin URI: http://tom.jabber.ee/chess
+Plugin URI: http://pgnview.com
 Description: Allows to add PGN files to your blog posts that are converted to interactive boards. Easy to share your chess games with your friends.
 Version: 0.6.4
 Author: Toomas Römer
 Author URI: http://tom.jabber.ee 
 */
 
-/*  Copyright 2006  Toomas Römer  (email : toomasr[at]gmail)
+/*  Copyright 2010  Toomas Römer  (email : toomasr[at]gmail)
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -47,15 +47,15 @@ function tr_pgnview_callback($str) {
 
 	$opts = array();
 	// jspgnviewer options
-	$opts['imagePrefix'] = $siteurl."/wp-content/pgnviewer/img/zurich/";
+	$opts['imagePrefix'] = $siteurl."/wp-content/plugins/pgnviewer/img/zurich/";
 	$opts['showMovesPane'] = true;
 	$opts['commentFontSize'] = '10pt';
 	$opts['moveFontColor'] = '#af0000';
 	$opts['commentFontColor'] = '#006699';
 	$opts['squareSize'] = '32px';
 	$opts['markLastMove'] = false;
-	$opts['blackSqColor'] = "url(\"$siteurl/wp-content/pgnviewer/img/zurich/board/darksquare.gif\")";
-	$opts['lightSqColor'] = "url(\"$siteurl/wp-content/pgnviewer/img/zurich/board/lightquare.gif\")";
+	$opts['blackSqColor'] = "url(\"$siteurl/wp-content/plugins/pgnviewer/img/zurich/board/darksquare.gif\")";
+	$opts['lightSqColor'] = "url(\"$siteurl/wp-content/plugins/pgnviewer/img/zurich/board/lightquare.gif\")";
 	$opts['squareBorder'] = '0px solid #000000';
 	$opts['moveBorder'] = '1px solid #cccccc';
 	// end of jspgnviewer options
@@ -86,18 +86,20 @@ function tr_add_script_tags($_) {
 
 function tr_pgnview($content) {
     // stumbled upon http://bugs.php.net/bug.php?id=51238
-    if (stristr($content, "<pgn>") === FALSE) {
+    if (stristr($content, "###pgn###")) {
         //return preg_replace_callback('/###pgn###((.|\n|\r)*?)%%%pgn%%%/', "tr_pgnview_callback", $content);
         $result = preg_replace('/###pgn###(.*)%%%pgn%%%/', "tr_pgnview_callback", $content);
         return tr_pgnview_callback(array($result));
     }
-    else {
+    else if (stristr($content, "<pgn>")) {
         $result = preg_replace('/<pgn>(.*)<\/pgn>/', "tr_pgnview_callback", $content);
         return tr_pgnview_callback(array($result));
         //return preg_replace_callback('/<pgn>(.*)<\/pgn>/', "tr_pgnview_callback", $content);
     }
+    else {
+        return $content;
+    }
 }
-
 
 add_filter('the_content', 'tr_pgnview');
 add_action('wp_head', 'tr_add_script_tags');

@@ -11,7 +11,7 @@ DEST_DIR="bin"
 LIB_DIR="lib"
 SRC_DIR="src"
 WP_DIR="wpPlugin"
-WP_IMG_DIR="bin/pgnviewer/pgnviewer/img"
+WP_IMG_DIR="bin/pgnviewer/img"
 TEST_DIR="tests"
 IMG_DIR="img"
 
