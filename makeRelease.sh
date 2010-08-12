@@ -19,14 +19,19 @@ IMG_DIR="img"
 genPackedFormat() {
 		# pack the source with packer
 		cd $LIB_DIR
-		php5 packerConf.php
+        if [ "`which php5`" = "" ];then
+            echo "No PHP5 found. Not using the PHP packer!";
+        else
+		    php5 packerConf.php
+        fi
+
 		cd $OLD_DIR
 		
 		cp $DEST_DIR/jsPgnViewer.js $JS_DEST_DIR/jsPgnViewerUnpacked.js
 		cp $DEST_DIR/jsPgnViewer.js $WP_DEST_DIR/jsPgnViewerUnpacked.js
 		
-		java -cp $LIB_DIR/jsmin JSMin $DEST_DIR/jsPgnViewer.js > $JS_DEST_DIR/jsPgnViewerJSMINned.js
-		java -cp $LIB_DIR/jsmin JSMin $DEST_DIR/jsPgnViewer.js > $WP_DEST_DIR/jsPgnViewerJSMINned.js
+		java -cp $LIB_DIR/jsmin JSMin $DEST_DIR/jsPgnViewer.js > $JS_DEST_DIR/jsPgnViewer.js
+		java -cp $LIB_DIR/jsmin JSMin $DEST_DIR/jsPgnViewer.js > $WP_DEST_DIR/jsPgnViewer.js
 }
 
 makeRelease() {
@@ -73,7 +78,6 @@ makeRelease() {
 
     cp $WP_DIR/pgnviewer.php $WP_DEST_DIR/pgnviewer.php
     WP_VERSION=`cat wpVersion`
-    perl -pi -e "s/WP_VERSION/$WP_VERSION/" $WP_DEST_DIR/pgnviewer.php
 
 # Making jsPgnViewer release
     cp -r $IMG_DIR $JS_DEST_DIR
@@ -83,17 +87,7 @@ makeRelease() {
     cp -r $IMG_DIR/* $WP_IMG_DIR
     cp $JS_DEST_DIR/jsPgnViewer.js $WP_DEST_DIR
     chmod -R 775 $DEST_DIR
-
-# generate packed versions to be uploaded
-    if [ $# -eq 2 ];then
-        if [ $2 == 'packed' ];then
-            genPackedFormat
-        fi
-    elif [ $# -ge 1 ];then
-        if [ $1 == 'packed' ];then
-            genPackedFormat
-        fi
-    fi
+    perl -pi -e "s/WP_VERSION/$WP_VERSION/" $WP_DEST_DIR/pgnviewer.php
 
 # WPR release
     cd $DEST_DIR
@@ -115,8 +109,12 @@ if [ $# -ge 1 ];then
 		rm -rf $DEST_DIR
     else
         makeRelease
+        genPackedFormat
 	fi
 else
-    echo "TERE"
+    echo "Usage:"
+    echo "  We have the following targets:"
+    echo "      release - makes a release"
+    echo "      clean - clean the project"
 fi
 
