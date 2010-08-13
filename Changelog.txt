@@ -6,6 +6,10 @@
 * Blog: http://tom.jabber.ee/                         *
 *******************************************************
 
+13.08.2010 - jsPgnViewer/WP plugin 0.6.8
+Bugfixe(s)/Change(s)
+	+ Fixed a bug in rook move handling
+
 12.04.2010 - jsPgnViewer/WP plugin 0.6.7
 Bugfixe(s)/Change(s)
 	+ Fixes the buttonPrefix defaults not honoring different
