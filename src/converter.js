@@ -734,44 +734,59 @@ function Converter(pgn) {
 		var extra = to[2];
 		var rtrns = new Array();
 		
-		var arr;
+		var rooks;
 		if (color == 'white') {
-			arr = board.wRooks;
+			rooks = board.wRooks;
 		}
 		else {
-			arr = board.bRooks;
+			rooks = board.bRooks;
 		}
-		for (var i=0;i<arr.length;i++) {
-			var rdx = to[0]-arr[i][0];
-			var rdy = to[1]-arr[i][1];
+
+        // loop through rooks and lets see
+        // which one can move to the position
+		for (var i=0;i<rooks.length;i++) {
+			var rdx = to[0]-rooks[i][0];
+			var rdy = to[1]-rooks[i][1];
 			var dx = Math.abs(rdx);
 			var dy = Math.abs(rdy);
+
+            // determine direction
 			if (rdx > 0) {
 				rdx = 1;
 			}
 			else if (rdx < 0) {
 				rdx = -1;
 			}
+
 			if (rdy > 0) {
 				rdy = 1;
 			}
 			else if (rdy < 0) {
 				rdy = -1;
 			}
+
 			if (dx == 0 || dy == 0) {
-				var x = arr[i][0];
-				var y = arr[i][1];
+				var x = rooks[i][0];
+				var y = rooks[i][1];
 				while (true) {
 					x += rdx;
 					y += rdy;
 					if (x == to[0] && y == to[1]) {
-						if (extra[0] != -1 || extra[1] != -1) {
-							if (extra[0] != arr[i][1] || extra[1] != arr[i][0]) {
+                        // if we have all extra information
+                        // and positions match, we have a win
+                        if (extra[0] != -1 && extra[1] != -1) {
+                            if (extra[1] == rooks[i][0] && extra[0] == rooks[i][1]) {
+                                return new Array(rooks[i][0],rooks[i][1]);
+                            }
+                        }
+                        // if we have some extra information
+                        else if (extra[0] != -1 || extra[1] != -1) {
+							if (extra[1] != rooks[i][0] && extra[0] != rooks[i][1]) {
 								break;
 							}
-							return new Array(arr[i][0],arr[i][1]);
+							return new Array(rooks[i][0],rooks[i][1]);
 						}
-						rtrns[rtrns.length] = new Array(arr[i][0],arr[i][1]);
+						rtrns[rtrns.length] = new Array(rooks[i][0],rooks[i][1]);
 						break;
 					}
 					tmp = pos[x][y];

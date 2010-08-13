@@ -20,6 +20,7 @@
 				}
 			}
 			function f() {
+				console.time("conversion")
 				for (var i = 1;i<2029;i++) {
 					var pgn = new Pgn(document.getElementById("testGame"+i).firstChild.nodeValue);	 
 					var conv = new Converter(pgn)
@@ -28,12 +29,14 @@
 						//console.time("conversion")
 						conv.convert()
 						//console.timeEnd("conversion")
-						console.log("Success. Time was ")
+						//console.log("Success. Time was ")
 					}
 					catch (e) {
 						console.warn("Conversion failed for testGame"+i+". "+e)
 					}
 				 }
+                console.timeEnd("conversion")
+                console.log("Success. Time was ")
 			}
 		</script>
   </head>
