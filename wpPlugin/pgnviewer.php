@@ -88,11 +88,11 @@ function tr_pgnview($content) {
     // stumbled upon http://bugs.php.net/bug.php?id=51238
     if (stristr($content, "###pgn###")) {
         //return preg_replace_callback('/###pgn###((.|\n|\r)*?)%%%pgn%%%/', "tr_pgnview_callback", $content);
-        $result = preg_replace('/###pgn###(.*)%%%pgn%%%/', "tr_pgnview_callback", $content);
+        $result = preg_replace('/###pgn###(.*)%%%pgn%%%/', "$1", $content);
         return tr_pgnview_callback(array($result));
     }
     else if (stristr($content, "<pgn>")) {
-        $result = preg_replace('/<pgn>(.*)<\/pgn>/', "tr_pgnview_callback", $content);
+        $result = preg_replace('/<pgn>(.*)<\/pgn>/', "$1", $content);
         return tr_pgnview_callback(array($result));
         //return preg_replace_callback('/<pgn>(.*)<\/pgn>/', "tr_pgnview_callback", $content);
     }
