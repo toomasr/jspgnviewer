@@ -15,7 +15,12 @@
 **/
 
 	function Board(divId, options) {
-		var pgn = new Pgn(document.getElementById(divId).firstChild.nodeValue);
+		var pgn = null;
+        if (isYahoo(document.getElementById(divId).firstChild.nodeValue))
+            pgn = new Yahoo(document.getElementById(divId).firstChild.nodeValue);
+        else
+            pgn = new Pgn(document.getElementById(divId).firstChild.nodeValue);
+
 		this.conv = new Converter(pgn);
 		this.conv.convert();
 		this.movesOnPane = new Array();
@@ -355,7 +360,7 @@
 					try {
 						 tmp = frst.removeChild(frst.firstChild);
 					}
-					catch (e) {tmp=null}
+					catch (e) {tmp=null;}
 
 					try{
 						 frst.appendChild(snd.removeChild(snd.firstChild));
@@ -405,7 +410,7 @@
 					};
 
 					this.startPosition = function() {
-						startPosition(this)
+						startPosition(this);
 					};
 
 					startPosition = function(board) {
@@ -1019,3 +1024,8 @@
 			}
 		};
 	};
+
+function isYahoo(pgn) {
+    pgn = pgn.replace(/^\s+|\s+$/g, '');
+    return pgn.charAt(0) == ';'; 
+}

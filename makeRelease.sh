@@ -69,6 +69,7 @@ makeRelease() {
     echo "/** Version: $JS_VERSION **/" > $JS_DEST_DIR/jsPgnViewer.js
     cat $SRC_DIR/converter.js >> $JS_DEST_DIR/jsPgnViewer.js
     cat $SRC_DIR/pgn.js >> $JS_DEST_DIR/jsPgnViewer.js
+    cat $SRC_DIR/yahoo-format.js >> $JS_DEST_DIR/jsPgnViewer.js
     cat $SRC_DIR/board.js >> $JS_DEST_DIR/jsPgnViewer.js
     cp $JS_DEST_DIR/jsPgnViewer.js $DEST_DIR
 

@@ -1,5 +1,5 @@
 /**
- * Copyright 2008 Toomas RÃ¶mer
+ * Copyright 2008 Toomas Ršmer
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -308,6 +308,7 @@ function Converter(pgn) {
 			Find the location of the piece.
 		*/
 		var pawnre = /^[a-z]+[1-8]/;
+		var genericre = /^[a-z][1-8]-[a-z][1-8]/;
 		var knightre = /^N[0-9]?[a-z]+[1-8]/i;
 		var bishre = /^B[a-z]+[1-8]/;
 		var queenre = /^Q([a-z]|[0-9])?[a-z]+[1-8]/i;
@@ -372,12 +373,17 @@ function Converter(pgn) {
 			fromCoords = getSquare(coords[2]);
 			toCoords = getSquare(coords[3]);
 		}
+        else if (genericre.test(to)) {
+            // dbl information move, g4-g6
+            fromCoords = findFromAny(this, this.vBoard, to, toCoords, color);
+        }
 		else if (pawnre.test(to)) {
 			// let see if it is a promotional move
 			if (/^[a-z]+[1-8]=[A-Z]/.test(to))
 				prom = to.charAt(to.indexOf('=')+1);
-			fromCoords = findFromPawn(this.vBoard, to, toCoords, color);
-			pawnM = true;
+
+            fromCoords = findFromPawn(this.vBoard, to, toCoords, color);
+            pawnM = true;
 		}
 		else {
 			throw("Can't figure out which piece to move '"+oldTo+"'");
@@ -633,6 +639,17 @@ function Converter(pgn) {
 		}
 		
 		throw('No move found for the bishop '+toSAN);
+	};
+	
+    /*
+       Find from any move
+	*/
+	function findFromAny(board, pos, toSAN, toCoords, color) {
+		if (toCoords[2][0] != -1 && toCoords[2][1] != -1) {
+			return new Array(toCoords[2][1], toCoords[2][0]);
+		}
+		
+		throw('No move found for the generic move '+toSAN);
 	};
 
 	/* 
@@ -950,10 +967,19 @@ function Converter(pgn) {
 			coord = coord.replace(/[a-z][0-9]/,"");
 		}
 
-		var rtrn = new Array(8-coord.charAt(1),
-												7-map[coord.charAt(0)],
-												extra, taking);
-		return rtrn;
+        // we have Yahoo format, e2-e4
+		if (/^([a-z][0-9])-([a-z][0-9])/.test(coord)) {
+			var tmp = coord.match(/^([a-z][0-9])-([a-z][0-9])/);
+			extra[0] = 7-map[tmp[1].charAt(0)];
+			extra[1] = 8-tmp[1].charAt(1);
+			coord = tmp[2];
+		}
+		
+        var rtrn = new Array(8-coord.charAt(1),
+                                7-map[coord.charAt(0)],
+                                extra, taking);
+		
+        return rtrn;
 	};
 
 	getEnPassante = function(brd, x1, y1, x2, y2) {
