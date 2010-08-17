@@ -14,8 +14,7 @@
 * Consult the License.txt for usage - Apache License ver 2.0       *
 *                                                                  *
 ********************************************************************
-* Site: http://tom.jabber.ee/chess/                                *
-* Blog: http://tom.jabber.ee/chessblog/                            *
+* Site: http://www.pgnview.com
 ********************************************************************
 
 
