@@ -111,23 +111,23 @@
 			// the main frame
 			var boardFrame = document.getElementById(divId+"_board");
 
-			var mainTable = document.createElement("table");
+			var mainTable = resetStyles(document.createElement("table"));
 			mainTable.border = 0;
 			var mainTableTb = document.createElement("tbody");
 			mainTable.appendChild(mainTableTb);
 			mainTable.style.border = "1px solid #000000";
 			var tmp = document.createElement("tr");
 			mainTableTb.appendChild(tmp);
-			var topLeftTd = document.createElement("td");
+			var topLeftTd = resetStyles(document.createElement("td"));
 			topLeftTd.vAlign = "top";
 			topLeftTd.style.width = this.opts['boardSize'];
 			tmp.appendChild(topLeftTd);
-			var topRightTd = document.createElement("td");
-			topRightTd.vAlign = "top";
+			var topRightTd = resetStyles(document.createElement("td"));
+			topRightTd.style.verticalAlign = "top";
 			tmp.appendChild(topRightTd);
 
 			// toplevel table;
-			var topTable = document.createElement("table");
+			var topTable = resetStyles(document.createElement("table"));
 			topTable.style.width = (parseInt(this.opts['boardSize'])+15)+"px";
 			topTable.style.height = (parseInt(this.opts['boardSize'])+15)+"px";
 			topLeftTd.appendChild(topTable);
@@ -135,22 +135,22 @@
 			var topTableTb = document.createElement("tbody");
 			topTable.appendChild(topTableTb);
 			
-			var boardTd = document.createElement("td");
+			var boardTd = resetStyles(document.createElement("td"));
 			boardTd.style.width = this.opts['boardSize'];
 			boardTd.style.height = this.opts['boardSize'];
 			boardTd.vAlign = "top";
-			var btnTdNext = document.createElement("td");
+			var btnTdNext = resetStyles(document.createElement("td"));
 			btnTdNext.vAlign = 'top';
 			btnTdNext.align = 'center';
 			btnTdNext.style.height = '10px';
-			var btnTd = document.createElement("td");
+			var btnTd = resetStyles(document.createElement("td"));
 			btnTd.vAlign = 'top';
 			btnTd.style.height = '10px';
-			var propsTd = document.createElement("td");
+			var propsTd = resetStyles(document.createElement("td"));
 			propsTd.style.height = '10px';
 			
 			// movesTable
-			var movesDiv = document.createElement("div");
+			var movesDiv = resetStyles(document.createElement("div"));
 			this.movesDiv = movesDiv;
 			if (this.opts['movesPaneWidth'])
 				movesDiv.style.width = this.opts['movesPaneWidth'];
@@ -160,7 +160,8 @@
 			movesDiv.id = divId+"_board_moves";
 			movesDiv.style.overflow = "auto";
 			movesDiv.style.border = "1px solid #cccccc";
-			movesDiv.vAlign = "top";
+			movesDiv.style.verticalAlign = "top";
+			movesDiv.style.textAlign = "left";
 			topRightTd.appendChild(movesDiv);
 			
 			var tmp = document.createElement("tr");
@@ -171,14 +172,14 @@
 			topTableTb.appendChild(document.createElement("tr")).appendChild(btnTd);
 			topTableTb.appendChild(document.createElement("tr")).appendChild(btnTdNext);
 			topTableTb.appendChild(document.createElement("tr")).appendChild(propsTd);
-			tmp = document.createElement("td");
+			tmp = resetStyles(document.createElement("td"));
 			var tmpStr = document.createTextNode("");
 			tmp.style.height = "auto";
 			tmp.appendChild(tmpStr);
 			topTableTb.appendChild(document.createElement("tr")).appendChild(tmp);
 
 
-			var board = document.createElement("table");
+			var board = resetStyles(document.createElement("table"));
 			var boardTb = document.createElement("tbody");
 			board.appendChild(boardTb);
 
@@ -198,7 +199,7 @@
 				tr.style.height = (parseInt(this.opts['squareSize'].replace("px",""))+1)+"px";
 				var flip = (i % 2)?1:0;
 				for(var j = 0; j < 8; j++) {
-					var td = document.createElement("td");
+					var td = resetStyles(document.createElement("td"));
 
 					td.style.height = this.opts['squareSize'];
 					td.style.width = this.opts['squareSize'];
@@ -269,7 +270,7 @@
 
 			// current move
 			// it is initialized in updateMoveInfo
-			var input = document.createElement("input");
+			var input = resetStyles(document.createElement("input"));
 			input.style.fontSize = "7pt";
 			input.size = "9";
 			input.style.border = this.opts['moveBorder'];
@@ -845,13 +846,13 @@
 
 				this.populateProps = function(container) {
 					// init the style
-					var tdS = document.createElement('td');
+					var tdS = resetStyles(document.createElement('td'));
 					tdS.style.fontFamily = "Tahoma, Arial, sans-serif";
 					tdS.style.fontSize = "8pt";
 					tdS.align = 'center';
 					// end of init the style;
 					
-					var tbl = document.createElement('table');
+					var tbl = resetStyles(document.createElement('table'));
 					tbl.cellPadding = "0";
 					tbl.cellSpacing = "0";
 					var tblTb = document.createElement("tbody");
@@ -921,10 +922,7 @@
 					}
 					
 					var src = prefix + imageNames[color][piece];
-					var img = document.createElement("img");
-					img.border = 0;
-					img.style.padding = "0px";
-					img.style.margin = "0px";
+					var img = resetStyles(document.createElement("img"));
 					img.style.border = "0px solid #cccccc";
 					
 					if ( /\.png$/.test( img.src.toLowerCase()) &&
@@ -1028,4 +1026,17 @@
 function isYahoo(pgn) {
     pgn = pgn.replace(/^\s+|\s+$/g, '');
     return pgn.charAt(0) == ';'; 
+}
+
+function resetStyles(obj) {
+  obj.style.background = 'transparent';
+  obj.style.margin = 0;
+  obj.style.padding = 0;
+  obj.style.border = 0;
+  obj.style.fontSize = "100%";
+  obj.style.outline = 0;
+  obj.style.verticalAlign = "middle";
+  obj.style.textAlign = "center";
+  obj.style.borderCollapse = "separate";
+  return obj;
 }
