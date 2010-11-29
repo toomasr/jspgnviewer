@@ -31,7 +31,7 @@ function tr_pgnview_callback($str) {
 	// this should sort it out
 	$now = time()+mt_rand();
 	// tinyMCE might have added <br /> and other tags
-	$str = strip_tags($str[0]);
+	$str = strip_tags($str);
 	// strip entities
 	$str = str_replace(array('&#8220;', '&#8221;', '&#8243;'), '"', $str);
 	// strip the ###pgn### and %%%pgn%%% placeholders
@@ -85,20 +85,23 @@ function tr_add_script_tags($_) {
 }
 
 function tr_pgnview($content) {
-    // stumbled upon http://bugs.php.net/bug.php?id=51238
-    if (stristr($content, "###pgn###")) {
-        //return preg_replace_callback('/###pgn###((.|\n|\r)*?)%%%pgn%%%/', "tr_pgnview_callback", $content);
-        $result = preg_replace('/###pgn###(.*)%%%pgn%%%/', "$1", $content);
-        return tr_pgnview_callback(array($result));
-    }
-    else if (stristr($content, "<pgn>")) {
-        $result = preg_replace('/<pgn>(.*)<\/pgn>/', "$1", $content);
-        return tr_pgnview_callback(array($result));
-        //return preg_replace_callback('/<pgn>(.*)<\/pgn>/', "tr_pgnview_callback", $content);
-    }
-    else {
-        return $content;
-    }
+  $tmpStr = $content;
+
+  // backwards compatibility
+  $tmpStr = str_replace("###pgn###", "<pgn>", $tmpStr);
+  $tmpStr = str_replace("%%%pgn%%%", "</pgn>", $tmpStr);
+
+  while (strpos($tmpStr, '<pgn>') !== FALSE && strpos($tmpStr, '</pgn>')) {
+    $startPos = strpos($tmpStr, '<pgn>');
+    $len = strpos($tmpStr, '</pgn>')+6-$startPos;
+
+    $game = substr($tmpStr, $startPos, $len);
+    $gamePGN = tr_pgnview_callback($game);
+
+    $tmpStr = substr_replace($tmpStr, $gamePGN, $startPos, $len);
+  }
+
+  return $tmpStr;
 }
 
 add_filter('the_content', 'tr_pgnview');
