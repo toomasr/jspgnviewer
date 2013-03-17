@@ -379,11 +379,21 @@ function Converter(pgn) {
         }
 		else if (pawnre.test(to)) {
 			// let see if it is a promotional move
-			if (/^[a-z]+[1-8]=[A-Z]/.test(to))
-				prom = to.charAt(to.indexOf('=')+1);
+      // promotion is indicated by the = sign or just last letter
+			if (/^[a-z]+[1-8](=?)[A-Z]/.test(to)) {
+        // have to be careful if the last char is not a letter
+        // for example + or ++ for cehck or mate or something similar
+        var tmpI = 0;
+        for (tmpI = to.length-1;tmpI>=0;tmpI--) {
+          if (/^[A-Z]/.test(to.charAt(tmpI))) {
+            prom = to.charAt(tmpI)
+            break
+          }
+        }
+      }
 
-            fromCoords = findFromPawn(this.vBoard, to, toCoords, color);
-            pawnM = true;
+      fromCoords = findFromPawn(this.vBoard, to, toCoords, color);
+      pawnM = true;
 		}
 		else {
 			throw("Can't figure out which piece to move '"+oldTo+"'");
