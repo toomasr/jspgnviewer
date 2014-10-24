@@ -31,9 +31,20 @@ function Pgn(pgn) {
 	// for outputting white and black moves separately
 	this.skip = 0;
 
-	// strip newlines
 	this.pgnOrig = pgn;
-	pgn = pgn.replace(/\n/g," ");
+	
+        // strip newlines
+        // also strip empty lines
+        // also strip lines that are single line comments
+        var pgnLines = pgn.split("\n");
+        var newPgnLines = Array();
+        for (var i = 0; i < pgnLines.length;i++) {
+          if (pgnLines[i].trim().length == 0 || pgnLines[i].trim().charAt(0) == ';')
+            continue;
+          
+          newPgnLines.push(pgnLines[i]);
+        }
+        pgn = newPgnLines.join(" ");
 	
 	// replace dollar signs
 	//"!", "?", "!!", "!?", "?!", and "??"
