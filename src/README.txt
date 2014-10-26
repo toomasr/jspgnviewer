@@ -6,8 +6,8 @@
 * be as minimal as possible and easily configurable.               *
 *                                                                  *
 * The features include traversing the game back- and forward. You  *
-*	can view the moves and skip to any position. Just as simple as   *
-*	that.                                                            *
+* can view the moves and skip to any position. Just as simple as   *
+* that.                                                            *
 *                                                                  *
 * Toomas Römer (toomasr[at]gmail.com)                              *
 *                                                                  *
