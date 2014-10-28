@@ -1,0 +1,33 @@
+{
+  "name": "jspgnviewer",
+  "version": "0.7.2",
+  "devDependencies": {
+    "karma-jasmine": "0.2.2"
+  },
+  "description": "JS PGN Viewer =============",
+  "main": "karma.conf.js",
+  "bin": {
+    "jspgnviewer": "jsPgnViewer.js"
+  },
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "karma start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/toomasr/jspgnviewer.git"
+  },
+  "keywords": [
+    "javascript",
+    "pgn",
+    "chess"
+  ],
+  "author": "Toomas Römer",
+  "license": "APL 2.0",
+  "bugs": {
+    "url": "https://github.com/toomasr/jspgnviewer/issues"
+  },
+  "homepage": "https://github.com/toomasr/jspgnviewer"
+}
