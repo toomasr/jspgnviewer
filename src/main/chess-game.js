@@ -17,8 +17,10 @@
 function ChessGame(gameAsText) {
   var format;
   if (isYahoo(gameAsText)) {
+    /*global Yahoo */
     this.format = new Yahoo(gameAsText);
   } else {
+    /*global Pgn */
     this.format = new Pgn(gameAsText);
   }
 

@@ -17,13 +17,15 @@
 function Board(divId, options) {
   var pgn = null;
   if (isYahoo(document.getElementById(divId).firstChild.nodeValue))
+    /*global Yahoo */
     pgn = new Yahoo(document.getElementById(divId).firstChild.nodeValue);
   else
+    /*global pgn */
     pgn = new Pgn(document.getElementById(divId).firstChild.nodeValue);
 
   this.conv = new Converter(pgn);
   this.conv.convert();
-  this.movesOnPane = new Array();
+  this.movesOnPane = [];
 
   this.flipped = false;
   this.id = (new Date()).getTime();
@@ -97,10 +99,10 @@ function Board(divId, options) {
   var imageNames = brdI.imageNames['default'];
   brdI = null;
   // end of static
-  this.pos = new Array();
+  this.pos = [];
 
   for (var i = 0; i < 8; i++)
-    this.pos[i] = new Array();
+    this.pos[i] = [];
 
   this.init = function() {
     // the main frame
@@ -190,8 +192,7 @@ function Board(divId, options) {
     // white pieces
     for (var i = 0; i < 8; i++) {
       var tr = document.createElement("tr");
-      tr.style.height = (parseInt(this.opts['squareSize'].replace("px", "")) + 1)
-          + "px";
+      tr.style.height = (parseInt(this.opts['squareSize'].replace("px", "")) + 1) + "px";
       var flip = (i % 2) ? 1 : 0;
       for (var j = 0; j < 8; j++) {
         var td = resetStyles(document.createElement("td"));
@@ -202,8 +203,7 @@ function Board(divId, options) {
         td.style.padding = "0px";
         td.vAlign = "middle";
         td.align = "center";
-        var color = !flip ? (j % 2) ? blackC : whiteC : !(j % 2) ? blackC
-            : whiteC;
+        var color = !flip ? (j % 2) ? blackC : whiteC : !(j % 2) ? blackC: whiteC;
 
         td.style.background = color;
 
@@ -231,7 +231,7 @@ function Board(divId, options) {
     var input = this.getImg("rwind", "btns");
     input.alt = this.opts['altRewind'];
     input.title = this.opts['altRewind'];
-    ;
+
     href.appendChild(input);
 
     input.onclick = function() {
@@ -334,7 +334,7 @@ function Board(divId, options) {
       try {
         var tmp2 = parseInt(this.opts['skipToMove']);
         if (tmp2 > 2) {
-          var color2 = tmp2 % 2 == 0 ? 1 : 0;
+          var color2 = tmp2 % 2 === 0 ? 1 : 0;
           tmp2 = Math.round(tmp2 / 2);
           this.skipToMove(tmp2 - 1, color2);
         } else if (tmp2 == 1) {
@@ -391,7 +391,7 @@ function Board(divId, options) {
         makeBwMove(this, true);
         i++;
       }
-      ;
+
       updateMoveInfo(this);
       updateMovePane(this);
       this.deMarkLastMove();
@@ -403,7 +403,7 @@ function Board(divId, options) {
     board.deMarkLastMove();
     var vBoard = board.conv.getEndPos(board.flipped);
     board.syncBoard(vBoard);
-    ;
+
     board.conv.resetToEnd();
     updateMoveInfo(board);
     updateMovePane(board, true);
@@ -471,7 +471,7 @@ function Board(divId, options) {
       return;
     try {
       var move = this.conv.moves[this.conv.iteIndex - 1].actions[1];
-      ;
+
       var piece = this.pos[move.x][move.y];
       if (this.flipped) {
         piece = this.pos[7 - move.x][7 - move.y];
@@ -682,8 +682,7 @@ function Board(divId, options) {
       this.visuals['pgn']['event'].nodeValue = this.conv.pgn.props['Event'];
     }
     if (this.conv.pgn.props['Date']) {
-      this.visuals['pgn']['event'].nodeValue += ", "
-          + this.conv.pgn.props['Date'];
+      this.visuals['pgn']['event'].nodeValue += ", " + this.conv.pgn.props['Date'];
     }
     if (this.conv.pgn.props['TimeControl']) {
       this.visuals['pgn']['timecontrol'].nodeValue = this.conv.pgn.props['TimeControl'];
@@ -954,7 +953,7 @@ function Board(divId, options) {
       to.appendChild(this.getImg(to.piece, to.color));
     }
   };
-};
+}
 
 /*
  * Provides support for different chess & button sets. Takes three optional

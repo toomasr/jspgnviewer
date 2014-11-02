@@ -24,7 +24,7 @@ function Pgn(pgn) {
   this.validProps = [ 'Event', 'Site', 'Date', 'Round', 'White', 'Black',
       'Result', 'FEN', 'WhiteElo', 'BlackElo', 'TimeControl' ];
   // the moves, one move contains the black and white move
-  this.moves = new Array();
+  this.moves = [];
   // the current move in the game
   this.currentMove = 0;
   // for outputting white and black moves separately
@@ -103,7 +103,7 @@ function Pgn(pgn) {
 
   // the moves;
   var themoves = this.pgn.split(" ");
-  var tmp = new Array();
+  var tmp = [];
   tmp[1] = null;
   var tmpidx = 0; // make this 1 if FEN and black to move
   if (this.props["FEN"]) {
@@ -187,7 +187,7 @@ function Pgn(pgn) {
       var move = new Move(tmp[0], tmp[1]);
       this.moves[this.moves.length] = move;
       tmpidx = 0;
-      tmp = new Array();
+      tmp = [];
       tmp[1] = null;
     } else {
       tmpidx = 1;
@@ -273,7 +273,7 @@ function Move(white, black) {
  */
 function stripIt(val, strip) {
   var count = 0;
-  var out = new Array();
+  var out = [];
   for (var i = 0; i < val.length; i++) {
     var c = val.charAt(i);
     switch (c) {
@@ -358,7 +358,7 @@ function isPGNBroken(val) {
 
 function stripItBroken(val, strip) {
   var count = 0;
-  var out = new Array();
+  var out = [];
   /*
    * At one point chesspastebin.com started getting cames with invalid PGNs,
    * mostly in the form { comment comment ( something between starting

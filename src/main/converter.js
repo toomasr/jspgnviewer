@@ -30,21 +30,21 @@ function Converter(pgn) {
   this.pgn = pgn;
   this.vBoard = new Array(8);
   this.initialBoard = new Array(8);
-  this.moves = new Array();
+  this.moves = [];
   this.iteIndex = 0;
   this.whiteToMove = true;
   this.startMoveNum = 1;
   this.flippedI = false;
   this.flippedV = false;
 
-  this.wKing = new Array();
-  this.bKing = new Array();
-  this.wQueens = new Array();
-  this.bQueens = new Array();
-  this.wBishops = new Array();
-  this.bBishops = new Array();
-  this.wRooks = new Array();
-  this.bRooks = new Array();
+  this.wKing = [];
+  this.bKing = [];
+  this.wQueens = [];
+  this.bQueens = [];
+  this.wBishops = [];
+  this.bBishops = [];
+  this.wRooks = [];
+  this.bRooks = [];
 
   for (var i = 0; i < 8; i++) {
     this.vBoard[i] = new Array(8);
@@ -641,7 +641,7 @@ function Converter(pgn) {
    */
   function findFromQueen(board, pos, toSAN, to, color) {
     var extra = to[2];
-    var rtrns = new Array();
+    var rtrns = [];
 
     if (to[2][0] != -1 && to[2][1] != -1) {
       return new Array(to[2][1], to[2][0]);
@@ -724,7 +724,7 @@ function Converter(pgn) {
    */
   function findFromRook(board, pos, toSAN, to, color) {
     var extra = to[2];
-    var rtrns = new Array();
+    var rtrns = [];
 
     var rooks;
     if (color == 'white') {
@@ -826,7 +826,7 @@ function Converter(pgn) {
     }
 
     var pos = brd.vBoard;
-    var rtrns = new Array();
+    var rtrns = [];
     var froms = new Array(new Array(to[0] + 2, to[1] + 1), new Array(to[0] + 2,
         to[1] - 1),
 
@@ -1143,7 +1143,7 @@ function Converter(pgn) {
 };
 
 function MyMove() {
-  this.actions = new Array();
+  this.actions = [];
   this.oPiece = null;
   this.oColor = null;
   // in case of promotion have to remember the prev
