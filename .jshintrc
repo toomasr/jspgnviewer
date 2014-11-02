@@ -1,0 +1,9 @@
+{
+    "undef": true,
+    "shadow": true,
+    "browser": true,
+    "sub": true,
+    "globals": {
+        "angular": true
+    }
+}
