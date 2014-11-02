@@ -1,5 +1,5 @@
 /**
- * Copyright 2008 Toomas Ršmer
+ * Copyright 2008 Toomas RÂšmer
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -710,6 +710,7 @@ function Converter(pgn) {
 			if (dx == dy || dx == 0 || dy == 0) {	//bishop-like move or rook-like move
 				var x = arr[i][0];
 				var y = arr[i][1];
+                                var limiter = 0;
 				while (true) {
 					x += rdx;
 					y += rdy;
@@ -727,6 +728,9 @@ function Converter(pgn) {
 					if (tmp && tmp.piece) {	//ran into another piece
 						break;
 					}
+                                        else if (limiter++>8) {
+		                          throw("No queen move found '"+toSAN+"'");
+                                        }
 				}
 			}
 		}
@@ -791,36 +795,42 @@ function Converter(pgn) {
 			else if (rdy < 0) {
 				rdy = -1;
 			}
-
+                        
+                        var limiter = 0;
 			if (dx == 0 || dy == 0) {
-				var x = rooks[i][0];
-				var y = rooks[i][1];
-				while (true) {
-					x += rdx;
-					y += rdy;
-					if (x == to[0] && y == to[1]) {
-                        // if we have all extra information
-                        // and positions match, we have a win
-                        if (extra[0] != -1 && extra[1] != -1) {
-                            if (extra[1] == rooks[i][0] && extra[0] == rooks[i][1]) {
+                          var x = rooks[i][0];
+                          var y = rooks[i][1];
+                          while (true) {
+                            x += rdx;
+                            y += rdy;
+                            if (x == to[0] && y == to[1]) {
+                              // if we have all extra information
+                              // and positions match, we have a win
+                              if (extra[0] != -1 && extra[1] != -1) {
+                                if (extra[1] == rooks[i][0] && extra[0] == rooks[i][1]) {
+                                  return new Array(rooks[i][0],rooks[i][1]);
+                                }
+                              }
+                              // if we have some extra information
+                              else if (extra[0] != -1 || extra[1] != -1) {
+                                if (extra[1] != rooks[i][0] && extra[0] != rooks[i][1]) {
+                                  break;
+                                }
                                 return new Array(rooks[i][0],rooks[i][1]);
+                              }
+
+                              rtrns[rtrns.length] = new Array(rooks[i][0],rooks[i][1]);
+                              break;
                             }
-                        }
-                        // if we have some extra information
-                        else if (extra[0] != -1 || extra[1] != -1) {
-							if (extra[1] != rooks[i][0] && extra[0] != rooks[i][1]) {
-								break;
-							}
-							return new Array(rooks[i][0],rooks[i][1]);
-						}
-						rtrns[rtrns.length] = new Array(rooks[i][0],rooks[i][1]);
-						break;
-					}
-					tmp = pos[x][y];
-					if (tmp && tmp.piece) {	//ran into another piece
-						break;
-					}
-				}
+
+                            tmp = pos[x][y];
+                            if (tmp && tmp.piece) { //ran into another piece
+                              break;
+			    }
+                            else if (limiter++>8) {
+		              throw("No rook move found '"+toSAN+"'");
+                            }
+                          }
 			}
 		}
 
