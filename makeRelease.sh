@@ -9,7 +9,7 @@ OLD_DIR=`pwd`
 PROJ_DIR="."
 DEST_DIR="bin"
 LIB_DIR="lib"
-SRC_DIR="src"
+SRC_DIR="src/main"
 WP_DIR="wpPlugin"
 WP_IMG_DIR="bin/pgnviewer/img"
 TEST_DIR="tests"
@@ -19,10 +19,10 @@ IMG_DIR="img"
 genPackedFormat() {
 		# pack the source with packer
 		cd $LIB_DIR
-        if [ "`which php5`" = "" ];then
-            echo "No PHP5 found. Not using the PHP packer!";
+        if [ "`which php`" = "" ];then
+            echo "No PHP found. Not using the PHP packer!";
         else
-		    php5 packerConf.php
+		    php packerConf.php
         fi
 
 		cd $OLD_DIR
@@ -67,6 +67,7 @@ makeRelease() {
 
     JS_VERSION=`cat jsVersion`
     echo "/** Version: $JS_VERSION **/" > $JS_DEST_DIR/jsPgnViewer.js
+    cat $SRC_DIR/chess-game.js >> $JS_DEST_DIR/jsPgnViewer.js
     cat $SRC_DIR/converter.js >> $JS_DEST_DIR/jsPgnViewer.js
     cat $SRC_DIR/pgn.js >> $JS_DEST_DIR/jsPgnViewer.js
     cat $SRC_DIR/yahoo-format.js >> $JS_DEST_DIR/jsPgnViewer.js
