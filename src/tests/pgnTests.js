@@ -45,6 +45,7 @@ describe("PGN Game Set 1", function() {
 
   it("works with the custom PGN set", function() {
     loadFixtures("testPgnsCustom.html");
+    var i = 1;
     $j("div[id^=testGame]").each(function (idx, el) {
       var pgn = new Pgn(el.innerHTML);
       var conv = new Converter(pgn);
@@ -55,6 +56,7 @@ describe("PGN Game Set 1", function() {
         expect("No errors!").toBe(e + ". For game "+el.id);
         return false;
       }
+      i++;
     });
     console.log("Ran tests for "+i+" games");
   });
