@@ -2,7 +2,11 @@
   "name": "jspgnviewer",
   "version": "0.7.2",
   "devDependencies": {
-    "karma-jasmine": "0.2.2"
+    "jasmine": "2.0.1",
+    "karma": "0.12.24",
+    "karma-coverage": "0.2.6",
+    "karma-jasmine": "0.2.2",
+    "karma-jasmine-jquery": "0.1.1"
   },
   "description": "JS PGN Viewer =============",
   "main": "karma.conf.js",
