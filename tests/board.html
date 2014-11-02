@@ -11,22 +11,27 @@
     <script
     	type="text/javascript"
     	language="javascript"
-			src="../src/converter.js">
+			src="../src/main/chess-game.js">
 			</script>
     <script
     	type="text/javascript"
     	language="javascript"
-			src="../src/pgn.js">
+			src="../src/main/converter.js">
 			</script>
     <script
     	type="text/javascript"
     	language="javascript"
-			src="../src/yahoo-format.js">
+			src="../src/main/pgn.js">
 			</script>
     <script
     	type="text/javascript"
     	language="javascript"
-			src="../src/board.js">
+			src="../src/main/yahoo-format.js">
+			</script>
+    <script
+    	type="text/javascript"
+    	language="javascript"
+			src="../src/main/board.js">
 			</script>
     <script
     	type="text/javascript"
@@ -46,29 +51,41 @@
 						<div id='area_board' style=""> 
 						</div>
 <div id='area' style="visibility: hidden;display:none">
-    [Event "?"]
-[Site "Baku"]
-[Date "1975.??.??"]
-[Round "3"]
-[White "Einoris"]
-[Black "Kasparov Garry"]
-[Result "0-1"]
-[ECO "B59/02"]
-
-1.e4 c5 2.Nf3 Nc6 3.d4 cxd4 4.Nxd4 Nf6 
-5.Nc3 d6 6.Be2 e5 7.Nb3 Be7 8.O-O O-O 
-9.f4 a5 10.a4 Nb4 11.Kh1 Bd7 12.Bf3 Bc6 
-13.Nd5 Bxd5 14.exd5 e4 15.Be2 Nbxd5 16.g4 Nc7 
-17.g5 Nfe8 18.Bd2 Ne6 19.h4 f5 20.Be3 d5 
-21.c4 N8c7 22.Bb6 Qd6 23.c5 Qd7 24.Nxa5 Nxc5 
-25.Bxc5 Bxc5 26.Nxb7 Ba7 27.a5 d4 28.Bc4+ Kh8 
-29.a6 d3 30.b4 Qd4 31.Qb3 Qe3 32.Qa2 Rac8 
-33.Nd6 Rcd8 34.Nb7 d2 35.Kh2 Rd3 36.Bxd3 Qxd3 
-37.Qa3 Qxa3 38.Rxa3 e3 39.Raa1 e2 40.Rh1 Re8 
-41.Nd6 e1=Q 42.Nxe8 Qf2+  0-1
+  ;Title: Yahoo! Chess Game
+  ;White: toomas1432
+  ;Black: bbb.rome
+  ;Date: Tue Aug 17 00:57:07 PDT 2010
+  1. e2-e4 e7-e6
+  2. d2-d4 d7-d5
+  3. e4xd5 e6xd5
+  4. b1-c3 g8-f6
+  5. g1-f3 f8-b4
+  6. f1-b5  c7-c6
+  7. b5-d3 d8-e7 
+  8. c1-e3 o-o
+  9. o-o c8-g4
+  10. h2-h3 g4-h5
+  11. f1-e1 e7-d6
+  12. a2-a3 b4-a5
+  13. b2-b4 a5-c7
+  14. g2-g4 h5-g6
+  15. b4-b5 f6-e4
+  16. c3-a4 f7-f5
+  17. a4-c5 f5xg4
+  18. f3-e5 b7-b6
+  19. c5xe4 d5xe4
+  20. d3-c4  g8-h8
+  21. d1xg4 b8-d7
+  22. e3-f4 d6xd4
+  23. e5xg6  h7xg6
+  24. f4-e3 d4-f6
+  25. g4xd7
 </div>
 <script language="JavaScript">
-	var brd = new Board('area', {'imagePrefix':'../img/default/','buttonPrefix':'../img/buttons/',
+  var game = new ChessGame(document.getElementById('area').innerHTML);
+  var conv = new Converter(game.format);
+  conv.convert();
+  var brd = new Board('area', {'imagePrefix':'../img/default/','buttonPrefix':'../img/buttons/',
 		 														'movesPaneWidth':'300px',
 																'showMovesPane':true,
 																'blackSqColor':'#adadad',
