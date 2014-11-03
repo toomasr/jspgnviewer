@@ -38,7 +38,7 @@ function Pgn(pgn) {
   var pgnLines = pgn.split("\n");
   var newPgnLines = Array();
   for (var i = 0; i < pgnLines.length; i++) {
-    if (pgnLines[i].trim().length == 0 || pgnLines[i].trim().charAt(0) == ';')
+    if (pgnLines[i].trim().length === 0 || pgnLines[i].trim().charAt(0) == ';')
       continue;
 
     newPgnLines.push(pgnLines[i]);
@@ -211,7 +211,7 @@ function Pgn(pgn) {
         rtrn = new Array(this.moves[this.currentMove].white, 'white');
       }
 
-      if (rtrn[0] == null || rtrn[0].length == 0)
+      if (rtrn[0] === null || rtrn[0].length === 0)
         rtrn = null;
       return rtrn;
     } catch (e) {
@@ -330,7 +330,7 @@ function isPGNBroken(val) {
       break;
     case ')':
       // closing a non-existent curly brace
-      if (pCount == 0)
+      if (pCount === 0)
         return false;
       // closing a curly instead of a parenthesis
       if (lastOne == "c")
@@ -344,7 +344,7 @@ function isPGNBroken(val) {
       break;
     case '}':
       // closing a non-existent curly brace
-      if (cCount == 0)
+      if (cCount === 0)
         return false;
       // if we're closing a parenthesis instead of a curly
       if (lastOne == "p")

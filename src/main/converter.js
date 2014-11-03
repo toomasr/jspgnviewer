@@ -1,5 +1,5 @@
 /**
- * Copyright 2008 Toomas Rmer
+ * Copyright 2008 Toomas Römer
  * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -190,7 +190,8 @@ function Converter(pgn) {
 
     this.vBoard[7][4].piece = 'king';
     this.vBoard[7][4].color = 'white';
-    this.wKingX = 7, this.wKingY = 4;
+    this.wKingX = 7;
+    this.wKingY = 4;
 
     this.vBoard[0][3].piece = 'queen';
     this.vBoard[0][3].color = 'black';
@@ -198,7 +199,8 @@ function Converter(pgn) {
 
     this.vBoard[0][4].piece = 'king';
     this.vBoard[0][4].color = 'black';
-    this.bKingX = 0, this.bKingY = 4;
+    this.bKingX = 0;
+    this.bKingY = 4;
 
     /* EO Virtual board initialization */
   }
@@ -291,7 +293,7 @@ function Converter(pgn) {
   this.convertMove = function(board) {
     var to = this.pgn.nextMove();
     var oldTo = to;
-    if (to == null)
+    if (to === null)
       return;
     var color = to[1];
     to = to[0];
@@ -338,10 +340,15 @@ function Converter(pgn) {
       from = this.vBoard[fromCoords[0]][fromCoords[1]];
       to = this.vBoard[toCoords[0]][toCoords[1]];
       // update king location
-      if ('king' == from.piece && 'white' == from.color)
-        this.wKingX = toCoords[0], this.wKingY = toCoords[1];
-      else if ('king' == from.piece && 'black' == from.color)
-        this.bKingX = toCoords[0], this.bKingY = toCoords[1];
+      if ('king' == from.piece && 'white' == from.color) {
+        this.wKingX = toCoords[0];
+        this.wKingY = toCoords[1];
+      }
+      else if ('king' == from.piece && 'black' == from.color) {
+        this.bKingX = toCoords[0];
+        this.bKingY = toCoords[1];
+      }
+        
 
       result = movePiece(this, from, to, prom);
 
@@ -371,8 +378,8 @@ function Converter(pgn) {
         var tmpI = 0;
         for (tmpI = to.length - 1; tmpI >= 0; tmpI--) {
           if (/^[A-Z]/.test(to.charAt(tmpI))) {
-            prom = to.charAt(tmpI)
-            break
+            prom = to.charAt(tmpI);
+            break;
           }
         }
       }
@@ -388,9 +395,11 @@ function Converter(pgn) {
 
     // update king location
     if ('king' == from.piece && 'white' == from.color) {
-      this.wKingX = toCoords[0], this.wKingY = toCoords[1];
+      this.wKingX = toCoords[0];
+      this.wKingY = toCoords[1];
     } else if ('king' == from.piece && 'black' == from.color) {
-      this.bKingX = toCoords[0], this.bKingY = toCoords[1];
+      this.bKingX = toCoords[0];
+      this.bKingY = toCoords[1];
       // update bishops location
     } else if ('bishop' == from.piece) {
       var idx;
@@ -428,6 +437,7 @@ function Converter(pgn) {
     }
 
     if ('queen' == to.piece) {
+      var idx;
       if ('white' == to.color) {
         idx = findPieceIdx(this.wQueens, toCoords);
         this.wQueens.splice(idx, 1);
@@ -436,6 +446,7 @@ function Converter(pgn) {
         this.bQueens.splice(idx, 1);
       }
     } else if ('bishop' == to.piece) {
+      var idx;
       if ('white' == to.color) {
         idx = findPieceIdx(this.wBishops, toCoords);
         this.wBishops.splice(idx, 1);
@@ -444,6 +455,7 @@ function Converter(pgn) {
         this.bBishops.splice(idx, 1);
       }
     } else if ('rook' == to.piece) {
+      var idx;
       if ('white' == to.color) {
         idx = findPieceIdx(this.wRooks, toCoords);
         this.wRooks.splice(idx, 1);
@@ -544,8 +556,7 @@ function Converter(pgn) {
 
       for (var i = 0; i < froms.length; i++) {
         try {
-          if (pos[froms[i][0]][froms[i][1]].piece == 'pawn'
-              && pos[froms[i][0]][froms[i][1]].color == color) {
+          if (pos[froms[i][0]][froms[i][1]].piece == 'pawn' && pos[froms[i][0]][froms[i][1]].color == color) {
             // we have the file information too
             if (tmp[3] != -1 && tmp[3] == froms[i][1]) {
               // no back taking
@@ -611,7 +622,6 @@ function Converter(pgn) {
 
     throw ('No move found for the bishop ' + toSAN);
   }
-  ;
 
   /*
    * Find from any move
@@ -623,18 +633,19 @@ function Converter(pgn) {
 
     throw ('No move found for the generic move ' + toSAN);
   }
-  ;
 
   /*
    * Find the king from location.
    */
   function findFromKing(board, pos, color) {
     var x = board.wKingX, y = board.wKingY;
-    if ("black" == color)
-      x = board.bKingX, y = board.bKingY;
+    if ("black" == color) {
+      x = board.bKingX;
+      y = board.bKingY;
+    }
+      
     return new Array(x, y);
   }
-  ;
 
   /*
    * Find the queen's from location.
@@ -668,7 +679,7 @@ function Converter(pgn) {
       } else if (rdy < 0) {
         rdy = -1;
       }
-      if (dx == dy || dx == 0 || dy == 0) { // bishop-like move or
+      if (dx == dy || dx === 0 || dy === 0) { // bishop-like move or
         // rook-like move
         var x = arr[i][0];
         var y = arr[i][1];
@@ -717,7 +728,6 @@ function Converter(pgn) {
 
     throw ("No queen move found '" + toSAN + "'");
   }
-  ;
 
   /*
    * Find the rook's from location.
@@ -755,7 +765,7 @@ function Converter(pgn) {
       }
 
       var limiter = 0;
-      if (dx == 0 || dy == 0) {
+      if (dx === 0 || dy === 0) {
         var x = rooks[i][0];
         var y = rooks[i][1];
         while (true) {
@@ -812,7 +822,6 @@ function Converter(pgn) {
 
     throw ("No rook move found '" + toSAN + "'");
   }
-  ;
 
   /*
    * Find the knight's from location.
@@ -880,13 +889,11 @@ function Converter(pgn) {
       throw "Wrong number of arguments";
     }
 
-    var map = new Object();
     // if only from certain file we can make the move
     var extra = new Array(-1, -1);
     var taking = -1;
-    map['a'] = 7, map['b'] = 6, map['c'] = 5;
-    map['d'] = 4, map['e'] = 3, map['f'] = 2;
-    map['g'] = 1, map['h'] = 0;
+    var map = {'a':7, 'b':6, 'c':5, 'd':4,
+           'e':3, 'f':2, 'g':1, 'h':0};
 
     // trim the everything from +
     if (coord.indexOf("+") != -1)
@@ -948,7 +955,6 @@ function Converter(pgn) {
 
     return rtrn;
   }
-  ;
 
   getEnPassante = function(brd, x1, y1, x2, y2) {
     var from = brd.vBoard[x1][y1];
@@ -959,11 +965,11 @@ function Converter(pgn) {
       return null;
 
     // taking move
-    if ((y1 - y2) == 0)
+    if ((y1 - y2) === 0)
       return null;
 
     // destination should be null
-    if (null != to.piece)
+    if (null !== to.piece)
       return null;
 
     // the piece we are looking for
@@ -1016,7 +1022,8 @@ function Converter(pgn) {
 
     var x = brd.wKingX, y = brd.wKingY;
     if ("black" == col) {
-      x = brd.bKingX, y = brd.bKingY;
+      x = brd.bKingX;
+      y = brd.bKingY;
     }
     // diagonals, looking for bishops, queens
     var tmp;
@@ -1140,7 +1147,7 @@ function Converter(pgn) {
 
     return false;
   };
-};
+}
 
 function MyMove() {
   this.actions = [];
@@ -1161,7 +1168,7 @@ function MyMove() {
   this.toString = function() {
     return "MyMove -- no. actions " + this.actions.length;
   };
-};
+}
 
 function MySquare(x, y, piece, color) {
   this.x = x;
@@ -1170,15 +1177,15 @@ function MySquare(x, y, piece, color) {
   this.piece = piece;
 
   this.toString = function() {
-    return "MySquare -- x = " + this.x + " y=" + this.y + " color="
-        + this.color + " piece=" + this.piece;
+    return "MySquare -- x = " + this.x + " y=" + this.y + " color=" +
+            this.color + " piece=" + this.piece;
   };
 
   this.clone = function() {
     var sq = new MySquare(this.x, this.y, this.piece, this.color);
     return sq;
   };
-};
+}
 
 function vSquare() {
   this.piece = null;
@@ -1186,8 +1193,8 @@ function vSquare() {
   this.type = "";
 
   this.toString = function() {
-    return "vSquare -- piece = " + this.piece + " color=" + this.color
-        + " type=" + this.type;
+    return "vSquare -- piece = " + this.piece + " color=" + this.color +
+            " type=" + this.type;
   };
 
   this.clone = function() {
@@ -1197,4 +1204,4 @@ function vSquare() {
     sq.type = this.type;
     return sq;
   };
-};
+}

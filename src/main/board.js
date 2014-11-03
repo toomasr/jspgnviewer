@@ -897,7 +897,6 @@ function Board(divId, options) {
     txt = document.createTextNode('&nbsp;');
     this.visuals['pgn']['timecontrol'] = txt;
     td.appendChild(txt);
-    // ;
     this.updatePGNInfo();
   };
 

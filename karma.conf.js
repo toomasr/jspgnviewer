@@ -8,7 +8,6 @@ module.exports = function(config) {
     basePath: '',
 
     plugins: [
-          'karma-jshint-preprocessor',
           'karma-coverage',
           'karma-jasmine',
           'karma-jasmine-jquery'
@@ -37,8 +36,7 @@ module.exports = function(config) {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-      'src/main/*.js': 'coverage',
-      'src/main/*.js': 'jshint'
+      'src/main/*.js': 'coverage'
     },
 
 

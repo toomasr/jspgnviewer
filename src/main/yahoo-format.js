@@ -19,7 +19,7 @@
  */
 function Yahoo(pgn) {
   // properties of the game eg players, ELOs etc
-  this.props = new Object();
+  this.props = {};
   this.validProps = [ 'Title', 'White', 'Black', 'Date' ];
 
   // the moves, one move contains the black and white move
