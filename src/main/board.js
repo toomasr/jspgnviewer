@@ -41,11 +41,11 @@ function Board(divId, options) {
   };
 
   this.opts = [];
-  this.opts['imagePrefix'] = "img/default/";
-  this.opts['buttonPrefix'] = "img/default/buttons/";
+  this.opts['imagePrefix'] = "img/zurich/";
+  this.opts['buttonPrefix'] = "img/zurich/buttons/";
   this.opts['imageSuffix'] = 'gif';
   this.opts['moveFontSize'] = "8pt";
-  this.opts['moveFontColor'] = "#537c3a";
+  this.opts['moveFontColor'] = "#af0000";
   this.opts['moveFont'] = 'Tahoma, Arial, sans-serif';
 
   this.opts['commentFontSize'] = "8pt";
@@ -57,12 +57,12 @@ function Board(divId, options) {
 
   this.opts['blackSqColor'] = "#4b4b4b";
   this.opts['whiteSqColor'] = "#ffffff";
-  this.opts['squareBorder'] = "1px solid #000000";
+  this.opts['squareBorder'] = "0px solid #000000";
   this.opts['flipped'] = false;
   this.opts['showMovesPane'] = true;
 
   this.opts['showComments'] = true;
-  this.opts['markLastMove'] = true;
+  this.opts['markLastMove'] = false;
 
   this.opts['altRewind'] = "Rewind to the beginning";
   this.opts['altBack'] = "One move back";
@@ -71,7 +71,7 @@ function Board(divId, options) {
   this.opts['altComments'] = "Show comments";
   this.opts['altPlayMove'] = "Play one move";
   this.opts['altFastForward'] = "Fast-forward to the end";
-  this.opts['moveBorder'] = "0px solid #000000";
+  this.opts['moveBorder'] = "1px solid #cccccc";
   this.opts['downloadURL'] = "http://www.chesspastebin.com/asPgn.php?PGN=";
   this.opts['skipToMove'] = null;
 
