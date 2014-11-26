@@ -11,8 +11,6 @@ Examples
 
 Currently this repository is in intermediate state. In progress of moving from https://code.google.com/p/jspgnviewer to GitHub.
 
-```html
-
 <div id='fen' style="visibility: hidden;display:none">
 [Event "SOK theme63 corr"]
 [Site "corr"]
@@ -46,4 +44,3 @@ Currently this repository is in intermediate state. In progress of moving from h
           });
  brd.init()
 </script>
-```
