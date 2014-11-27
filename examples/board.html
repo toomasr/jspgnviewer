@@ -1,55 +1,47 @@
 <html>
-	<head>
-		<style type="text/css" media="screen">
-			<!-- @import url(test.css); -->
-		</style>
+  <head>
+    <style type="text/css" media="screen">
+      <!-- @import url(test.css); -->
+    </style>
 
-  	<!--script type="text/javascript"
-		language="javascript"
-		src="../bin/jspgnviewer/jsPgnViewer.js">
-		</script-->
     <script
-    	type="text/javascript"
-    	language="javascript"
-			src="../src/main/chess-game.js">
-			</script>
+      type="text/javascript"
+      language="javascript"
+      src="../src/main/chess-game.js">
+      </script>
     <script
-    	type="text/javascript"
-    	language="javascript"
-			src="../src/main/converter.js">
-			</script>
+      type="text/javascript"
+      language="javascript"
+      src="../src/main/converter.js">
+      </script>
     <script
-    	type="text/javascript"
-    	language="javascript"
-			src="../src/main/pgn.js">
-			</script>
+      type="text/javascript"
+      language="javascript"
+      src="../src/main/pgn.js">
+      </script>
     <script
-    	type="text/javascript"
-    	language="javascript"
-			src="../src/main/yahoo-format.js">
-			</script>
+      type="text/javascript"
+      language="javascript"
+      src="../src/main/yahoo-format.js">
+      </script>
     <script
-    	type="text/javascript"
-    	language="javascript"
-			src="../src/main/board.js">
-			</script>
+      type="text/javascript"
+      language="javascript"
+      src="../src/main/board.js">
+      </script>
     <script
-    	type="text/javascript"
-    	language="javascript"
-			src="moo.js">
-			</script>
-		<!-- script language="javascript">
-			//var brdi = new BoardImages("default", "../img/default/")
-			//brdi.preload()
-		</script-->
+      type="text/javascript"
+      language="javascript"
+      src="moo.js">
+      </script>
   </head>
 
   <body>
     <table border=0> 
       <tr>
         <td width="600px">
-						<div id='area_board' style=""> 
-						</div>
+            <div id='area_board' style=""> 
+            </div>
 <div id='area' style="visibility: hidden;display:none">
   ;Title: Yahoo! Chess Game
   ;White: toomas1432
@@ -86,15 +78,14 @@
   var conv = new Converter(game.format);
   conv.convert();
   var brd = new Board('area', {'imagePrefix':'../img/default/','buttonPrefix':'../img/buttons/',
-		 														'movesPaneWidth':'300px',
-																'showMovesPane':true,
-																'blackSqColor':'#adadad',
-																'lightSqColor':'#f5f5f5',
-																'squareBorder':'1px solid #666666',
-																'moveBorder':'0px solid #cccccc',
-																'flipped':false});
-	brd.init();
-	
+                                'movesPaneWidth':'300px',
+                                'showMovesPane':true,
+                                'blackSqColor':'#adadad',
+                                'lightSqColor':'#f5f5f5',
+                                'squareBorder':'1px solid #666666',
+                                'moveBorder':'0px solid #cccccc',
+                                'flipped':false});
+  brd.init();
 </script>
           </td>
       </tr>
