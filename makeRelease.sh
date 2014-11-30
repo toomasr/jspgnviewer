@@ -1,5 +1,4 @@
 #!/bin/bash
-# Author Toomas Römer toomasr[at]gmail
 
 # Intended to be used from the project root directory
 # or ./res directory
@@ -17,21 +16,21 @@ IMG_DIR="img"
 
 # functions
 genPackedFormat() {
-		# pack the source with packer
-		cd $LIB_DIR
-        if [ "`which php`" = "" ];then
-            echo "No PHP found. Not using the PHP packer!";
-        else
-		    php packerConf.php
-        fi
+  # pack the source with packer
+  cd $LIB_DIR
+  if [ "`which php`" = "" ];then
+    echo "PHP not found. Not using the PHP packer!";
+  else
+    php packerConf.php
+  fi
 
-		cd $OLD_DIR
-		
-		cp $DEST_DIR/jsPgnViewer.js $JS_DEST_DIR/jsPgnViewerUnpacked.js
-		cp $DEST_DIR/jsPgnViewer.js $WP_DEST_DIR/jsPgnViewerUnpacked.js
-		
-		java -cp $LIB_DIR/jsmin JSMin $DEST_DIR/jsPgnViewer.js > $JS_DEST_DIR/jsPgnViewer.js
-		java -cp $LIB_DIR/jsmin JSMin $DEST_DIR/jsPgnViewer.js > $WP_DEST_DIR/jsPgnViewer.js
+  cd $OLD_DIR
+
+  cp $DEST_DIR/jsPgnViewer.js $JS_DEST_DIR/jsPgnViewerUnpacked.js
+  cp $DEST_DIR/jsPgnViewer.js $WP_DEST_DIR/jsPgnViewerUnpacked.js
+
+  java -cp $LIB_DIR/jsmin JSMin $DEST_DIR/jsPgnViewer.js > $JS_DEST_DIR/jsPgnViewer.js
+  java -cp $LIB_DIR/jsmin JSMin $DEST_DIR/jsPgnViewer.js > $WP_DEST_DIR/jsPgnViewer.js
 }
 
 makeRelease() {
@@ -81,23 +80,23 @@ makeRelease() {
     cp $WP_DIR/pgnviewer.php $WP_DEST_DIR/pgnviewer.php
     WP_VERSION=`cat wpVersion`
 
-# Making jsPgnViewer release
+    # Making jsPgnViewer release
     cp -r $IMG_DIR $JS_DEST_DIR
 
-# Making plugin release
+    # Making plugin release
     cp $WP_DIR/* $WP_DEST_DIR
     cp -r $IMG_DIR/* $WP_IMG_DIR
     cp $JS_DEST_DIR/jsPgnViewer.js $WP_DEST_DIR
     chmod -R 775 $DEST_DIR
     perl -pi -e "s/WP_VERSION/$WP_VERSION/" $WP_DEST_DIR/pgnviewer.php
 
-# WPR release
+    # WPR release
     cd $DEST_DIR
     NAME="pgnviewer-"`cat ../wpVersion`".tar.gz"
     tar --exclude=.svn -cvzf $NAME pgnviewer
     cd $OLD_DIR
 
-# JSR release
+    # JSR release
     cd $DEST_DIR
     NAME="jspgnviewer-"`cat ../jsVersion`".tar.gz"
     tar --exclude=.svn -cvzf $NAME jspgnviewer
@@ -106,13 +105,13 @@ makeRelease() {
 
 
 if [ $# -ge 1 ];then
-	if [ $1 == 'clean' ];then
-		echo "clean "$DEST_DIR
-		rm -rf $DEST_DIR
-    else
-        makeRelease
-        genPackedFormat
-	fi
+  if [ $1 == 'clean' ];then
+    echo "cleaning "$DEST_DIR
+    rm -rf $DEST_DIR
+  else
+    makeRelease
+    genPackedFormat
+  fi
 else
     echo "Usage:"
     echo "  We have the following targets:"
