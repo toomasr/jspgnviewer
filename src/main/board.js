@@ -56,9 +56,6 @@ function Board(divId, options) {
   this.opts['boardSize'] = '257px';
   this.opts['squareSize'] = '31px';
 
-  this.opts['blackSqColor'] = "#4b4b4b";
-  this.opts['whiteSqColor'] = "#ffffff";
-  this.opts['squareBorder'] = "0px solid #000000";
   this.opts['flipped'] = false;
   this.opts['showMovesPane'] = true;
 
@@ -72,7 +69,6 @@ function Board(divId, options) {
   this.opts['altComments'] = "Show comments";
   this.opts['altPlayMove'] = "Play one move";
   this.opts['altFastForward'] = "Fast-forward to the end";
-  this.opts['moveBorder'] = "1px solid #cccccc";
   this.opts['downloadURL'] = "http://www.chesspastebin.com/asPgn.php?PGN=";
   this.opts['skipToMove'] = null;
 
@@ -94,6 +90,23 @@ function Board(divId, options) {
   }
 
   this.opts['imagePrefix'] = this.opts['root'] + this.opts['imagePrefix'];
+
+  // have to have the defaults after imageprefix is properly rooted
+  if(!this.opts['blackSqColor']) {
+    this.opts['blackSqColor'] = "url('"+this.opts['imagePrefix']+"board/darksquare.gif')";
+  }
+
+  if(!this.opts['whiteSqColor']) {
+    this.opts['whiteSqColor'] = "url('"+this.opts['imagePrefix']+"board/lightsquare.gif')";
+  }
+
+  if(!this.opts['squareBorder']) {
+    this.opts['squareBorder'] = "0px solid #000000";
+  }
+
+  if(!this.opts['moveBorder']) {
+    this.opts['moveBorder'] = "1px solid #cccccc";
+  }
 
   if (options && typeof (options['buttonPrefix']) == 'undefined')
     this.opts['buttonPrefix'] = this.opts['imagePrefix'] + "buttons/";

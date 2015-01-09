@@ -9,11 +9,7 @@
 <div style="border:2px solid #000000;padding: 5px">
  <i>
   &lt;script&gt;<br>
- var brd = new Board('fen', {'imagePrefix':'img/zurich/',<br>
-          'moveFontColor':'#af0000',<br>
-          'blackSqColor':'url("img/zurich/board/darksquare.gif")',<br>
-          'lightSqColor':'url("img/zurich/board/lightquare.gif")',<br>
-          });<br>
+ var brd = new Board('fen', {});<br>
   brd.init()<br>
   &lt;/script&gt;
  </i>
@@ -41,12 +37,7 @@
 14... d6 15. Nf3 Qxh3 16. Qxb7 Bxb7 17. Bxh3 Nce5 18. Kg2 Bf4 19. Bxg4 Nxg4 20. Rhf1 Kf7 21. Kh3 h1=Q+ 22. Rxh1 Nf2+ 23. Kg2 Nxh1 24. Rxh1 Rxh8 0-1
 </div>
 <script>
- var brd = new Board('fen1', {
-          'imagePrefix':'img/zurich/',
-          'moveFontColor':'#af0000',
-          'blackSqColor':'url("img/zurich/board/darksquare.gif")',
-          'lightSqColor':'url("img/zurich/board/lightquare.gif")',
-          });
+ var brd = new Board('fen1', {});
  brd.init()
 </script>
 
@@ -104,6 +95,7 @@ Kxd8 c2 64. Rg5+ Kf7 65. Rg1 1-0
                    'commentFontSize':'10pt',<br>
                    'moveFontColor':'#206020',<br>
                    'blackSqColor':'#ababab',<br>
+                   'whiteSqColor':'#fffff',<br>
                    'moveFontSize':'10pt',<br>
                    'boardSize':'377px',<br>
                    'squareSize':'46'})<br>
@@ -151,6 +143,7 @@ Qxf3 Qxd4) 33. Rg4 Qg1+ 34. Kf3 Rc3+ 35. Ke2 Rc2+ 36. Kd3 Qd1+ 37. Ke3 Rc3# 0-1
                    'commentFontSize':'10pt',
                    'moveFontColor':'#206020',
                    'blackSqColor':'#ababab',
+                   'whiteSqColor':"#ffffff",
                    'moveFontSize':'10pt',
                    'boardSize':'377px',
                    'squareSize':'46'})

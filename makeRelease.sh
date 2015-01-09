@@ -11,7 +11,7 @@ LIB_DIR="lib"
 SRC_DIR="src/main"
 WP_DIR="wpPlugin"
 WP_IMG_DIR="bin/pgnviewer/img"
-TEST_DIR="tests"
+TEST_DIR="examples"
 IMG_DIR="img"
 
 # functions
