@@ -20,7 +20,7 @@ function Board(divId, options) {
     /*global Yahoo */
     pgn = new Yahoo(document.getElementById(divId).firstChild.nodeValue);
   else
-    /*global pgn */
+    /*global PGN */
     pgn = new Pgn(document.getElementById(divId).firstChild.nodeValue);
 
   this.conv = new Converter(pgn);
@@ -41,6 +41,7 @@ function Board(divId, options) {
   };
 
   this.opts = [];
+  this.opts['root'] = detectRoot();
   this.opts['imagePrefix'] = "img/zurich/";
   this.opts['buttonPrefix'] = "img/zurich/buttons/";
   this.opts['imageSuffix'] = 'gif';
@@ -75,7 +76,7 @@ function Board(divId, options) {
   this.opts['downloadURL'] = "http://www.chesspastebin.com/asPgn.php?PGN=";
   this.opts['skipToMove'] = null;
 
-  var optionNames = [ 'flipped', 'moveFontSize', 'moveFontColor', 'moveFont',
+  var optionNames = [ 'root', 'flipped', 'moveFontSize', 'moveFontColor', 'moveFont',
       'commentFontSize', 'commentFontColor', 'commentFont', 'boardSize',
       'squareSize', 'blackSqColor', 'whiteSqColor', 'imagePrefix',
       'showMovesPane', 'movesPaneWidth', 'imageSuffix', 'comments',
@@ -91,6 +92,8 @@ function Board(divId, options) {
       this.opts[optionNames[i]] = options[optionNames[i]];
     }
   }
+
+  this.opts['imagePrefix'] = this.opts['root'] + this.opts['imagePrefix'];
 
   if (options && typeof (options['buttonPrefix']) == 'undefined')
     this.opts['buttonPrefix'] = this.opts['imagePrefix'] + "buttons/";
@@ -1027,6 +1030,24 @@ function BoardImages(options) {
 function isYahoo(pgn) {
   pgn = pgn.replace(/^\s+|\s+$/g, '');
   return pgn.charAt(0) == ';';
+}
+
+function detectRoot() {
+  var scripts = document.getElementsByTagName('script');
+
+  for (var i = 0; i < scripts.length; i++) {
+    // good for testing when the JS is not in a single file
+    var idx = scripts[i].src.indexOf("board.js");
+    if (idx != -1) {
+      return scripts[i].src.substring(0, idx);
+    }
+    
+    // for production, where everthing is in a single file
+    var idx = scripts[i].src.indexOf("jsPgnViewer.js");
+    if (idx != -1) {
+      return scripts[i].src.substring(0, idx);
+    }
+  }
 }
 
 function resetStyles(obj) {

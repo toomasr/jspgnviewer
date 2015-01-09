@@ -4,19 +4,11 @@
             <!-- @import url(test.css); -->
         </style>
 
-    <!--script type="text/javascript"
+    <script type="text/javascript"
         language="javascript"
         src="../bin/jspgnviewer/jsPgnViewer.js">
-        </script-->
-    <script
-        type="text/javascript"
-        language="javascript"
-            src="../bin/packed.js">
-            </script>
-        <script language="javascript">
-            var brdi = new BoardImages("default", "../img/")
-            brdi.preload()
         </script>
+    </script>    
   </head>
 
   <body>
@@ -49,9 +41,8 @@
 </div>
 <script>
     var brd = new Board('area', {'showMovesPane':true,
-                                            'movesPaneWidth':'300px',
-                                            'imagePrefix':'../img/',
-                                            'flipped':false})
+                                'movesPaneWidth':'300px',
+                                'flipped':false})
     brd.init()
 </script>
           </td>

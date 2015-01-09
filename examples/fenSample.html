@@ -11,22 +11,18 @@
     <script
     	type="text/javascript"
     	language="javascript"
-			src="../src/converter.js">
+			src="../src/main/converter.js">
 			</script>
     <script
     	type="text/javascript"
     	language="javascript"
-			src="../src/pgn.js">
+			src="../src/main/pgn.js">
 			</script>
     <script
     	type="text/javascript"
     	language="javascript"
-			src="../src/board.js">
+			src="../src/main/board.js">
 			</script>
-		<!-- script language="javascript">
-			//var brdi = new BoardImages("default", "../img/default/")
-			//brdi.preload()
-		</script-->
   </head>
 
   <body>
@@ -50,10 +46,10 @@
 
 </div>
 <script language="JavaScript">
-	var brd = new Board('area', {'imagePrefix':'../img/default/',
-		 														'movesPaneWidth':'300px',
-																'showMovesPane':true,
-																'flipped':false});
+	var brd = new Board('area', {'root':'../',
+								'movesPaneWidth':'300px',
+								'showMovesPane':true,
+								'flipped':false});
 	brd.init();
 </script>
           </td>
