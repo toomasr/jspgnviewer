@@ -613,13 +613,20 @@ function Converter(pgn) {
     } else {
       arr = board.bBishops;
     }
+
+    // you could have multiple bishops that can move there
+    // if the from is unknown then the closest can move
+    var moves = new Array();
     for (var i = 0; i < arr.length; i++) {
       if (Math.abs(arr[i][0] - toCoords[0]) == Math
           .abs(arr[i][1] - toCoords[1])) {
-        return new Array(arr[i][0], arr[i][1]);
+        moves[moves.length] = new Array(arr[i][0], arr[i][1]);
       }
     }
 
+    if (moves.length>0) {
+      return moves[moves.length-1];
+    }
     throw ('No move found for the bishop ' + toSAN);
   }
 
