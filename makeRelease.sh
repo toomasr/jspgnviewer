@@ -76,14 +76,12 @@ makeRelease() {
     cp $TEST_DIR/samplePage.html $JS_DEST_DIR/
     cp $SRC_DIR/README.txt $JS_DEST_DIR/
     cp License.txt $JS_DEST_DIR/
+    cp -r $IMG_DIR $JS_DEST_DIR
 
+    # WP Plugin release
     cp $WP_DIR/pgnviewer.php $WP_DEST_DIR/pgnviewer.php
     WP_VERSION=`cat wpVersion`
 
-    # Making jsPgnViewer release
-    cp -r $IMG_DIR $JS_DEST_DIR
-
-    # Making plugin release
     cp $WP_DIR/* $WP_DEST_DIR
     cp -r $IMG_DIR/* $WP_IMG_DIR
     cp $JS_DEST_DIR/jsPgnViewer.js $WP_DEST_DIR

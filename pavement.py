@@ -6,10 +6,12 @@ options(
     build = Bunch(
         lib_dir = path("lib"),
         dest_dir = path("bin"),
-        src_dir = path("src/main")
+        test_dir = path("examples"),
+        src_dir = path("src/main"),
+        img_dir = path("img"),
+        wp_dir = path("wpPlugin")
     )
 )
-
 
 setup(
     name="jsPgnViewer",
@@ -23,10 +25,11 @@ setup(
 def release(options, info):
     """Lets build a release!"""
 
-    options.dest_dir.mkdir();
-    jsDestDir = options.dest_dir / "jspgnviewer";
+    options.build.dest_dir.mkdir();
+    jsDestDir = options.build.dest_dir / "jspgnviewer";
     jsDestDir.mkdir();
 
+    # prepare the JS release
     jsDestFile = jsDestDir / "jsPgnViewer.js"
     jsDestFile.write_text("/** Version: %s **/\n" % (options.version))
 
@@ -35,11 +38,24 @@ def release(options, info):
     sh("cat %s/pgn.js >> %s" % (options.src_dir, jsDestFile))
     sh("cat %s/yahoo-format.js >> %s" % (options.src_dir, jsDestFile))
     sh("cat %s/board.js >> %s" % (options.src_dir, jsDestFile))
-    
-    sh("cp %s %s" % (jsDestFile, options.dest_dir))
+
+    sh("cp %s %s" % (jsDestFile, options.build.dest_dir))
+    sh("cp %s %s" % (options.test_dir / "samplePage.html", options.build.dest_dir))
+    sh("cp %s %s" % (options.src_dir / "README.txt", options.build.dest_dir))
+    sh("cp %s %s" % ("License.txt", options.build.dest_dir))
+    sh("cp -r %s %s" % (options.img_dir, jsDestDir))
+
+
+    # prepare the WP plugin release
+    wpDestDir = options.build.dest_dir / "pgnviewer"
+    wpDestDir.mkdir()
+    sh("cp %s %s" % (options.wp_dir / "pgnviewer.php", wpDestDir))
+    sh("cp %s/* %s" % (options.wp_dir , wpDestDir))
+    sh("cp -r %s %s" % (options.img_dir, wpDestDir))
+    sh("cp %s %s" % (jsDestDir/"jsPgnViewer.js", wpDestDir))
     pass
 
 @task
 def clean(options):
     """Cleans the repository of the generated build files"""
-    options.dest_dir.rmtree()
+    options.build.dest_dir.rmtree()
