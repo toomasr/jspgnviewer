@@ -1,8 +1,11 @@
 from paver.easy import *
 from paver.setuputils import setup
+from github3 import GitHub
+from github3 import GitHubError
 import pprint
 import tarfile
 import os
+import ConfigParser
 
 options(
     build = Bunch(
@@ -17,11 +20,49 @@ options(
 
 setup(
     name="jsPgnViewer",
-    version="0.7.2",
+    version="0.7.3",
     url="http://github.com/toomasr/jspgnviewer",
     author="Toomas Römer",
     author_email="toomasr@gmail.com"
 )
+
+
+@task
+@needs("release")
+def upload(options, info):
+    """Lets upload the release to GitHub"""
+
+    # read the github token
+    config = ConfigParser.ConfigParser()
+    config.read("personal.properties")
+    myToken = config.get("GitHub", "token", 0)
+
+    # lets log in
+    print "'%s'" % myToken
+    gh = GitHub(token = myToken)
+    repo = gh.repository("toomasr", "jspgnviewer")
+
+    # lets do the releases
+    try:
+        release_name = "JsPgnViewer %s" % options.version
+        tag_name = "jspgnviewer-%s" % options.version
+        release = repo.create_release(tag_name, name=release_name, prerelease=True)
+        f = open("bin/jspgnviewer-%s.tar.gz" % options.version)
+        release.upload_asset("application/gzip", "jspgnviewer-%s.tar.gz" %
+            options.version, f)
+    except GitHubError as e:
+        print e.errors
+
+    try:
+        release_name = "JsPgnViewer WordPress %s" % options.version
+        tag_name = "jspgnviewer-wordpress-%s" % options.version
+        release = repo.create_release(tag_name, name=release_name, prerelease=True)
+        f = open("bin/pgnviewer-%s.tar.gz" % options.version)
+        release.upload_asset("application/gzip", "pgnviewer-%s.tar.gz" %
+                options.version, f)
+    except GitHubError as e:
+        print e.errors
+    pass
 
 @task
 def release(options, info):
