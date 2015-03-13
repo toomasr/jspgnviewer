@@ -5,7 +5,7 @@ Plugin URI: http://pgnview.com
 Description: Allows to add PGN files to your blog posts that are converted to interactive boards. Easy to share your chess games with your friends.
 Version: WP_VERSION
 Author: Toomas Römer
-Author URI: http://tom.jabber.ee 
+Author URI: http://toomasr.com/ 
 */
 
 /*  Copyright 2010  Toomas Römer  (email : toomasr[at]gmail)
