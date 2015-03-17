@@ -48,6 +48,7 @@ function Board(divId, options) {
   this.opts['moveFontSize'] = "8pt";
   this.opts['moveFontColor'] = "#af0000";
   this.opts['moveFont'] = 'Tahoma, Arial, sans-serif';
+  this.opts['background'] = '#fff';
 
   this.opts['commentFontSize'] = "8pt";
   this.opts['commentFontColor'] = "#6060df";
@@ -78,7 +79,7 @@ function Board(divId, options) {
       'showMovesPane', 'movesPaneWidth', 'imageSuffix', 'comments',
       'squareBorder', 'markLastMove', 'altRewind', 'altBack', 'altFlip',
       'altShowMoves', 'altComments', 'altPlayMove', 'altFastForward',
-      'moveBorder', 'skipToMove', 'downloadURL', 'buttonPrefix' ];
+      'moveBorder', 'skipToMove', 'downloadURL', 'buttonPrefix', 'background' ];
 
   // if keys in options define new values then
   // set the this.opts for that key with the
@@ -130,6 +131,7 @@ function Board(divId, options) {
     mainTable.appendChild(mainTableTb);
     mainTable.style.border = "1px solid #000000";
     var tmp = document.createElement("tr");
+    tmp.style.background = this.opts['background'];
     mainTableTb.appendChild(tmp);
     var topLeftTd = resetStyles(document.createElement("td"));
     topLeftTd.vAlign = "top";
@@ -175,6 +177,8 @@ function Board(divId, options) {
     movesDiv.style.border = "1px solid #cccccc";
     movesDiv.style.verticalAlign = "top";
     movesDiv.style.textAlign = "left";
+    movesDiv.style.paddingLeft = "5px";
+    movesDiv.style.paddingTop = "5px";
     topRightTd.appendChild(movesDiv);
 
     var tmp = document.createElement("tr");
@@ -747,6 +751,7 @@ function Board(divId, options) {
     p.style.fontSize = "9pt";
     p.style.fontFace = "Tahoma, Arial, sans-serif";
     p.style.fontWeight = "bold";
+    p.style.color = "#000000";
     var tmpA = document.createElement("a");
 
     tmpA.href = this.opts['downloadURL'] + escape(pgn);
