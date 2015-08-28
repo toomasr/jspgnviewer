@@ -1,12 +1,12 @@
 /**
  * Copyright 2008-2015 Toomas Römer
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License") you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -51,7 +51,7 @@ function Board(divId, options) {
   this.opts['background'] = '#fff';
 
   this.opts['commentFontSize'] = "8pt";
-  this.opts['commentFontColor'] = "#6060df";
+  this.opts['commentFontColor'] = "#006699";
   this.opts['commentFont'] = 'Tahoma, Arial, sans-serif';
 
   this.opts['boardSize'] = '257px';
@@ -143,8 +143,8 @@ function Board(divId, options) {
 
     // toplevel table;
     var topTable = resetStyles(document.createElement("table"));
-    topTable.style.width = (parseInt(this.opts['boardSize']) + 15) + "px";
-    topTable.style.height = (parseInt(this.opts['boardSize']) + 15) + "px";
+    topTable.style.width = parseInt(this.opts['boardSize']) + "px";
+    topTable.style.height = parseInt(this.opts['boardSize']) + "px";
     topLeftTd.appendChild(topTable);
     topTable.border = 0;
     var topTableTb = document.createElement("tbody");
@@ -780,7 +780,7 @@ function Board(divId, options) {
 
     for (var i = 0; i < tmp2.length; i++) {
       if (tmp2[i].white != null) {
-        link = document.createElement("a");
+        link = resetStyles(document.createElement("a"));
         tmp = document.createTextNode(tmp2[i].white);
         tmp3 = document.createElement("b");
 
@@ -809,7 +809,7 @@ function Board(divId, options) {
           tmp4.style.fontFamily = this.opts['commentFont'];
           tmp4.style.fontSize = this.opts['commentFontSize'];
           tmp4.style.color = this.opts['commentFontColor'];
-          tmp4.appendChild(document.createTextNode(comment[0]));
+          tmp4.appendChild(document.createTextNode(" "+comment[0]));
           cont.appendChild(tmp4);
           lastMoveIdx = comment[1];
         }
@@ -820,7 +820,7 @@ function Board(divId, options) {
       if (tmp2[i].black != null) {
         cont.appendChild(document.createTextNode(" "));
         tmp = document.createTextNode(tmp2[i].black);
-        link = document.createElement("a");
+        link = resetStyles(document.createElement("a"));
         link.style.fontFamily = this.opts['moveFont'];
         link.style.fontSize = this.opts['moveFontSize'];
         link.style.color = this.opts['moveFontColor'];
@@ -838,7 +838,7 @@ function Board(divId, options) {
           tmp4.style.fontFamily = this.opts['commentFont'];
           tmp4.style.fontSize = this.opts['commentFontSize'];
           tmp4.style.color = this.opts['commentFontColor'];
-          tmp4.appendChild(document.createTextNode(comment[0]));
+          tmp4.appendChild(document.createTextNode(" "+comment[0]));
           cont.appendChild(tmp4);
           lastMoveIdx = comment[1];
         }
@@ -942,6 +942,7 @@ function Board(divId, options) {
     var src = prefix + imageNames[color][piece];
     var img = resetStyles(document.createElement("img"));
     img.style.border = "0px solid #cccccc";
+    img.style.display = "inline";
 
     if (/\.png$/.test(img.src.toLowerCase())
         && navigator.userAgent.toLowerCase().indexOf("msie") != -1) {
@@ -1078,5 +1079,6 @@ function resetStyles(obj) {
   obj.style.verticalAlign = "middle";
   obj.style.textAlign = "center";
   obj.style.borderCollapse = "separate";
+  obj.style.lineHeight = "normal";
   return obj;
 }
