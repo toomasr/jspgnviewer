@@ -3,7 +3,6 @@ from paver.setuputils import setup
 from github3 import GitHub
 from github3 import GitHubError
 import pprint
-import tarfile
 import os
 import ConfigParser
 
@@ -48,7 +47,7 @@ def upload(options, info):
         tag_name = "jspgnviewer-%s" % options.version
         release = repo.create_release(tag_name, name=release_name, prerelease=True)
         f = open("bin/jspgnviewer-%s.zip" % options.version)
-        release.upload_asset("application/gzip", "jspgnviewer-%s.zip" %
+        release.upload_asset("application/zip", "jspgnviewer-%s.zip" %
             options.version, f)
     except GitHubError as e:
         print e.errors
@@ -57,8 +56,8 @@ def upload(options, info):
         release_name = "JsPgnViewer WordPress %s" % options.version
         tag_name = "jspgnviewer-wordpress-%s" % options.version
         release = repo.create_release(tag_name, name=release_name, prerelease=True)
-        f = open("bin/pgnviewer-%s.tar.gz" % options.version)
-        release.upload_asset("application/gzip", "pgnviewer-%s.tar.gz" %
+        f = open("bin/pgnviewer-%s.zip" % options.version)
+        release.upload_asset("application/zip", "pgnviewer-%s.zip" %
                 options.version, f)
     except GitHubError as e:
         print e.errors
