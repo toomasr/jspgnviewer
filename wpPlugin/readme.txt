@@ -3,7 +3,7 @@ Contributors: toomasr
 Donate link: http://pgnview.com/
 Tags: chess, pgn, yahoo
 Requires at least: 2.0.2
-Tested up to: 3.0.3
+Tested up to: 4.3
 Stable tag: trunk
 
 Share chess games (PGN and Yahoo) on your Wordpress blog as an interactive chess board.
