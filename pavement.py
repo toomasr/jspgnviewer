@@ -47,8 +47,8 @@ def upload(options, info):
         release_name = "JsPgnViewer %s" % options.version
         tag_name = "jspgnviewer-%s" % options.version
         release = repo.create_release(tag_name, name=release_name, prerelease=True)
-        f = open("bin/jspgnviewer-%s.tar.gz" % options.version)
-        release.upload_asset("application/gzip", "jspgnviewer-%s.tar.gz" %
+        f = open("bin/jspgnviewer-%s.zip" % options.version)
+        release.upload_asset("application/gzip", "jspgnviewer-%s.zip" %
             options.version, f)
     except GitHubError as e:
         print e.errors
@@ -107,15 +107,12 @@ def release(options, info):
             (options.version, wpDestDir))
 
     # lets package the folders as archives
-    tar = tarfile.open(options.dest_dir / ("jspgnviewer-%s.tar.gz" %
-        (options.version)), "w:gz" )
-    tar.add(jsDestDir, "jspgnviewer")
-    tar.close()
-    
-    tar = tarfile.open(options.dest_dir / ("pgnviewer-%s.tar.gz" %
-        (options.version)), "w:gz" )
-    tar.add(wpDestDir, "pgnviewer")
-    tar.close()
+    sh("cd %s && zip -r jspgnviewer-%s.zip jspgnviewer"
+            % (options.build.dest_dir, options.version))
+
+    # lets package the folders as archives
+    sh("cd %s && zip -r pgnviewer-%s.zip pgnviewer"
+            % (options.build.dest_dir, options.version))
     pass
 
 @task
