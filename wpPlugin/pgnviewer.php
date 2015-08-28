@@ -1,11 +1,11 @@
 <?php
 /*
-Plugin Name: pgnviewer
-Plugin URI: http://pgnview.com
+Plugin Name: Pgn Viewer
+Plugin URI: http://pgnview.edicypages.com/
 Description: Allows to add PGN files to your blog posts that are converted to interactive boards. Easy to share your chess games with your friends.
 Version: WP_VERSION
 Author: Toomas Römer
-Author URI: http://toomasr.com/ 
+Author URI: http://toomasr.com/
 */
 
 /*  Copyright 2010  Toomas Römer  (email : toomasr[at]gmail)
@@ -47,15 +47,10 @@ function tr_pgnview_callback($str) {
 
 	$opts = array();
 	// jspgnviewer options
-	$opts['imagePrefix'] = $siteurl."/wp-content/plugins/pgnviewer/img/zurich/";
 	$opts['showMovesPane'] = true;
-	$opts['commentFontSize'] = '10pt';
 	$opts['moveFontColor'] = '#af0000';
-	$opts['commentFontColor'] = '#006699';
 	$opts['squareSize'] = '32px';
 	$opts['markLastMove'] = false;
-	$opts['blackSqColor'] = "url(\"$siteurl/wp-content/plugins/pgnviewer/img/zurich/board/darksquare.gif\")";
-	$opts['lightSqColor'] = "url(\"$siteurl/wp-content/plugins/pgnviewer/img/zurich/board/lightquare.gif\")";
 	$opts['squareBorder'] = '0px solid #000000';
 	$opts['moveBorder'] = '1px solid #cccccc';
 	// end of jspgnviewer options
