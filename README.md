@@ -9,4 +9,4 @@ Back in 2006 I was trying to share chess games on the web and discovered that it
 Using It
 ----------
 
-The end user documentation is available at [http://toomasr.github.io/jspgnviewer].
+The end user documentation is available at http://toomasr.github.io/jspgnviewer.
