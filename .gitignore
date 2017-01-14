@@ -4,3 +4,5 @@ node_modules
 .settings
 npm-debug.log
 personal.properties
+nbproject
+.idea
