@@ -1,6 +1,6 @@
 === Plugin Name ===
 Contributors: toomasr
-Donate link: http://pgnview.com/
+Donate link: http://toomasr.github.io/jspgnviewer/
 Tags: chess, pgn, yahoo
 Requires at least: 2.0.2
 Tested up to: 4.3

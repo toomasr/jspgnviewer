@@ -1,8 +1,8 @@
 <?php
 /*
 Plugin Name: Pgn Viewer
-Plugin URI: http://pgnview.edicypages.com/
-Description: Allows to add PGN files to your blog posts that are converted to interactive boards. Easy to share your chess games with your friends.
+Plugin URI: http://toomasr.github.io/jspgnviewer/
+Description: Add PGN files to your blog posts that show up as interactive boards. Easy to share your chess games with your friends.
 Version: WP_VERSION
 Author: Toomas Römer
 Author URI: http://toomasr.com/
