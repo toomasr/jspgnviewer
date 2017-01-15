@@ -109,8 +109,10 @@ function Board(divId, options) {
     this.opts['moveBorder'] = "1px solid #cccccc";
   }
 
-  if (options && typeof (options['buttonPrefix']) == 'undefined')
+  if (typeof (options['buttonPrefix']) == 'undefined')
     this.opts['buttonPrefix'] = this.opts['imagePrefix'] + "buttons/";
+  else
+    this.opts['buttonPrefix'] = this.opts['root'] + options['buttonPrefix'];
 
   var brdI = new BoardImages(this.opts);
   var imageNames = brdI.imageNames['default'];
