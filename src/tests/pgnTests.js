@@ -22,8 +22,29 @@ describe("PGN Game Set 1", function() {
     console.log("Ran tests for "+i+" games");
   });
 
-  it("works with the ChessPastebin PGN set", function() {
-    loadFixtures("chesspastebin.html");
+  it("works with the ChessPastebin 001 PGN set", function() {
+    loadFixtures("chesspastebin-001.html");
+    var i = 1;
+    var printInterval = 1000;
+    $j("div[id^=testGame]").each(function (idx, el) {
+      var pgn = new ChessGame(el.innerHTML);
+      var conv = new Converter(pgn.format);
+      try {
+        conv.convert();
+      }
+      catch(e) {
+        expect("No errors!").toBe(e + ". For game "+el.id);
+        return false;
+      }
+      if (i++ % printInterval == 0) {
+        console.log((i-1)+" games processed");
+      }
+    });
+    console.log("Ran tests for "+i+" games");
+  });
+
+  it("works with the ChessPastebin 002 PGN set", function() {
+    loadFixtures("chesspastebin-002.html");
     var i = 1;
     var printInterval = 1000;
     $j("div[id^=testGame]").each(function (idx, el) {

@@ -4,6 +4,8 @@
 module.exports = function(config) {
   config.set({
 
+    browserNoActivityTimeout: 160000,
+
     // base path that will be used to resolve all patterns (eg. files, exclude)
     basePath: '',
 
