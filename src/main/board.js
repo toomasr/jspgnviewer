@@ -288,7 +288,7 @@ function Board(divId, options) {
     // current move
     // it is initialized in updateMoveInfo
     var input = resetStyles(document.createElement("input"));
-    input.style.fontSize = "7pt";
+    input.style.fontSize = "9pt";
     input.size = "9";
     input.style.border = this.opts['moveBorder'];
     input.style.textAlign = 'center';
@@ -748,8 +748,8 @@ function Board(divId, options) {
     cont.vAlign = "top";
     var tmp2 = this.conv.pgn.moves;
     var p = document.createElement("p");
-    p.style.fontSize = "9pt";
-    p.style.fontFace = "Tahoma, Arial, sans-serif";
+    p.style.fontSize = this.opts['moveFontSize'];
+    p.style.fontFace = this.opts['moveFont'];
     p.style.fontWeight = "bold";
     p.style.color = "#000000";
     var tmpA = document.createElement("a");
@@ -784,8 +784,8 @@ function Board(divId, options) {
         tmp = document.createTextNode(tmp2[i].white);
         tmp3 = document.createElement("b");
 
-        tmp3.style.fontFamily = "Tahoma, Arial, sans-serif";
-        tmp3.style.fontSize = "8pt";
+        tmp3.style.fontFamily = this.opts['moveFont'];
+        tmp3.style.fontSize = this.opts['moveFontSize'];
         tmp3.style.color = "black";
         tmp3.appendChild(document.createTextNode(" "
             + (i + this.conv.startMoveNum) + ". "));
@@ -858,8 +858,8 @@ function Board(divId, options) {
   this.populateProps = function(container) {
     // init the style
     var tdS = resetStyles(document.createElement('td'));
-    tdS.style.fontFamily = "Tahoma, Arial, sans-serif";
-    tdS.style.fontSize = "8pt";
+    tdS.style.fontFamily = this.opts['moveFont'];
+    tdS.style.fontSize = this.opts['moveFontSize'];
     tdS.align = 'center';
     // end of init the style;
 
