@@ -629,15 +629,41 @@ function Converter(pgn) {
       return moves[0];
     }
     // if multiple can move lets use the extra information
-    else if (extra[0] !== -1 || extra[1] != -1) {
+    else if (extra[0] !== -1 && extra[1] != -1) {
       for (var i = 0; i < moves.length; i++) {
-        if (moves[i][0] !== extra[0] && moves[i][1] !== extra[1])
-          break;
-        return moves[i];
+        if (moves[i][0] === extra[0] && moves[i][1] !== extra[1])
+          return moves[i];
       }
     }
-    // otherwise the closest can move
-    // not sure if this is possible so not implemented at the moment
+    else if (extra[0] !== -1 || extra[1] != -1) {
+      for (var i = 0; i < moves.length; i++) {
+        if (moves[i][0] === extra[0] || moves[i][1] !== extra[1])
+          return moves[i];
+      }
+    }
+    /* Otherwise the one that actually doesn't have anything
+      blocking can move.
+
+      I'm starting the navigation from the toCoords in all 4 directions
+      and the first one I find is the one.
+    */
+    else if (moves.length > 1) {
+      for (var i = 1; i < 8; i++) {
+        for (var j = 0; j < moves.length; j++) {
+          if (
+            ((toCoords[0] - i) == moves[j][0] && (toCoords[1] - i) === moves[j][1])
+              ||
+            ((toCoords[0] + i) == moves[j][0] && (toCoords[1] + i) === moves[j][1])
+              ||
+            ((toCoords[0] + i) == moves[j][0] && (toCoords[1] - i) === moves[j][1])
+              ||
+            ((toCoords[0] - i) == moves[j][0] && (toCoords[1] + i) === moves[j][1])
+          ) {
+            return moves[j];
+          }
+        }
+      }
+    }
 
     // no move found, throwing exception
     throw ('No move found for the bishop ' + toSAN);
