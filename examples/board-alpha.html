@@ -1,0 +1,98 @@
+<html>
+  <head>
+    <style type="text/css" media="screen">
+      <!-- @import url(test.css); -->
+    </style>
+
+    <script
+      type="text/javascript"
+      language="javascript"
+      src="../src/main/chess-game.js">
+      </script>
+    <script
+      type="text/javascript"
+      language="javascript"
+      src="../src/main/converter.js">
+      </script>
+    <script
+      type="text/javascript"
+      language="javascript"
+      src="../src/main/pgn.js">
+      </script>
+    <script
+      type="text/javascript"
+      language="javascript"
+      src="../src/main/yahoo-format.js">
+      </script>
+    <script
+      type="text/javascript"
+      language="javascript"
+      src="../src/main/board.js">
+      </script>
+  </head>
+
+  <body>
+    <table border=0> 
+      <tr>
+        <td>
+            <div id='area_board' style=""> 
+            </div>
+<div id='area' style="visibility: hidden;display:none">
+  ;Title: Yahoo! Chess Game
+  ;White: toomas1432
+  ;Black: bbb.rome
+  ;Date: Tue Aug 17 00:57:07 PDT 2010
+  1. e2-e4 e7-e6
+  2. d2-d4 d7-d5
+  3. e4xd5 e6xd5
+  4. b1-c3 g8-f6
+  5. g1-f3 f8-b4
+  6. f1-b5  c7-c6
+  7. b5-d3 d8-e7 
+  8. c1-e3 o-o
+  9. o-o c8-g4
+  10. h2-h3 g4-h5
+  11. f1-e1 e7-d6
+  12. a2-a3 b4-a5
+  13. b2-b4 a5-c7
+  14. g2-g4 h5-g6
+  15. b4-b5 f6-e4
+  16. c3-a4 f7-f5
+  17. a4-c5 f5xg4
+  18. f3-e5 b7-b6
+  19. c5xe4 d5xe4
+  20. d3-c4  g8-h8
+  21. d1xg4 b8-d7
+  22. e3-f4 d6xd4
+  23. e5xg6  h7xg6
+  24. f4-e3 d4-f6
+  25. g4xd7
+</div>
+<script language="JavaScript">
+  var game = new ChessGame(document.getElementById('area').innerHTML);
+  var conv = new Converter(game.format);
+  conv.convert();
+  var brd = new Board('area', {'root':'../',
+                                'showMovesPane':true,
+                                'squareBorder':'1px solid #666666',
+                                'moveBorder':'0px solid #cccccc',
+                                'imagePrefix':"img/alpha/",
+                                'imageSuffix':"svg",
+                                'buttonPrefix':"img/buttons-svg/",
+                                'squareSize':"45px",
+                                'boardSize':"360px",
+                                'movesPaneWidth':"400px",
+                                'blackSqColor':"#cccccc",
+                                'whiteSqColor':"#ffffff",
+                                'moveFontSize': "10pt",
+                                'moveFont': '"Helvetica Neue", Helvetica, Arial, sans-serif',
+                                'commentFont': '"Helvetica Neue", Helvetica, Arial, sans-serif',
+                                'commentFontSize': "10pt",
+                                'flipped':false});
+  brd.init();
+</script>
+          </td>
+      </tr>
+    </table>
+  </body>
+</html>
