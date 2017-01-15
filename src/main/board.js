@@ -141,6 +141,7 @@ function Board(divId, options) {
     tmp.appendChild(topLeftTd);
     var topRightTd = resetStyles(document.createElement("td"));
     topRightTd.style.verticalAlign = "top";
+    topRightTd.style.overflow = "scroll";
     tmp.appendChild(topRightTd);
 
     // toplevel table;
@@ -175,13 +176,11 @@ function Board(divId, options) {
     // movesDiv.style.overflow = "hidden";
     movesDiv.style.height = boardTd.style.height;
     movesDiv.id = divId + "_board_moves";
-    movesDiv.style.overflow = "auto";
     movesDiv.style.border = "1px solid #cccccc";
     movesDiv.style.verticalAlign = "top";
     movesDiv.style.textAlign = "left";
     movesDiv.style.paddingLeft = "5px";
     movesDiv.style.paddingTop = "5px";
-    movesDiv.style.height = "100%";
     topRightTd.appendChild(movesDiv);
 
     var tmp = document.createElement("tr");
