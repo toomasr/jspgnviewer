@@ -2,13 +2,13 @@
   "name": "jspgnviewer",
   "version": "0.7.2",
   "devDependencies": {
-    "uglify-js": "2.4.17",
-    "jasmine": "2.0.1",
-    "karma": "0.12.24",
-    "karma-coverage": "0.2.6",
-    "karma-jshint-preprocessor": "0.0.4",
-    "karma-jasmine": "0.2.2",
-    "karma-jasmine-jquery": "0.1.1"
+    "jasmine": "^2.5.3",
+    "karma": "^1.4.0",
+    "karma-coverage": "^1.1.1",
+    "karma-jasmine": "^1.1.0",
+    "karma-jasmine-jquery": "0.1.1",
+    "karma-jshint-preprocessor": "0.0.6",
+    "uglify-js": "^2.7.5"
   },
   "description": "JS PGN Viewer =============",
   "main": "karma.conf.js",
