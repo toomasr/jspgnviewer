@@ -179,6 +179,7 @@ function Board(divId, options) {
     movesDiv.style.textAlign = "left";
     movesDiv.style.paddingLeft = "5px";
     movesDiv.style.paddingTop = "5px";
+    movesDiv.style.height = "100%";
     topRightTd.appendChild(movesDiv);
 
     var tmp = document.createElement("tr");
