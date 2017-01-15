@@ -603,6 +603,7 @@ function Converter(pgn) {
    * Find the bishop from location.
    */
   function findFromBish(board, pos, toSAN, toCoords, color) {
+    var extra = toCoords[2];
     if (toCoords[2][0] != -1 && toCoords[2][1] != -1) {
       return new Array(toCoords[2][1], toCoords[2][0]);
     }
@@ -615,7 +616,6 @@ function Converter(pgn) {
     }
 
     // you could have multiple bishops that can move there
-    // if the from is unknown then the closest can move
     var moves = new Array();
     for (var i = 0; i < arr.length; i++) {
       if (Math.abs(arr[i][0] - toCoords[0]) == Math
@@ -624,9 +624,22 @@ function Converter(pgn) {
       }
     }
 
-    if (moves.length>0) {
-      return moves[moves.length-1];
+    // if one move then lets return this
+    if (moves.length === 1) {
+      return moves[0];
     }
+    // if multiple can move lets use the extra information
+    else if (extra[0] !== -1 || extra[1] != -1) {
+      for (var i = 0; i < moves.length; i++) {
+        if (moves[i][0] !== extra[0] && moves[i][1] !== extra[1])
+          break;
+        return moves[i];
+      }
+    }
+    // otherwise the closest can move
+    // not sure if this is possible so not implemented at the moment
+
+    // no move found, throwing exception
     throw ('No move found for the bishop ' + toSAN);
   }
 
