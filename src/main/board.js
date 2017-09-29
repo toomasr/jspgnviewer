@@ -45,6 +45,7 @@ function Board(divId, options) {
   this.opts['imagePrefix'] = "img/zurich/";
   this.opts['buttonPrefix'] = "img/zurich/buttons/";
   this.opts['imageSuffix'] = 'gif';
+  this.opts['buttonSuffix'] = 'png';
   this.opts['moveFontSize'] = "8pt";
   this.opts['moveFontColor'] = "#af0000";
   this.opts['moveFont'] = 'Tahoma, Arial, sans-serif';
@@ -988,6 +989,7 @@ function BoardImages(options) {
   this.set = "default";
   this.pref = "";
   this.suf = 'gif';
+  this.btnSuf = "png";
   if (options['set']) {
     this.set = options['set'];
   }
@@ -996,6 +998,9 @@ function BoardImages(options) {
   }
   if (options['imageSuffix']) {
     this.suf = options['imageSuffix'];
+  }
+  if (options['buttonSuffix']) {
+    this.btnSuf = options['buttonSuffix'];
   }
   this.imageNames = {
     "default" : {
@@ -1020,13 +1025,13 @@ function BoardImages(options) {
 
       ,
       "btns" : {
-        "ffward" : "buttons/ffward." + this.suf,
-        "rwind" : "buttons/rwind." + this.suf,
-        "forward" : "buttons/forward." + this.suf,
-        "back" : "buttons/back." + this.suf,
-        "toggle" : "buttons/toggle." + this.suf,
-        "comments" : "buttons/comments." + this.suf,
-        "flip" : "buttons/flip." + this.suf
+        "ffward" : "buttons/ffward." + this.btnSuf,
+        "rwind" : "buttons/rwind." + this.btnSuf,
+        "forward" : "buttons/forward." + this.btnSuf,
+        "back" : "buttons/back." + this.btnSuf,
+        "toggle" : "buttons/toggle." + this.btnSuf,
+        "comments" : "buttons/comments." + this.btnSuf,
+        "flip" : "buttons/flip." + this.btnSuf
       }
     }
   };
