@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from paver.easy import *
 from paver.setuputils import setup
 from github3 import GitHub
