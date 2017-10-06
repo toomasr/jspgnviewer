@@ -959,6 +959,14 @@ function Board(divId, options) {
     img.style.border = "0px solid #cccccc";
     img.style.display = "inline";
 
+    if (btns[piece]) {
+      img.style.width = this.opts['buttonSize']
+    }
+    else {
+     img.style.width = this.opts['pieceSize'] 
+    }
+
+
     if (/\.png$/.test(img.src.toLowerCase())
         && navigator.userAgent.toLowerCase().indexOf("msie") != -1) {
       // set filter
