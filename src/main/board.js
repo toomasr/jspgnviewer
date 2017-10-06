@@ -177,15 +177,24 @@ function Board(divId, options) {
     if (this.opts['movesPaneWidth'])
       movesDiv.style.width = this.opts['movesPaneWidth'];
     // else
-    // movesDiv.style.overflow = "hidden";
-    movesDiv.style.height = boardTd.style.height;
+    
+    
     movesDiv.id = divId + "_board_moves";
     movesDiv.style.border = "1px solid #cccccc";
     movesDiv.style.verticalAlign = "top";
     movesDiv.style.textAlign = "left";
     movesDiv.style.paddingLeft = "5px";
     movesDiv.style.paddingTop = "5px";
-    topRightTd.appendChild(movesDiv);
+
+    if (this.opts['movePaneBottom']) {
+      movesDiv.style.overflow = "scroll";
+      movesDiv.style.height = "200px";
+      topLeftTd.appendChild(movesDiv);
+    }
+    else {
+      movesDiv.style.height = boardTd.style.height;
+      topRightTd.appendChild(movesDiv);
+    }
 
     var tmp = document.createElement("tr");
     tmp.style.height = "0%";
