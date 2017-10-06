@@ -57,6 +57,8 @@ function Board(divId, options) {
 
   this.opts['boardSize'] = '257px';
   this.opts['squareSize'] = '31px';
+  this.opts['pieceSize'] = '31px';
+  this.opts['buttonSize'] = '31px';
 
   this.opts['flipped'] = false;
   this.opts['showMovesPane'] = true;
@@ -80,7 +82,8 @@ function Board(divId, options) {
       'showMovesPane', 'movesPaneWidth', 'imageSuffix', 'comments',
       'squareBorder', 'markLastMove', 'altRewind', 'altBack', 'altFlip',
       'altShowMoves', 'altComments', 'altPlayMove', 'altFastForward',
-      'moveBorder', 'skipToMove', 'downloadURL', 'buttonPrefix', 'background' ];
+      'moveBorder', 'skipToMove', 'downloadURL', 'buttonPrefix', 'background', 'buttonSize',
+      'pieceSize', 'movePaneBottom' ];
 
   // if keys in options define new values then
   // set the this.opts for that key with the
