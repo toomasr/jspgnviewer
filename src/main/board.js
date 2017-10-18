@@ -866,7 +866,8 @@ function Board(divId, options) {
       txt = document.createTextNode("  " + this.conv.pgn.props['Result']);
       tmp2 = document.createElement("b");
       tmp2.appendChild(txt);
-      tmp2.style.fontSize = "9pt";
+      tmp2.style.fontFamily = this.opts['moveFont'];
+      tmp2.style.fontSize = this.opts['moveFontSize'];
       cont.appendChild(tmp2);
       this.movesOnPane[this.movesOnPane.length] = tmp2;
     }
