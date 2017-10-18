@@ -177,8 +177,8 @@ function Board(divId, options) {
     if (this.opts['movesPaneWidth'])
       movesDiv.style.width = this.opts['movesPaneWidth'];
     // else
-    
-    
+
+
     movesDiv.id = divId + "_board_moves";
     movesDiv.style.border = "1px solid #cccccc";
     movesDiv.style.verticalAlign = "top";
@@ -234,8 +234,10 @@ function Board(divId, options) {
 
         td.style.height = this.opts['squareSize'];
         td.style.width = this.opts['squareSize'];
+        td.style.minWidth = this.opts['squareSize'];
         td.style.border = this.opts['squareBorder'];
         td.style.padding = "0px";
+
         td.vAlign = "middle";
         td.align = "center";
         var color = !flip ? (j % 2) ? blackC : whiteC : !(j % 2) ? blackC: whiteC;
