@@ -6,7 +6,7 @@ from github3 import GitHub
 from github3 import GitHubError
 import pprint
 import os
-import ConfigParser
+import configparser
 
 options(
     build = Bunch(
@@ -39,7 +39,7 @@ def upload(options, info):
     myToken = config.get("GitHub", "token", 0)
 
     # lets log in
-    print "'%s'" % myToken
+    print("'%s'" % myToken)
     gh = GitHub(token = myToken)
     repo = gh.repository("toomasr", "jspgnviewer")
 
@@ -52,7 +52,7 @@ def upload(options, info):
         release.upload_asset("application/zip", "jspgnviewer-%s.zip" %
             options.version, f)
     except GitHubError as e:
-        print e.errors
+        print(e.errors)
 
     try:
         release_name = "JsPgnViewer WordPress %s" % options.version
@@ -62,7 +62,7 @@ def upload(options, info):
         release.upload_asset("application/zip", "pgnviewer-%s.zip" %
                 options.version, f)
     except GitHubError as e:
-        print e.errors
+        print(e.errors)
     pass
 
 @task
