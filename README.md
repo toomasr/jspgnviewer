@@ -1,10 +1,14 @@
 JS PGN Viewer
 =============
 
-Motivation
-----------
+This is a JavaScript library to show chess games on web pages. The library is fairly old and dates back to 2006. It doesn't have any external dependencies and is written int he old school `document.getElementById()` approach. We have added some dependencies to help with the testing of the library.
 
-Back in 2006 I was trying to share chess games on the web and discovered that it was way more difficult than it should have been. There was no library that would parse the PGN and show a nice board. There were some commandline tools that would generate HTML pages based on your PGN and then you could copy the file to the server. Also you could install a Java Applet or a Flash widget. So I set out to write a library in Javascript that would take a PGN and show a visual board!
+Building
+--------
+
+*Prerequisities*
+
+- `npm install`
 
 Using It
 ----------
