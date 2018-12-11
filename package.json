@@ -31,7 +31,7 @@
     "chess"
   ],
   "author": "Toomas Römer",
-  "license": "APL 2.0",
+  "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/toomasr/jspgnviewer/issues"
   },
