@@ -133,6 +133,23 @@ function Board(divId, options) {
 
     var mainTable = resetStyles(document.createElement("table"));
     mainTable.border = 0;
+
+    var that = this;
+    boardFrame.tabIndex = -1;
+    boardFrame.addEventListener('keyup', function (event) {
+      if (event.defaultPrevented) {
+          return;
+      }
+      var key = event.key || event.keyCode;
+      if (key == "ArrowRight" || key == 39) {
+        that.makeMove();
+
+      }
+      else if (key == "ArrowLeft" || key == 37) {
+        that.makeBwMove();
+      }
+    }, false);
+
     var mainTableTb = document.createElement("tbody");
     mainTable.appendChild(mainTableTb);
     mainTable.style.border = "1px solid #000000";
@@ -284,7 +301,7 @@ function Board(divId, options) {
     href.appendChild(input);
 
     input.onclick = function() {
-      makeBwMove(tmp);
+      that.makeBwMove(tmp);
     };
 
     btnTd.appendChild(href);
@@ -347,7 +364,7 @@ function Board(divId, options) {
     href.appendChild(input);
 
     input.onclick = function() {
-      makeMove(tmp);
+      that.makeMove();
     };
 
     btnTd.appendChild(href);
@@ -415,7 +432,7 @@ function Board(divId, options) {
     if (this.conv.getCurMoveNo() < rNo) {
       var i = 0;
       while (this.conv.getCurMoveNo() < rNo && i < 400) {
-        makeMove(this, true);
+        this.makeMove(true);
         i++;
       }
       updateMoveInfo(this);
@@ -425,7 +442,7 @@ function Board(divId, options) {
     } else if (this.conv.getCurMoveNo() > rNo) {
       var i = 0;
       while (this.conv.getCurMoveNo() > rNo && i < 200) {
-        makeBwMove(this, true);
+        this.makeBwMove(true);
         i++;
       }
 
@@ -460,16 +477,16 @@ function Board(divId, options) {
     updateMovePane(board);
   };
 
-  makeBwMove = function(board, noUpdate) {
-    var move = board.conv.prevMove();
+  this.makeBwMove = function(noUpdate) {
+    var move = this.conv.prevMove();
     if (move == null)
       return;
 
     if (!noUpdate) {
-      board.deMarkLastMove(true);
-      board.markLastMove();
-      updateMoveInfo(board);
-      updateMovePane(board, true);
+      this.deMarkLastMove(true);
+      this.markLastMove();
+      updateMoveInfo(this);
+      updateMovePane(this, true);
     }
 
     for (var i = move.actions.length; i > 1; i -= 2) {
@@ -489,17 +506,17 @@ function Board(divId, options) {
       if (move.pPiece)
         snd.piece = move.pPiece;
 
-      board.drawSquare(frst);
-      board.drawSquare(snd);
+      this.drawSquare(frst);
+      this.drawSquare(snd);
     }
     if (move.enP) {
       var x = move.enP.x, y = move.enP.y;
-      if (board.flipped) {
+      if (this.flipped) {
         x = 7 - x;
         y = 7 - y;
       }
       var sq = board.pos[x][y];
-      sq.appendChild(board.getImg(move.enP.piece, move.enP.color));
+      sq.appendChild(this.getImg(move.enP.piece, move.enP.color));
     }
   };
 
@@ -607,24 +624,24 @@ function Board(divId, options) {
       board.moveInput.value = "...";
   };
 
-  makeMove = function(board, noUpdate) {
-    var move = board.conv.nextMove();
+  this.makeMove = function(noUpdate) {
+    var move = this.conv.nextMove();
     if (move == null)
       return;
 
     if (!noUpdate) {
-      board.deMarkLastMove();
-      board.markLastMove();
+      this.deMarkLastMove();
+      this.markLastMove();
 
-      updateMoveInfo(board);
-      updateMovePane(board);
+      updateMoveInfo(this);
+      updateMovePane(this);
     }
 
     for (var i = 0; i < move.actions.length; i++) {
-      board.drawSquare(move.actions[i]);
+      this.drawSquare(move.actions[i]);
     }
 
-    board.drawEnPassante(move);
+    this.drawEnPassante(move);
   };
 
   updateMovePane = function(board, bw) {
@@ -966,7 +983,7 @@ function Board(divId, options) {
       img.style.width = this.opts['buttonSize']
     }
     else {
-     img.style.width = this.opts['pieceSize'] 
+     img.style.width = this.opts['pieceSize']
     }
 
 
@@ -1090,7 +1107,7 @@ function detectRoot() {
     if (idx != -1) {
       return scripts[i].src.substring(0, idx);
     }
-    
+
     // for production, where everthing is in a single file
     var idx = scripts[i].src.indexOf("jsPgnViewer.js");
     if (idx != -1) {
