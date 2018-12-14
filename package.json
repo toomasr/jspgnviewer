@@ -2,13 +2,13 @@
   "name": "jspgnviewer",
   "version": "0.7.2",
   "devDependencies": {
-    "jasmine": "^2.5.3",
-    "karma": "^1.4.0",
-    "karma-coverage": "^1.1.1",
-    "karma-jasmine": "^1.1.0",
+    "jasmine": "^3.3.1",
+    "karma": "^3.1.3",
+    "karma-coverage": "^1.1.2",
+    "karma-jasmine": "^2.0.1",
     "karma-jasmine-jquery": "0.1.1",
     "karma-jshint-preprocessor": "0.0.6",
-    "uglify-js": "^2.7.5"
+    "uglify-js": "^3.4.9"
   },
   "description": "JS PGN Viewer =============",
   "main": "karma.conf.js",
@@ -31,9 +31,12 @@
     "chess"
   ],
   "author": "Toomas Römer",
-  "license": "APL 2.0",
+  "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/toomasr/jspgnviewer/issues"
   },
-  "homepage": "https://github.com/toomasr/jspgnviewer"
+  "homepage": "https://github.com/toomasr/jspgnviewer",
+  "dependencies": {
+    "npm-check-updates": "^2.15.0"
+  }
 }
