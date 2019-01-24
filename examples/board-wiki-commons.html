@@ -38,55 +38,56 @@
             <div id='area_board' style=""> 
             </div>
 <div id='area' style="visibility: hidden;display:none">
-  ;Title: Yahoo! Chess Game
-  ;White: toomas1432
-  ;Black: bbb.rome
-  ;Date: Tue Aug 17 00:57:07 PDT 2010
-  1. e2-e4 e7-e6
-  2. d2-d4 d7-d5
-  3. e4xd5 e6xd5
-  4. b1-c3 g8-f6
-  5. g1-f3 f8-b4
-  6. f1-b5  c7-c6
-  7. b5-d3 d8-e7 
-  8. c1-e3 o-o
-  9. o-o c8-g4
-  10. h2-h3 g4-h5
-  11. f1-e1 e7-d6
-  12. a2-a3 b4-a5
-  13. b2-b4 a5-c7
-  14. g2-g4 h5-g6
-  15. b4-b5 f6-e4
-  16. c3-a4 f7-f5
-  17. a4-c5 f5xg4
-  18. f3-e5 b7-b6
-  19. c5xe4 d5xe4
-  20. d3-c4  g8-h8
-  21. d1xg4 b8-d7
-  22. e3-f4 d6xd4
-  23. e5xg6  h7xg6
-  24. f4-e3 d4-f6
-  25. g4xd7
+[Event "Dagvierkamp TATA"]
+[Site "?"]
+[Date "2019.01.16"]
+[Round "3"]
+[White "Paul-Peter Theulings"]
+[Black "Floris Doolaard"]
+[Result "0-1"]
+[BlackElo "0"]
+[GameNo "-1"]
+[WhiteElo "0"]
+1. Nf3 c5 2. c4 Nf6 3. Nc3 d5 4. cxd5 Nxd5 5. g3 g6 6. Bg2 (6. Qa4  Nc6 7. Ne5
+Nxc3 8. dxc3 Qd5) 6... Bg7 7. O-O O-O 8. Nxd5 Qxd5 9. d3 Nc6 10. Be3 Qd6
+(10... Bd7)(10... Bxb2 11. Rb1 Bf6 12. Qa4 Qd7 13. Qb5) 11. Rc1 Nd4 12. Nxd4
+cxd4 13. Bf4 e5 14. Bd2 Be6 15. Qa4 Qb6 16. Qb4 Rfc8 17. Bxb7 (17. Qxb6 axb6
+18. a3 Rab8 19. Rxc8  Rxc8 20. Rc1 (20. Bxb7 Rc2)20... Rxc1  21. Bxc1 Bc8)
+17... Rxc1 18. Rxc1 Qxb4 (18... Rb8) 19. Bxb4 Rb8 20. Rc7 Bxa2 21. Bd6 Rd8 22.
+Be7 Rb8 23. Bd6 Rd8 24. Bc5 a5 25. Bb6 a4 26. Rxf7 Kxf7 27. Bxd8 Bh6 28. f4
+exf4 29. Bb6 fxg3 30. hxg3 Be3  31. Kg2 Ke6 32. Bc5 (32. Bf3 Bd5 33. Bc5
+h5)(32. Bc8  Kd6 33. Ba7 Bd5  34. Kh3 h5) 32... Bd5  33. Bxd5  Kxd5 34. Bf8 h5
+35. Kh3 g5 36. Be7 Bc1 37. Ba3 Ke5 38. Kg2 h4 (38... Kf5) 39. gxh4 (39. Kf2
+Kf5 40. Kf3 hxg3 41. Kxg3 g4 42. Kf2 Kf4 43. Bd6  Kg5 44. Ba3 Kh4 45. Kg2 g3
+46. Bd6 Bxb2) 39... gxh4 40. Kf3 Kf5 41. e4  (41. b3 Bxa3 42. bxa4 Bc5) 41...
+dxe3 42. Bd6 Bxb2 (42... h3) 43. Kxe3 h3 44. Kf3 Be5 45. Bf8 Ke6 46. Ba3 Kd5
+47. Bc1 Bc3 48. Kg3 Kd4 49. Kxh3 Kxd3 0-1
+
 </div>
 <script language="JavaScript">
   var game = new ChessGame(document.getElementById('area').innerHTML);
   var conv = new Converter(game.format);
   conv.convert();
   var brd = new Board('area', {'root':'../',
-                                'movesPaneWidth':'300px',
+                                'movesPaneWidth':'400px',
                                 'showMovesPane':true,
                                 'squareBorder':'1px solid #666666',
-                                'moveBorder':'0px solid #cccccc',
+                                'markLastMove':true,
+                                'moveBorder':'0px solid #00ff00',
                                 'imagePrefix':"img/wiki-commons/",
                                 'imageSuffix':"svg",
                                 'buttonPrefix':"img/buttons-svg/",
-                                'squareSize':"45px",
+                                'buttonSuffix':"svg",
+                                'skipToMove':2,
+                                'buttonSize':"45px",
+                                'squareSize':"50px",
+                                'pieceSize':"48px",
                                 'blackSqColor':"#cccccc",
                                 'whiteSqColor':"#ffffff",
-                                'moveFontSize': "10pt",
+                                'moveFontSize': "12pt",
                                 'moveFont': '"Helvetica Neue", Helvetica, Arial, sans-serif',
                                 'commentFont': '"Helvetica Neue", Helvetica, Arial, sans-serif',
-                                'commentFontSize': "10pt",
+                                'commentFontSize': "12pt",
                                 'flipped':false});
   brd.init();
 </script>
