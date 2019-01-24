@@ -524,17 +524,16 @@ function Board(divId, options) {
     updateMovePane(board);
   };
 
-  this.makeBwMove = function(noUpdate) {
+  this.makeBwMove = function(boardObj) {
     var move = this.conv.prevMove();
     if (move == null)
       return;
-
-    if (!noUpdate) {
-      this.deMarkLastMove(true);
-      this.markLastMove();
-      updateMoveInfo(this);
-      updateMovePane(this, true);
-    }
+  
+    this.deMarkLastMove(true);
+    this.markLastMove();
+    updateMoveInfo(this);
+    updateMovePane(this, true);
+    
 
     for (var i = move.actions.length; i > 1; i -= 2) {
       var frst = move.actions[i - 1].clone();
