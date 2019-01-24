@@ -247,11 +247,11 @@ function Board(divId, options) {
 
 
     movesDiv.id = divId + "_board_moves";
-    movesDiv.style.border = "1px solid #cccccc";
+    movesDiv.style.border = "0px solid #cccccc";
     movesDiv.style.verticalAlign = "top";
-    movesDiv.style.textAlign = "left";
+    movesDiv.style.textAlign = "justify";
     movesDiv.style.paddingLeft = "5px";
-    movesDiv.style.paddingTop = "5px";
+    movesDiv.style.paddingRight = "5px";
 
     if (this.opts['movePaneBottom']) {
       movesDiv.style.overflow = "scroll";
@@ -259,7 +259,6 @@ function Board(divId, options) {
       topLeftTd.appendChild(movesDiv);
     }
     else {
-      movesDiv.style.height = boardTd.style.height;
       topRightTd.appendChild(movesDiv);
     }
 
