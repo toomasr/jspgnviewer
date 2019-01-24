@@ -6,7 +6,11 @@ This is a JavaScript library to show chess games on web pages. The library is fa
 Building
 --------
 
-We are using [Paver](https://github.com/paver/paver) for the building of the project. There are 3 targets `clean`, `released` and `upload`.
+We are using [Paver](https://github.com/paver/paver) for the building of the project. There are 3 targets `clean`, `release` and `upload`.
+
+To install **Paver** and you are using `pip3` you can issue the following command
+
+`pip3 install Paver github3.py`
 
 *Prerequisities*
 
