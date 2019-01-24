@@ -76,14 +76,61 @@ function Board(divId, options) {
   this.opts['downloadURL'] = "http://www.chesspastebin.com/asPgn.php?PGN=";
   this.opts['skipToMove'] = null;
 
-  var optionNames = [ 'root', 'flipped', 'moveFontSize', 'moveFontColor', 'moveFont',
-      'commentFontSize', 'commentFontColor', 'commentFont', 'boardSize',
-      'squareSize', 'blackSqColor', 'whiteSqColor', 'imagePrefix',
-      'showMovesPane', 'movesPaneWidth', 'imageSuffix', 'comments',
-      'squareBorder', 'markLastMove', 'altRewind', 'altBack', 'altFlip',
-      'altShowMoves', 'altComments', 'altPlayMove', 'altFastForward',
-      'moveBorder', 'skipToMove', 'downloadURL', 'buttonPrefix', 'background', 'buttonSize',
-      'pieceSize', 'movePaneBottom' ];
+  var optionNames = [
+      // defines the root path for image resolution
+      'root',
+      // defines prefix for chess pieces image resolution
+      'imagePrefix',
+      // define suffix for chess pieces image resolution, default is png
+      'imageSuffix',
+      // defines prefix for all btn image resolution
+      'buttonPrefix',
+      // defines suffix for btn image resolution, defaults to png
+      'buttonSuffix',
+      // have the moves pane opened by default
+      'showMovesPane',
+      // show board flipped - black down, white up
+      'flipped',
+      // controls move font attributes
+      'moveFontSize','moveFontColor', 'moveFont',
+      // controls comment font attributes
+      'commentFontSize', 'commentFontColor', 'commentFont',
+      // define the size of board, defaults 257px
+      'boardSize',
+      // width for the moves pane, defaults to not set
+      'movesPaneWidth',
+      // define square size, defaults 31px
+      'squareSize',
+      // size of the control buttons, defaults 31px
+      'buttonSize',
+      // size of the chess pieces, defaults 31px
+      'pieceSize',
+      // colours for the squares, defaults to url("board/[dark|light]square.gif")
+      'blackSqColor',
+      'whiteSqColor',
+      // show PGN comments in the move pane
+      'comments',
+      // CSS border for board squares, defaults to 0px solid #000000"
+      'squareBorder',
+      // highlights just played move, defaults to false
+      'markLastMove',
+      // alternative ALT language
+      'altRewind','altBack', 'altFlip', 'altShowMoves',
+      'altComments', 'altPlayMove','altFastForward',
+      'moveBorder',
+      // show board situation for that move number;
+      // numbering is different from chess moves where
+      // one move consists of black and white, this is
+      // the n'th actual piece moved on the board
+      'skipToMove',
+      // the URL to show PGN link in the title for the game
+      // uses by default a service from chesspastebin.com
+      'downloadURL',
+      // overall background color for the widget, defaults to #fff
+      'background',
+      // show moves pane on the bottom instead of the right side
+      'movePaneBottom'
+    ];
 
   // if keys in options define new values then
   // set the this.opts for that key with the
