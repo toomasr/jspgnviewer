@@ -65,6 +65,7 @@ function Board(divId, options) {
 
   this.opts['showComments'] = true;
   this.opts['markLastMove'] = false;
+  this.opts['markLastMoveColor'] = "#fbeec1";
 
   this.opts['altRewind'] = "Rewind to the beginning";
   this.opts['altBack'] = "One move back";
@@ -114,6 +115,8 @@ function Board(divId, options) {
       'squareBorder',
       // highlights just played move, defaults to false
       'markLastMove',
+      // color to highlight last move
+      'markLastMoveColor',
       // alternative ALT language
       'altRewind','altBack', 'altFlip', 'altShowMoves',
       'altComments', 'altPlayMove','altFastForward',
@@ -581,7 +584,7 @@ function Board(divId, options) {
       // background to a color containing the "initial"
       // parts fails. Go figure
       piece.lastBg = piece.style.backgroundColor.replace(/initial/g, "");
-      piece.style.backgroundColor = "#e89292";
+      piece.style.backgroundColor = this.opts["markLastMoveColor"];
       this.lastSquare = piece;
     } catch (e) {
     }
