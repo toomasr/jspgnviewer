@@ -1,0 +1,92 @@
+<html>
+  <head>
+    <style type="text/css" media="screen">
+      <!-- @import url(test.css); -->
+    </style>
+
+    <script
+      type="text/javascript"
+      language="javascript"
+      src="/base/src/main/chess-game.js">
+      </script>
+    <script
+      type="text/javascript"
+      language="javascript"
+      src="/base/src/main/converter.js">
+      </script>
+    <script
+      type="text/javascript"
+      language="javascript"
+      src="/base/src/main/pgn.js">
+      </script>
+    <script
+      type="text/javascript"
+      language="javascript"
+      src="/base/src/main/yahoo-format.js">
+      </script>
+    <script
+      type="text/javascript"
+      language="javascript"
+      src="/base/src/main/board.js">
+      </script>
+  </head>
+
+  <body>
+    <table border=0> 
+      <tr>
+        <td width="600px">
+            <div id='area_board' style=""> 
+            </div>
+<div id='area' style="visibility: hidden;display:none">
+  [Event "Casual Correspondence game"]
+[Site "https://lichess.org/ZkoNV53c"]
+[Date "2019.01.25"]
+[Round "-"]
+[White "Anonymous"]
+[Black "Anonymous"]
+[Result "1/2-1/2"]
+[UTCDate "2019.01.25"]
+[UTCTime "13:05:45"]
+[WhiteElo "?"]
+[BlackElo "?"]
+[Variant "Standard"]
+[TimeControl "-"]
+[ECO "C70"]
+[Opening "Ruy Lopez: Morphy Defense, Caro Variation"]
+[Termination "Normal"]
+
+1. e4 e5 2. Nf3 Nc6 3. Bb5 a6 4. Ba4 b5 5. Bb3 Nf6 6. d4 exd4 7. Nxd4 Nxd4 8. Qxd4 d6 9. Bg5 h6 10. Bxf6 Qxf6 11. Qxf6 gxf6 12. Nc3 Bb7 13. Nd5 Bxd5 14. exd5 Be7 15. O-O-O O-O 16. Rde1 Rae8 17. h4 Bd8 18. Rxe8 Rxe8 19. Kd2 c6 20. Re1 Rxe1 21. Kxe1 f5 22. dxc6 Bb6 23. a4 bxa4 24. Bc4 a3 25. b3 d5 26. Bxa6 d4 27. c4 d3 28. f3 d2+ 29. Kd1 Bc7 30. Ke2 a2 31. Kf2 d1=N+ 32. Ke2 Bd6 33. c7 Bc5 34. c8=Q+ Kg7 35. b4 Ba7 36. b5 Bc5 37. b6 Be3 38. b7 Bf2 39. b8=Q Bxh4 40. Qd8 Bg5 41. Qdd6 h5 42. Qbd8 h4 43. g4 hxg3 44. c5 g2 45. c6 g1=R 46. c7 a1=B 47. c8=Q f4 48. Q6f6+ Kh7 49. Qcc3 Rg2+ 1/2-1/2
+
+</div>
+<script language="JavaScript">
+  var game = new ChessGame(document.getElementById('area').innerHTML);
+  var conv = new Converter(game.format);
+  conv.convert();
+  var brd = new Board('area', {'root':'',
+                                'movesPaneWidth':'400px',
+                                'showMovesPane':true,
+                                'squareBorder':'1px solid #666666',
+                                'markLastMove':true,
+                                'moveBorder':'0px solid #00ff00',
+                                'imagePrefix':"base/img/wiki-commons/",
+                                'imageSuffix':"svg",
+                                'buttonPrefix':"base/img/buttons-svg/",
+                                'buttonSuffix':"svg",
+                                'skipToMove':2,
+                                'buttonSize':"45px",
+                                'squareSize':"50px",
+                                'pieceSize':"48px",
+                                'blackSqColor':"#cccccc",
+                                'whiteSqColor':"#ffffff",
+                                'moveFontSize': "12pt",
+                                'moveFont': '"Helvetica Neue", Helvetica, Arial, sans-serif',
+                                'commentFont': '"Helvetica Neue", Helvetica, Arial, sans-serif',
+                                'commentFontSize': "12pt",
+                                'flipped':false});
+  brd.init();
+</script>
+          </td>
+      </tr>
+    </table>
+  </body>
+</html>

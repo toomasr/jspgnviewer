@@ -81,4 +81,16 @@ describe("PGN Game Set 1", function() {
     });
     console.log("Ran tests for "+i+" games");
   });
+
+  it("works with visual board", function() {
+    loadFixtures("visual-board.html");
+  });
+
+  it("works with visual board yahoo", function() {
+    loadFixtures("visual-board-yahoo.html");
+  });
+
+  it("works with visual board fen", function() {
+    loadFixtures("visual-board-fen.html");
+  });
 });

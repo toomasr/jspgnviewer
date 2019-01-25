@@ -1,0 +1,83 @@
+<html>
+  <head>
+    <style type="text/css" media="screen">
+      <!-- @import url(test.css); -->
+    </style>
+
+    <script
+      type="text/javascript"
+      language="javascript"
+      src="/base/src/main/chess-game.js">
+      </script>
+    <script
+      type="text/javascript"
+      language="javascript"
+      src="/base/src/main/converter.js">
+      </script>
+    <script
+      type="text/javascript"
+      language="javascript"
+      src="/base/src/main/pgn.js">
+      </script>
+    <script
+      type="text/javascript"
+      language="javascript"
+      src="/base/src/main/yahoo-format.js">
+      </script>
+    <script
+      type="text/javascript"
+      language="javascript"
+      src="/base/src/main/board.js">
+      </script>
+  </head>
+
+  <body>
+    <table border=0> 
+      <tr>
+        <td width="600px">
+            <div id='area_board' style=""> 
+            </div>
+<div id='area' style="visibility: hidden;display:none">
+[Event "UNO Quads"]
+[Site "University of Nebraska at Omaha"]
+[Date "2007.5.12"]
+[Round "1"]
+[White "Moore, Martin"]
+[Black "Solheim, Jeffery A"]
+[TimeControl "G55/5"]
+[ECO "D02"] { Grunfeld Reversed / Symmetrical Variation }
+[FEN "bnqrnbkr/pppppppp/8/8/8/8/PPPPPPPP/BNQRNBKR w KQkq -"]
+
+</div>
+<script language="JavaScript">
+  var game = new ChessGame(document.getElementById('area').innerHTML);
+  var conv = new Converter(game.format);
+  conv.convert();
+  var brd = new Board('area', {'root':'',
+                                'movesPaneWidth':'400px',
+                                'showMovesPane':true,
+                                'squareBorder':'1px solid #666666',
+                                'markLastMove':true,
+                                'moveBorder':'0px solid #00ff00',
+                                'imagePrefix':"base/img/wiki-commons/",
+                                'imageSuffix':"svg",
+                                'buttonPrefix':"base/img/buttons-svg/",
+                                'buttonSuffix':"svg",
+                                'skipToMove':2,
+                                'buttonSize':"45px",
+                                'squareSize':"50px",
+                                'pieceSize':"48px",
+                                'blackSqColor':"#cccccc",
+                                'whiteSqColor':"#ffffff",
+                                'moveFontSize': "12pt",
+                                'moveFont': '"Helvetica Neue", Helvetica, Arial, sans-serif',
+                                'commentFont': '"Helvetica Neue", Helvetica, Arial, sans-serif',
+                                'commentFontSize': "12pt",
+                                'flipped':false});
+  brd.init();
+</script>
+          </td>
+      </tr>
+    </table>
+  </body>
+</html>
