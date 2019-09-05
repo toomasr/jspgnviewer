@@ -1,9 +1,5 @@
 <html>
   <head>
-    <style type="text/css" media="screen">
-      <!-- @import url(test.css); -->
-    </style>
-
     <script
       type="text/javascript"
       language="javascript"
@@ -82,8 +78,10 @@
                                 'moveFont': '"Helvetica Neue", Helvetica, Arial, sans-serif',
                                 'commentFont': '"Helvetica Neue", Helvetica, Arial, sans-serif',
                                 'commentFontSize': "12pt",
-                                'flipped':false});
+                                'flipped':true});
   brd.init();
+  brd.makeBwMove();
+  brd.toggleComments(true);
 </script>
           </td>
       </tr>

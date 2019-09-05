@@ -27,6 +27,8 @@ module.exports = function(config) {
         watched: true, served: true, included: false },
       { pattern: 'src/**/*.js', watched: true,
         served: true, included: true },
+      { pattern: 'img/**/*', watched: true,
+        served: true, included: false },
     ],
 
 

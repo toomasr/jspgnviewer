@@ -10,7 +10,7 @@
     "karma-jshint-preprocessor": "0.0.6",
     "uglify-js": "^3.6.0"
   },
-  "description": "JS PGN Viewer =============",
+  "description": "JS PGN Viewer",
   "main": "karma.conf.js",
   "bin": {
     "jspgnviewer": "jsPgnViewer.js"
