@@ -21,7 +21,7 @@ options(
 
 setup(
     name="jsPgnViewer",
-    version="0.7.3",
+    version="dummy",
     url="http://github.com/toomasr/jspgnviewer",
     author="Toomas Römer",
     author_email="toomasr@gmail.com"
@@ -34,9 +34,9 @@ def upload(options, info):
     """Lets upload the release to GitHub"""
 
     # read the github token
-    config = ConfigParser.ConfigParser()
+    config = configparser.ConfigParser()
     config.read("personal.properties")
-    myToken = config.get("GitHub", "token", 0)
+    myToken = config.get("GitHub", "token")
 
     # lets log in
     print("'%s'" % myToken)
@@ -72,6 +72,8 @@ def release(options, info):
     options.build.dest_dir.mkdir();
     jsDestDir = options.build.dest_dir / "jspgnviewer";
     jsDestDir.mkdir();
+
+    options['version'] = open('version', 'r').read().strip()
 
     # prepare the JS release
     jsDestFile = jsDestDir / "jsPgnViewer.js"
