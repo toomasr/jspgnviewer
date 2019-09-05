@@ -68,7 +68,7 @@ function Board(divId, options) {
   this.opts['showMovesPane'] = true;
 
   this.opts['showComments'] = true;
-  this.opts['markLastMove'] = true;
+  this.opts['markLastMove'] = false;
   this.opts['markLastMoveColor'] = "#cccccc";
 
   this.opts['altRewind'] = "Rewind to the beginning";
@@ -337,6 +337,7 @@ function Board(divId, options) {
     hrefS.href = "javascript:void(0)";
     var href = hrefS.cloneNode(false);
     var input = this.getImg("rwind", "btns");
+    input.style.paddingRight = "5px";
     input.alt = this.opts['altRewind'];
     input.title = this.opts['altRewind'];
 
@@ -386,6 +387,7 @@ function Board(divId, options) {
 
     // hide
     input = this.getImg("toggle", "btns");
+    input.style.paddingRight = "5px";
     input.alt = this.opts['altShowMoves'];
     input.title = this.opts['altShowMoves'];
     href = hrefS.cloneNode(false);
@@ -399,6 +401,7 @@ function Board(divId, options) {
 
     // comments
     input = this.getImg("comments", "btns");
+    input.style.paddingRight = "5px";
     input.alt = this.opts['altComments'];
     input.title = this.opts['altComments'];
     href = hrefS.cloneNode(false);
@@ -412,6 +415,7 @@ function Board(divId, options) {
 
     // next btn
     input = this.getImg("forward", "btns");
+    input.style.paddingRight = "5px";
     input.alt = this.opts['altPlayMove'];
     input.title = this.opts['altPlayMove'];
     href = hrefS.cloneNode(false);
