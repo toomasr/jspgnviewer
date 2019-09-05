@@ -72,12 +72,8 @@
   var game = new ChessGame(document.getElementById('area').innerHTML);
   var conv = new Converter(game.format);
   conv.convert();
-  var brd = new Board('area', {'root':'../',
-                                'movesPaneWidth':'300px',
-                                'showMovesPane':true,
-                                'squareBorder':'1px solid #666666',
-                                'moveBorder':'0px solid #cccccc',
-                                'flipped':false});
+  // the most default board with the default settings
+  var brd = new Board('area', {});
   brd.init();
 </script>
           </td>

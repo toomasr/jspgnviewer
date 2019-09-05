@@ -42,10 +42,14 @@ function Board(divId, options) {
 
   this.opts = [];
   this.opts['root'] = detectRoot();
-  this.opts['imagePrefix'] = "img/zurich/";
-  this.opts['buttonPrefix'] = "img/zurich/buttons/";
-  this.opts['imageSuffix'] = 'gif';
-  this.opts['buttonSuffix'] = 'png';
+  this.opts['imagePrefix'] = "img/alpha/";
+  this.opts['buttonPrefix'] = "img/buttons-svg/";
+  this.opts['imageSuffix'] = 'svg';
+  this.opts['buttonSuffix'] = 'svg';
+  this.opts['blackSqColor'] = 'url("'+this.opts['root']+'img/backgrounds/darksquare.svg")',
+  this.opts['whiteSqColor'] = 'url("'+this.opts['root']+'img/backgrounds/lightsquare.svg")',
+  this.opts['sqHighlightWhite'] = 'url("'+this.opts['root']+'img/backgrounds/lightsquare-highlight.svg")',
+  this.opts['sqHighlightBlack'] = 'url("'+this.opts['root']+'img/backgrounds/darksquare-highlight.svg")',
   this.opts['moveFontSize'] = "8pt";
   this.opts['moveFontColor'] = "#af0000";
   this.opts['moveFont'] = 'Tahoma, Arial, sans-serif';
@@ -64,8 +68,8 @@ function Board(divId, options) {
   this.opts['showMovesPane'] = true;
 
   this.opts['showComments'] = true;
-  this.opts['markLastMove'] = false;
-  this.opts['markLastMoveColor'] = "#fbeec1";
+  this.opts['markLastMove'] = true;
+  this.opts['markLastMoveColor'] = "#cccccc";
 
   this.opts['altRewind'] = "Rewind to the beginning";
   this.opts['altBack'] = "One move back";
@@ -156,17 +160,17 @@ function Board(divId, options) {
   }
 
   if(!this.opts['squareBorder']) {
-    this.opts['squareBorder'] = "0px solid #000000";
+    this.opts['squareBorder'] = "1px solid #666666";
   }
 
   if(!this.opts['moveBorder']) {
     this.opts['moveBorder'] = "1px solid #cccccc";
   }
 
-  if (typeof (options['buttonPrefix']) == 'undefined')
+  if (typeof (this.opts['buttonPrefix']) == 'undefined')
     this.opts['buttonPrefix'] = this.opts['imagePrefix'] + "buttons/";
   else
-    this.opts['buttonPrefix'] = this.opts['root'] + options['buttonPrefix'];
+    this.opts['buttonPrefix'] = this.opts['root'] + this.opts['buttonPrefix'];
 
   var brdI = new BoardImages(this.opts);
   var imageNames = brdI.imageNames['default'];
@@ -308,6 +312,7 @@ function Board(divId, options) {
         td.align = "center";
         var color = !flip ? (j % 2) ? blackC : whiteC : !(j % 2) ? blackC: whiteC;
 
+        td.squareColor = !flip ? (j % 2) ? "black" : "white" : !(j % 2) ? "black": "white";
         td.style.background = color;
 
         this.pos[i][j] = td;
@@ -529,13 +534,7 @@ function Board(divId, options) {
   this.makeBwMove = function(boardObj) {
     var move = this.conv.prevMove();
     if (move == null)
-      return;
-  
-    this.deMarkLastMove(true);
-    this.markLastMove();
-    updateMoveInfo(this);
-    updateMovePane(this, true);
-    
+      return;    
 
     for (var i = move.actions.length; i > 1; i -= 2) {
       var frst = move.actions[i - 1].clone();
@@ -566,11 +565,17 @@ function Board(divId, options) {
       var sq = board.pos[x][y];
       sq.appendChild(this.getImg(move.enP.piece, move.enP.color));
     }
+
+    this.deMarkLastMove(true);
+    this.markLastMove();
+    updateMoveInfo(this);
+    updateMovePane(this, true);
   };
 
   this.markLastMove = function() {
     if (!this.opts['markLastMove'])
       return;
+
     try {
       var move = this.conv.moves[this.conv.iteIndex - 1].actions[1];
 
@@ -578,12 +583,22 @@ function Board(divId, options) {
       if (this.flipped) {
         piece = this.pos[7 - move.x][7 - move.y];
       }
-      // on konq the bg contains "initial initial initial "
-      // i guess xtra information. Anyways setting the
-      // background to a color containing the "initial"
-      // parts fails. Go figure
-      piece.lastBg = piece.style.backgroundColor.replace(/initial/g, "");
-      piece.style.backgroundColor = this.opts["markLastMoveColor"];
+      
+      if (piece.style.background) {
+        piece.lastBackground = piece.style.background;
+        if (piece.squareColor == "black") {
+          piece.style.background = this.opts['sqHighlightBlack'];
+        }
+        else {
+          piece.style.background = this.opts['sqHighlightWhite'];
+        }
+      }
+      else {
+        // background color default is on "initial" on browsers
+        piece.lastBg = piece.style.backgroundColor.replace(/initial/g, "");
+        piece.firstChild.style.backgroundColor = this.opts["markLastMoveColor"];
+      }
+      // let's remember the piece we are marking for easy demarking
       this.lastSquare = piece;
     } catch (e) {
     }
@@ -607,8 +622,14 @@ function Board(divId, options) {
       if (piece.lastBg)
         piece.style.background = piece.lastBg;
     }
-    if (this.lastSquare && this.lastSquare.lastBg) {
-      this.lastSquare.style.backgroundColor = this.lastSquare.lastBg;
+
+    if (this.lastSquare) {
+      if (this.lastSquare.lastBackground) {
+        this.lastSquare.style.background = this.lastSquare.lastBackground;
+      }
+      else {
+        this.lastSquare.firstChild.style.backgroundColor = this.lastSquare.lastBg;
+      }
       this.lastSquare = null;
     }
   };
@@ -677,6 +698,12 @@ function Board(divId, options) {
     if (move == null)
       return;
 
+    for (var i = 0; i < move.actions.length; i++) {
+      this.drawSquare(move.actions[i]);
+    }
+
+    this.drawEnPassante(move);
+
     if (!noUpdate) {
       this.deMarkLastMove();
       this.markLastMove();
@@ -684,12 +711,6 @@ function Board(divId, options) {
       updateMoveInfo(this);
       updateMovePane(this);
     }
-
-    for (var i = 0; i < move.actions.length; i++) {
-      this.drawSquare(move.actions[i]);
-    }
-
-    this.drawEnPassante(move);
   };
 
   updateMovePane = function(board, bw) {
