@@ -7,8 +7,7 @@
 *                                                       *
 *********************************************************
 
-05.09.2019 - jsPgnViewer/WP plugin 0.7.3
-Bugfixe(s)/Change(s)
+05.09.2019 - jsPgnViewer/WP plugin 0.7.4
 	+ Added couple of pieces themes (including SVG)
 	+ Added SVG buttons
 	+ Added support for keyboard arrows
@@ -16,6 +15,9 @@ Bugfixe(s)/Change(s)
 	+ Improved tests and coverage
 	+ Bugfixes to very specific bishop move
 
+28.08.2015 - jsPgnViewer/WP plugin 0.7.3
+Bugfixe(s)/Change(s)
+	+ Bugfixes
 
 17.08.2010 - jsPgnViewer/WP plugin 0.6.8
 Bugfixe(s)/Change(s)
