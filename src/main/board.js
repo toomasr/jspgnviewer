@@ -216,7 +216,7 @@ function Board(divId, options) {
     tmp.appendChild(topLeftTd);
     var topRightTd = resetStyles(document.createElement("td"));
     topRightTd.style.verticalAlign = "top";
-    topRightTd.style.overflow = "scroll";
+    topRightTd.style.overflow = "auto";
     tmp.appendChild(topRightTd);
 
     // toplevel table;
@@ -256,7 +256,7 @@ function Board(divId, options) {
     movesDiv.style.textAlign = "justify";
     movesDiv.style.paddingLeft = "5px";
     movesDiv.style.paddingRight = "5px";
-    movesDiv.style.overflow = "scroll";
+    movesDiv.style.height = "400px";
 
     if (this.opts['movePaneBottom']) {
       movesDiv.style.height = "200px";
