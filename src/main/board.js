@@ -211,7 +211,7 @@ function Board(divId, options) {
     tmp.style.background = this.opts['background'];
     mainTableTb.appendChild(tmp);
     var topLeftTd = resetStyles(document.createElement("td"));
-    topLeftTd.vAlign = "top";
+    topLeftTd.style.verticalAlign = "top";
     topLeftTd.style.width = this.opts['boardSize'];
     tmp.appendChild(topLeftTd);
     var topRightTd = resetStyles(document.createElement("td"));
@@ -256,9 +256,9 @@ function Board(divId, options) {
     movesDiv.style.textAlign = "justify";
     movesDiv.style.paddingLeft = "5px";
     movesDiv.style.paddingRight = "5px";
+    movesDiv.style.overflow = "scroll";
 
     if (this.opts['movePaneBottom']) {
-      movesDiv.style.overflow = "scroll";
       movesDiv.style.height = "200px";
       topLeftTd.appendChild(movesDiv);
     }
