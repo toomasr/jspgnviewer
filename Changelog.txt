@@ -1,10 +1,21 @@
-*******************************************************
-*              JSPGNVIEWER CHANGELOG                  *
-*                                                     *
-* Project page: http://code.google.com/p/jspgnviewer/ *
-* Website: http://www.pgnview.com                     *
-* Blog: http://tom.jabber.ee/                         *
-*******************************************************
+*********************************************************
+*                                                       *
+*              JSPGNVIEWER CHANGELOG                    *
+*                                                       *
+* Project page: https://github.com/toomasr/jspgnviewer/ *
+*                                                       *
+*                                                       *
+*********************************************************
+
+05.09.2019 - jsPgnViewer/WP plugin 0.7.3
+Bugfixe(s)/Change(s)
+	+ Added couple of pieces themes (including SVG)
+	+ Added SVG buttons
+	+ Added support for keyboard arrows
+	+ Improved defaults for board visuals
+	+ Improved tests and coverage
+	+ Bugfixes to very specific bishop move
+
 
 17.08.2010 - jsPgnViewer/WP plugin 0.6.8
 Bugfixe(s)/Change(s)
