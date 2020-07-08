@@ -49,20 +49,20 @@ def upload(options, info):
         tag_name = "jspgnviewer-%s" % options.version
         release = repo.create_release(tag_name, name=release_name, prerelease=True)
         f = open("bin/jspgnviewer-%s.zip" % options.version)
-        release.upload_asset("application/zip", "jspgnviewer-%s.zip" %
-            options.version, f)
+        release.upload_asset(content_type='application/zip', name="jspgnviewer-%s.zip" %
+            options.version, asset=f)
     except GitHubError as e:
-        print(e.errors)
+        raise e
 
     try:
         release_name = "JsPgnViewer WordPress %s" % options.version
         tag_name = "jspgnviewer-wordpress-%s" % options.version
         release = repo.create_release(tag_name, name=release_name, prerelease=True)
         f = open("bin/pgnviewer-%s.zip" % options.version)
-        release.upload_asset("application/zip", "pgnviewer-%s.zip" %
-                options.version, f)
+        release.upload_asset(content_type='application/zip', name="pgnviewer-%s.zip" %
+                options.version, asset=f)
     except GitHubError as e:
-        print(e.errors)
+        raise e
     pass
 
 @task
