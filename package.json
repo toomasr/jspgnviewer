@@ -2,13 +2,13 @@
   "name": "jspgnviewer",
   "version": "0.7.2",
   "devDependencies": {
-    "jasmine": "^3.4.0",
-    "karma": "^4.3.0",
-    "karma-coverage": "^2.0.1",
+    "jasmine": "^3.5.0",
+    "karma": "^4.4.1",
+    "karma-coverage": "^2.0.2",
     "karma-jasmine": "^2.0.1",
     "karma-jasmine-jquery": "0.1.1",
     "karma-jshint-preprocessor": "0.0.6",
-    "uglify-js": "^3.6.0"
+    "uglify-js": "^3.10.0"
   },
   "description": "JS PGN Viewer",
   "main": "karma.conf.js",
@@ -37,6 +37,6 @@
   },
   "homepage": "https://github.com/toomasr/jspgnviewer",
   "dependencies": {
-    "npm-check-updates": "^3.1.21"
+    "npm-check-updates": "^3.2.2"
   }
 }
